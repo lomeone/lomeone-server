@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_DIR" value="/app/logs"/>
+    <property name="APP_LOG_PATH" value="${LOG_DIR}/application"/>
+
+    <!-- Console Loging -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- Log Format -->
+        <layout class='ch.qos.logback.classic.PatternLayout'>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-4relative][%thread] %highlight(%-5level) --- [%logger.%method:%line] %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <!-- Application Info Log-->
+    <appender name="APP_INFO_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Log Path -->
+        <file>${APP_LOG_PATH}/app_info_log.log</file>
+        <!-- Log Level -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- Log Format -->
+        <encoder>
+            <!-- [Time][Threa Name] Level - - - [(package)class.method:line] message-->
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-4relative][%thread] %highlight(%-5level) --- [%logger.%method:%line] %msg%n</pattern>
+        </encoder>
+        <!-- 파일 저장 규칙 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 파일 이름 패턴 -->
+            <fileNamePattern>${APP_LOG_PATH}.app_info_log_%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- 파일 저장 기준 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 파일 저장 크기 -->
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 파일 최대 저장 기간 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Application Warnning Log-->
+    <appender name="APP_WARN_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Log Path -->
+        <file>${APP_LOG_PATH}/app_warn_log.log</file>
+        <!-- Log Level -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- Log Format -->
+        <encoder>
+            <!-- [Time][Threa Name] Level - - - [(package)class.method:line] message-->
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-4relative][%thread] %highlight(%-5level) --- [%logger.%method:%line] %msg%n</pattern>
+        </encoder>
+        <!-- 파일 저장 규칙 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 파일 이름 패턴 -->
+            <fileNamePattern>${APP_LOG_PATH}.app_warn_log_%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- 파일 저장 기준 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 파일 저장 크기 -->
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 파일 최대 저장 기간 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Application Error Log -->
+    <appender name="APP_ERROR_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Log Path -->
+        <file>${APP_LOG_PATH}/app_error_log.log</file>
+        <!-- Log Level -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- Log Format -->
+        <encoder>
+            <!-- [Time][Threa Name] Level - - - [(package)class.method:line] message-->
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-4relative][%thread] %highlight(%-5level) --- [%logger.%method:%line] %msg%n</pattern>
+        </encoder>
+        <!-- 파일 저장 규칙 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 파일 이름 패턴 -->
+            <fileNamePattern>${APP_LOG_PATH}.app_error_log_%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- 파일 저장 기준 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 파일 저장 크기 -->
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 파일 최대 저장 기간 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="APP_ERROR_LOG"/>
+    </root>
+
+    <logger name="spring.labserver" level="DEBUG">
+        <appender-ref ref="APP_INFO_LOG"/>
+        <appender-ref ref='APP_WARN_LOG'/>
+    </logger>
+</configuration>

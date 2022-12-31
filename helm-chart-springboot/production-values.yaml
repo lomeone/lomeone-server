@@ -1,0 +1,31 @@
+container:
+  activeProfile: "production"
+  replicas: 1
+
+image:
+  tag: main
+
+service:
+  internal: true
+  containerPort: 8080
+  annotations: {}
+
+ingress:
+  enable: true
+  internal: true
+  domain: springboot.comstering.com
+  annotations: {}
+
+resources:
+  limits:
+    cpu: 0.5
+    memory: 256Mi
+
+  requests:
+    cpu: 0.1
+    memory: 128Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2

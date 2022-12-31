@@ -109,7 +109,7 @@ subprojects {
 		afterEvaluate {
 			classDirectories.setFrom(files(classDirectories.files.map {
 				fileTree(it).apply {
-					exclude("**/DemoApplication**")
+					exclude("**/MmsApplication**")
 					for (pattern in 'A' .. 'Z') {
 						exclude("**/${pattern}**")
 					}
@@ -144,7 +144,7 @@ subprojects {
 					minimum = jacocoLineCoverageRatio.toBigDecimal()
 				}
 
-				excludes = listOf<String>("**.DemoApplication**") + excludeJacocoClassNamePatterns
+				excludes = listOf<String>("**.MmsApplication**") + excludeJacocoClassNamePatterns
 			}
 		}
 	}
@@ -186,7 +186,7 @@ tasks.register<JacocoReport>("jacocoAllReport") {
 		afterEvaluate {
 			classDirectories.setFrom(files(classDirectories.files.map {
 				fileTree(it).apply {
-					exclude("**/DemoApplication**")
+					exclude("**/MmsApplication**")
 					for (pattern in 'A' .. 'Z') {
 						exclude("**/${pattern}**")
 					}

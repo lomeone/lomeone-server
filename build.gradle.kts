@@ -2,21 +2,26 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.ByteArrayOutputStream
 
 val groupName: String by project
+
+val queryDslVersion: String by project
+
 val kotestVersion: String by project
 val springMockkVersion: String by project
+val jacocoBranchCoverageRatio: String by project
+val jacocoLineCoverageRatio: String by project
 
 val springCloudOpenFeignVersion: String by project
 val springCloudHystrixVersion: String by project
 val springCloudRibbonVersion: String by project
 val springCloudEurekaClientVersion: String by project
-val jacocoBranchCoverageRatio: String by project
-val jacocoLineCoverageRatio: String by project
 
 plugins {
 	id("org.springframework.boot")
 	id("io.spring.dependency-management")
 	kotlin("jvm")
 	kotlin("plugin.spring")
+	kotlin("kapt")
+	kotlin("plugin.jpa")
 	jacoco
 	id("com.github.kt3k.coveralls")
 	id("com.google.cloud.tools.jib")
@@ -29,6 +34,8 @@ allprojects {
 	apply {
 		plugin("kotlin")
 		plugin("kotlin-spring")
+		plugin("kotlin-jpa")
+		plugin("kotlin-kapt")
 		plugin("org.springframework.boot")
 		plugin("io.spring.dependency-management")
 		plugin("jacoco")
@@ -62,6 +69,11 @@ subprojects {
 		implementation("org.springframework.boot:spring-boot-starter-actuator")
 		implementation("org.springframework.boot:spring-boot-starter-validation")
 		implementation("org.springframework.boot:spring-boot-starter-web")
+
+		// JPA
+		implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+		implementation("com.querydsl:querydsl-jpa")
+		kapt("com.querydsl:querydsl-apt:$queryDslVersion:jpa")
 
 		// Spring Cloud
 		implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$springCloudOpenFeignVersion")

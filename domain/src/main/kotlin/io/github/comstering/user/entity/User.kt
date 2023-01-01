@@ -19,9 +19,6 @@ import javax.persistence.Table
 @Entity
 @Table(indexes = [Index(name = "idx_user_firebaseUserToken", columnList = "firebaseUserToken", unique = true)])
 class User(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
     @Column(unique = true)
     val firebaseUserToken: String,
     val name: String,
@@ -36,6 +33,9 @@ class User(
     @LastModifiedDate
     val updatedAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
 ) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null
 }
 
 @JvmInline

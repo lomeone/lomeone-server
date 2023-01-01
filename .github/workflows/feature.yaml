@@ -38,4 +38,6 @@ jobs:
       - name: Run coverage measurement (use coveralls)
         run: |
           ./gradlew clean
+          ./gradlew test
+          ./gradlew jacocoAllReport
           ./gradlew coveralls

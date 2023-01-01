@@ -51,4 +51,23 @@ class CreateUserServiceTest : BehaviorSpec({
             }
         }
     }
+
+    Given("유저가 이미 존재하면") {
+        every { userRepository.findByFirebaseUserToken(any()) } returns mockk<User>()
+        When("유저를 생성할 때") {
+            val request = CreateUserServiceRequest(
+                firebaseUserToken = "user1234",
+                name = "name",
+                nickname = "nickname",
+                email = "test@gmail.com",
+                birthday = LocalDate.of(2000, 1, 1),
+                accountType = "GOOGLE"
+            )
+            Then("유저가 이미 존재한다는 예외가 발생해서 유저를 생성할 수 없다") {
+                shouldThrow<Exception> {
+                    createUserService.execute(request)
+                }
+            }
+        }
+    }
 })

@@ -1,4 +1,4 @@
-package com.example.demo
+package io.github.comstering
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -15,7 +15,6 @@ class UserTest : BehaviorSpec({
             Then("예외가 발생해서 유저를 생성할 수 없다") {
                 shouldThrow<Exception> {
                     User(
-                        id = 1L,
                         firebaseUserToken = "user1234",
                         name = "name",
                         nickname = "nickname",
@@ -33,7 +32,6 @@ class UserTest : BehaviorSpec({
             Then("예외가 발생해서 유저를 생성할 수 없다") {
                 shouldThrow<Exception> {
                     User(
-                        id = 1L,
                         firebaseUserToken = "user1234",
                         name = "name",
                         nickname = "nickname",
@@ -49,7 +47,6 @@ class UserTest : BehaviorSpec({
         val emailInput = "email@gmail.com"
         When("유저를 생성할 때") {
             val user = User(
-                id = 1L,
                 firebaseUserToken = "user1234",
                 name = "name",
                 nickname = "nickname",
@@ -58,7 +55,6 @@ class UserTest : BehaviorSpec({
                 accountType = AccountType.APPLE
             )
             Then("유저를 생성할 수 있다") {
-                user.id shouldBe 1L
                 user.firebaseUserToken shouldBe "user1234"
                 user.name shouldBe "name"
                 user.nickname shouldBe "nickname"

@@ -17,7 +17,16 @@ class CreateUserService(
     fun execute(request: CreateUserServiceRequest): CreateUserServiceResponse {
         ensureUserNotExists(request.firebaseUserToken)
 
-        val user = saveUser(request)
+        val user = userRepository.save(
+            User(
+                firebaseUserToken = request.firebaseUserToken,
+                name = request.name,
+                nickname = request.nickname,
+                email = Email(request.email),
+                birthday = request.birthday,
+                accountType = AccountType.valueOf(request.accountType)
+            )
+        )
 
         return CreateUserServiceResponse(
             id = user.id!!,
@@ -33,21 +42,6 @@ class CreateUserService(
     private fun ensureUserNotExists(firebaseUserToken: String) {
         userRepository.findByFirebaseUserToken(firebaseUserToken) != null
             && throw Exception("User already exists")
-    }
-
-    private fun saveUser(request: CreateUserServiceRequest): User {
-        val user = userRepository.save(
-            User(
-                firebaseUserToken = request.firebaseUserToken,
-                name = request.name,
-                nickname = request.nickname,
-                email = Email(request.email),
-                birthday = request.birthday,
-                accountType = AccountType.valueOf(request.accountType)
-            )
-        )
-        user.id ?: throw Exception("User create failed")
-        return user
     }
 }
 

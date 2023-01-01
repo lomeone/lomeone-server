@@ -29,7 +29,7 @@ class CreateUserService(
         )
 
         return CreateUserServiceResponse(
-            id = user.id!!,
+            id = user.id,
             firebaseUserToken = user.firebaseUserToken,
             name = user.name,
             nickname = user.nickname,
@@ -55,7 +55,7 @@ data class CreateUserServiceRequest(
 )
 
 data class CreateUserServiceResponse(
-    val id: Long,
+    val id: Long?,
     val firebaseUserToken: String,
     val name: String,
     val nickname: String,

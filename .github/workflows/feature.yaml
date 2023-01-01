@@ -36,8 +36,4 @@ jobs:
         run: echo "COVERALLS_REPO_TOKEN=${{ secrets.COVERALLS_REPO_TOKEN }}" >> $GITHUB_ENV
 
       - name: Run coverage measurement (use coveralls)
-        run: |
-          ./gradlew clean
-          ./gradlew test
-          ./gradlew jacocoAllReport
-          ./gradlew coveralls
+        run: ./gradlew coveralls

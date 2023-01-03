@@ -18,7 +18,7 @@ class UserTest : BehaviorSpec({
                         firebaseUserToken = "user1234",
                         name = "name",
                         nickname = "nickname",
-                        email = Email(emailInput),
+                        email = emailInput,
                         birthday = LocalDate.now(),
                         accountType = AccountType.GOOGLE
                     )
@@ -35,7 +35,7 @@ class UserTest : BehaviorSpec({
                         firebaseUserToken = "user1234",
                         name = "name",
                         nickname = "nickname",
-                        email = Email(emailInput),
+                        email = emailInput,
                         birthday = LocalDate.now(),
                         accountType = AccountType.FACEBOOK
                     )
@@ -50,7 +50,7 @@ class UserTest : BehaviorSpec({
                 firebaseUserToken = "user1234",
                 name = "name",
                 nickname = "nickname",
-                email = Email(emailInput),
+                email = emailInput,
                 birthday = LocalDate.of(2000, 1, 1),
                 accountType = AccountType.APPLE
             )

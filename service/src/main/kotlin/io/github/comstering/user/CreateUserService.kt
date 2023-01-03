@@ -15,16 +15,18 @@ class CreateUserService(
 ) {
     @Transactional
     fun execute(request: CreateUserServiceRequest): CreateUserServiceResponse {
-        ensureUserNotExists(request.firebaseUserToken)
+        val (firebaseUserToken, name, nickname, email, birthday, accountType) = request
+
+        ensureUserNotExists(firebaseUserToken)
 
         val user = userRepository.save(
             User(
-                firebaseUserToken = request.firebaseUserToken,
-                name = request.name,
-                nickname = request.nickname,
-                email = Email(request.email),
-                birthday = request.birthday,
-                accountType = AccountType.valueOf(request.accountType)
+                firebaseUserToken = firebaseUserToken,
+                name = name,
+                nickname = nickname,
+                email = email,
+                birthday = birthday,
+                accountType = AccountType.valueOf(accountType)
             )
         )
 

@@ -21,21 +21,35 @@ import javax.persistence.Table
 class User(
     @Column(unique = true)
     val firebaseUserToken: String,
-    val name: String,
-    val nickname: String,
-    val email: Email,
-    val birthday: LocalDate,
+    name: String,
+    nickname: String,
+    email: String,
+    birthday: LocalDate,
     @Enumerated(EnumType.STRING)
-    val accountType: AccountType,
-    @CreatedDate
-    @Column(updatable = false)
-    val createdAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul")),
-    @LastModifiedDate
-    val updatedAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
+    val accountType: AccountType
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
+
+    var name: String = name
+        private set
+
+    var nickname: String = nickname
+        private set
+
+    var email: Email = Email(email)
+        private set
+
+    var birthday: LocalDate = birthday
+        private set
+
+    @CreatedDate
+    @Column(updatable = false)
+    val createdAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
+
+    @LastModifiedDate
+    val updatedAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
 }
 
 @JvmInline

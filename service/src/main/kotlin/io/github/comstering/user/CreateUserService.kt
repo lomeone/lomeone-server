@@ -1,7 +1,6 @@
 package io.github.comstering.user
 
 import io.github.comstering.user.entity.AccountType
-import io.github.comstering.user.entity.Email
 import io.github.comstering.user.entity.User
 import io.github.comstering.user.repository.UserRepository
 import org.springframework.stereotype.Service

@@ -1,7 +1,6 @@
 package io.github.comstering.user
 
 import io.github.comstering.user.entity.AccountType
-import io.github.comstering.user.entity.Email
 import io.github.comstering.user.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec

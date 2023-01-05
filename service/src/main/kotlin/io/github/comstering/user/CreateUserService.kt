@@ -1,7 +1,6 @@
 package io.github.comstering.user
 
 import io.github.comstering.user.entity.AccountType
-import io.github.comstering.user.entity.Email
 import io.github.comstering.user.entity.User
 import io.github.comstering.user.repository.UserRepository
 import org.springframework.stereotype.Service
@@ -15,16 +14,18 @@ class CreateUserService(
 ) {
     @Transactional
     fun execute(request: CreateUserServiceRequest): CreateUserServiceResponse {
-        ensureUserNotExists(request.firebaseUserToken)
+        val (firebaseUserToken, name, nickname, email, birthday, accountType) = request
+
+        ensureUserNotExists(firebaseUserToken)
 
         val user = userRepository.save(
             User(
-                firebaseUserToken = request.firebaseUserToken,
-                name = request.name,
-                nickname = request.nickname,
-                email = Email(request.email),
-                birthday = request.birthday,
-                accountType = AccountType.valueOf(request.accountType)
+                firebaseUserToken = firebaseUserToken,
+                name = name,
+                nickname = nickname,
+                email = email,
+                birthday = birthday,
+                accountType = AccountType.valueOf(accountType)
             )
         )
 

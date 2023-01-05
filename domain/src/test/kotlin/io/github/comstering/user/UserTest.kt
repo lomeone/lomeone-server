@@ -1,7 +1,6 @@
 package io.github.comstering.user
 
 import io.github.comstering.user.entity.AccountType
-import io.github.comstering.user.entity.Email
 import io.github.comstering.user.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
@@ -18,7 +17,7 @@ class UserTest : BehaviorSpec({
                         firebaseUserToken = "user1234",
                         name = "name",
                         nickname = "nickname",
-                        email = Email(emailInput),
+                        email = emailInput,
                         birthday = LocalDate.now(),
                         accountType = AccountType.GOOGLE
                     )
@@ -35,7 +34,7 @@ class UserTest : BehaviorSpec({
                         firebaseUserToken = "user1234",
                         name = "name",
                         nickname = "nickname",
-                        email = Email(emailInput),
+                        email = emailInput,
                         birthday = LocalDate.now(),
                         accountType = AccountType.FACEBOOK
                     )
@@ -50,7 +49,7 @@ class UserTest : BehaviorSpec({
                 firebaseUserToken = "user1234",
                 name = "name",
                 nickname = "nickname",
-                email = Email(emailInput),
+                email = emailInput,
                 birthday = LocalDate.of(2000, 1, 1),
                 accountType = AccountType.APPLE
             )

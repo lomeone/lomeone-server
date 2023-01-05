@@ -1,7 +1,6 @@
 package io.github.comstering.user
 
 import io.github.comstering.user.entity.AccountType
-import io.github.comstering.user.entity.Email
 import io.github.comstering.user.entity.User
 import io.github.comstering.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow
@@ -33,7 +32,7 @@ class CreateUserServiceTest : BehaviorSpec({
                 firebaseUserToken = "user1234",
                 name = "name",
                 nickname = "nickname",
-                email = Email("test@gmail.com"),
+                email = "test@gmail.com",
                 birthday = LocalDate.of(2000, 1, 1),
                 accountType = AccountType.GOOGLE
             )

@@ -2,7 +2,6 @@ package io.github.comstering.user.entity
 
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.persistence.Column
@@ -24,7 +23,7 @@ class User(
     name: String,
     nickname: String,
     email: String,
-    birthday: LocalDate,
+    birthday: ZonedDateTime,
     @Enumerated(EnumType.STRING)
     val accountType: AccountType
 ) {
@@ -41,7 +40,7 @@ class User(
     var email: Email = Email(email)
         private set
 
-    var birthday: LocalDate = birthday
+    var birthday: ZonedDateTime  = birthday
         private set
 
     @CreatedDate

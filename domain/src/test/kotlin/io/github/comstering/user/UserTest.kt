@@ -5,7 +5,8 @@ import io.github.comstering.user.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
-import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class UserTest : BehaviorSpec({
     Given("이메일이 공백이면") {
@@ -18,7 +19,7 @@ class UserTest : BehaviorSpec({
                         name = "name",
                         nickname = "nickname",
                         email = emailInput,
-                        birthday = LocalDate.now(),
+                        birthday = ZonedDateTime.now(),
                         accountType = AccountType.GOOGLE
                     )
                 }
@@ -35,7 +36,7 @@ class UserTest : BehaviorSpec({
                         name = "name",
                         nickname = "nickname",
                         email = emailInput,
-                        birthday = LocalDate.now(),
+                        birthday = ZonedDateTime.now(),
                         accountType = AccountType.FACEBOOK
                     )
                 }
@@ -50,7 +51,7 @@ class UserTest : BehaviorSpec({
                 name = "name",
                 nickname = "nickname",
                 email = emailInput,
-                birthday = LocalDate.of(2000, 1, 1),
+                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
                 accountType = AccountType.APPLE
             )
             Then("유저를 생성할 수 있다") {
@@ -58,7 +59,7 @@ class UserTest : BehaviorSpec({
                 user.name shouldBe "name"
                 user.nickname shouldBe "nickname"
                 user.email.value shouldBe emailInput
-                user.birthday shouldBe LocalDate.of(2000, 1, 1)
+                user.birthday shouldBe ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
                 user.accountType shouldBe AccountType.APPLE
             }
         }

@@ -5,7 +5,7 @@ import io.github.comstering.user.entity.User
 import io.github.comstering.user.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
+import java.time.ZonedDateTime
 import javax.validation.constraints.NotBlank
 
 @Service
@@ -51,7 +51,7 @@ data class CreateUserServiceRequest(
     @field:NotBlank val name: String,
     @field:NotBlank val nickname: String,
     @field:NotBlank val email: String,
-    val birthday: LocalDate,
+    val birthday: ZonedDateTime,
     @field:NotBlank val accountType: String
 )
 
@@ -61,6 +61,6 @@ data class CreateUserServiceResponse(
     val name: String,
     val nickname: String,
     val email: String,
-    val birthday: LocalDate,
+    val birthday: ZonedDateTime,
     val accountType: String
 )

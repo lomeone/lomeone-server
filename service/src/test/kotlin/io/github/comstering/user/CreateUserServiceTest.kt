@@ -10,7 +10,8 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class CreateUserServiceTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
@@ -24,7 +25,7 @@ class CreateUserServiceTest : BehaviorSpec({
                 name = "name",
                 nickname = "nickname",
                 email = "test@gmail.com",
-                birthday = LocalDate.of(2000, 1, 1),
+                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
                 accountType = "GOOGLE"
             )
 
@@ -33,7 +34,7 @@ class CreateUserServiceTest : BehaviorSpec({
                 name = "name",
                 nickname = "nickname",
                 email = "test@gmail.com",
-                birthday = LocalDate.of(2000, 1, 1),
+                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
                 accountType = AccountType.GOOGLE
             )
 
@@ -59,7 +60,7 @@ class CreateUserServiceTest : BehaviorSpec({
                 name = "name",
                 nickname = "nickname",
                 email = "test@gmail.com",
-                birthday = LocalDate.of(2000, 1, 1),
+                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
                 accountType = "GOOGLE"
             )
             Then("유저가 이미 존재한다는 예외가 발생해서 유저를 생성할 수 없다") {

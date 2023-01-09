@@ -48,4 +48,23 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
             }
         }
     }
+    Given("유저가 존재하지 않으면") {
+        every { userRepository.findByFirebaseUserToken(any()) } returns null
+        When("유저 정보를 업데이트할 때") {
+            val request = UpdateUserInfoServiceRequest(
+                firebaseUserToken = "user1234",
+                name = "John",
+                nickname = "Tomy",
+                email = "google@gmail.com",
+                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
+            )
+            Then("예외가 발생해서 유저 정보를 업데이트할 수 없다") {
+                shouldThrow<Exception> {
+                    withContext(Dispatchers.IO) {
+                        updateUserInfoService.execute(request)
+                    }
+                }
+            }
+        }
+    }
 })

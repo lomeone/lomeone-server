@@ -31,16 +31,16 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
 
-    var name: String = name
+    var name: String
         private set
 
-    var nickname: String = nickname
+    var nickname: String
         private set
 
-    var email: Email = Email(email)
+    var email: Email
         private set
 
-    var birthday: ZonedDateTime  = birthday
+    var birthday: ZonedDateTime
         private set
 
     @CreatedDate
@@ -49,6 +49,32 @@ class User(
 
     @LastModifiedDate
     val updatedAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
+
+    init {
+        ensureNameIsNotBlank(name)
+        ensureNicknameIsNotBlank(nickname)
+        this.name = name
+        this.nickname = nickname
+        this.email = Email(email)
+        this.birthday = birthday
+    }
+
+    private fun ensureNameIsNotBlank(name: String) {
+        name.isBlank() && throw Exception("Name is blank")
+    }
+
+    private fun ensureNicknameIsNotBlank(nickname: String) {
+        nickname.isBlank() && throw Exception("Nickname is blank")
+    }
+
+    fun updateUserInfo(name: String, nickname: String, email: String, birthday: ZonedDateTime) {
+        ensureNameIsNotBlank(name)
+        ensureNicknameIsNotBlank(nickname)
+        this.name = name
+        this.nickname = nickname
+        this.email = Email(email)
+        this.birthday = birthday
+    }
 }
 
 @JvmInline

@@ -9,6 +9,64 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 class UserTest : BehaviorSpec({
+    Given("이름이 공백이 아니고, 닉네임도 공백이 아니고, 이메일도 형식에 맞으면") {
+        val nameInput = "John"
+        val nicknameInput = "Tomy"
+        val emailInput = "email@gmail.com"
+        When("유저를 생성할 때") {
+            val user = User(
+                firebaseUserToken = "user1234",
+                name = nameInput,
+                nickname = nicknameInput,
+                email = emailInput,
+                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
+                accountType = AccountType.GOOGLE
+            )
+            Then("유저를 생성할 수 있다") {
+                user.firebaseUserToken shouldBe "user1234"
+                user.name shouldBe nameInput
+                user.nickname shouldBe nicknameInput
+                user.email.value shouldBe emailInput
+                user.birthday shouldBe ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
+                user.accountType shouldBe AccountType.GOOGLE
+            }
+        }
+    }
+    Given("이름이 공백이면") {
+        val nameInput = " "
+        When("유저를 생성할 때") {
+            Then("에외가 발생해서 유저를 생성할 수 없다") {
+                shouldThrow<Exception> {
+                    User(
+                        firebaseUserToken = "user1234",
+                        name = nameInput,
+                        nickname = "nickname",
+                        email = "email@gmail.com",
+                        birthday = ZonedDateTime.now(),
+                        accountType = AccountType.GOOGLE
+                    )
+
+                }
+            }
+        }
+    }
+    Given("닉네임이 공백이면") {
+        val nicknameInput = ""
+        When("유저를 생성할 때") {
+            Then("예외가 발생해서 유저를 생성할 수 없다") {
+                shouldThrow<Exception> {
+                    User(
+                        firebaseUserToken = "user1234",
+                        name = "name",
+                        nickname = nicknameInput,
+                        email = "email@gmail.com",
+                        birthday = ZonedDateTime.now(),
+                        accountType = AccountType.GOOGLE
+                    )
+                }
+            }
+        }
+    }
     Given("이메일이 공백이면") {
         val emailInput = " "
         When("유저를 생성할 때") {
@@ -40,27 +98,6 @@ class UserTest : BehaviorSpec({
                         accountType = AccountType.FACEBOOK
                     )
                 }
-            }
-        }
-    }
-    Given("이메일이 형식에 맞으면") {
-        val emailInput = "email@gmail.com"
-        When("유저를 생성할 때") {
-            val user = User(
-                firebaseUserToken = "user1234",
-                name = "name",
-                nickname = "nickname",
-                email = emailInput,
-                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
-                accountType = AccountType.APPLE
-            )
-            Then("유저를 생성할 수 있다") {
-                user.firebaseUserToken shouldBe "user1234"
-                user.name shouldBe "name"
-                user.nickname shouldBe "nickname"
-                user.email.value shouldBe emailInput
-                user.birthday shouldBe ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
-                user.accountType shouldBe AccountType.APPLE
             }
         }
     }

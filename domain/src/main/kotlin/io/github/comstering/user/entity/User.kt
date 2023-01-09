@@ -66,6 +66,15 @@ class User(
     private fun ensureNicknameIsNotBlank(nickname: String) {
         nickname.isBlank() && throw Exception("Nickname is blank")
     }
+
+    fun updateUserInfo(name: String, nickname: String, email: String, birthday: ZonedDateTime) {
+        ensureNameIsNotBlank(name)
+        ensureNicknameIsNotBlank(nickname)
+        this.name = name
+        this.nickname = nickname
+        this.email = Email(email)
+        this.birthday = birthday
+    }
 }
 
 @JvmInline

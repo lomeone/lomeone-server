@@ -9,17 +9,27 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 class UserTest : BehaviorSpec({
+    val defaultUser = User(
+        firebaseUserToken = "user1234",
+        name = "name",
+        nickname = "nickname",
+        email = "test@gmail.com",
+        birthday = ZonedDateTime.now(),
+        AccountType.GOOGLE
+    )
+
     Given("이름이 공백이 아니고, 닉네임도 공백이 아니고, 이메일도 형식에 맞으면") {
         val nameInput = "John"
         val nicknameInput = "Tomy"
         val emailInput = "email@gmail.com"
+        val birthdayInput = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
         When("유저를 생성할 때") {
             val user = User(
                 firebaseUserToken = "user1234",
                 name = nameInput,
                 nickname = nicknameInput,
                 email = emailInput,
-                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
+                birthday = birthdayInput,
                 accountType = AccountType.GOOGLE
             )
             Then("유저를 생성할 수 있다") {
@@ -27,8 +37,18 @@ class UserTest : BehaviorSpec({
                 user.name shouldBe nameInput
                 user.nickname shouldBe nicknameInput
                 user.email.value shouldBe emailInput
-                user.birthday shouldBe ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
+                user.birthday shouldBe birthdayInput
                 user.accountType shouldBe AccountType.GOOGLE
+            }
+        }
+        When("유저 정보를 업데이트할 때") {
+
+            defaultUser.updateUserInfo(nameInput, nicknameInput, emailInput, birthdayInput)
+            Then("유저 정보를 업데이트할 수 있다") {
+                defaultUser.name shouldBe nameInput
+                defaultUser.nickname shouldBe nicknameInput
+                defaultUser.email.value shouldBe emailInput
+                defaultUser.birthday shouldBe birthdayInput
             }
         }
     }

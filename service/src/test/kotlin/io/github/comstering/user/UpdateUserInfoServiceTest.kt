@@ -31,7 +31,6 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
                 firebaseUserToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
-                email = "google@gmail.com",
                 birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
             )
 
@@ -39,11 +38,10 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
                 updateUserInfoService.execute(request)
             }
             Then("유저 정보가 업데이트된다") {
-                val (firebaseUserToken, name, nickname, email, birthday) = result
+                val (firebaseUserToken, name, nickname, birthday) = result
                 firebaseUserToken shouldBe request.firebaseUserToken
                 name shouldBe request.name
                 nickname shouldBe request.nickname
-                email shouldBe request.email
                 birthday shouldBe request.birthday
             }
         }
@@ -55,7 +53,6 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
                 firebaseUserToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
-                email = "google@gmail.com",
                 birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
             )
             Then("예외가 발생해서 유저 정보를 업데이트할 수 없다") {

@@ -11,17 +11,16 @@ class UpdateUserInfoService(
 ) {
     @Transactional
     fun execute(request: UpdateUserInfoServiceRequest): UpdateUserInfoServiceResponse {
-        val (firebaseUserToken, name, nickname, email, birthday) = request
+        val (firebaseUserToken, name, nickname, birthday) = request
 
         val user = getUser(firebaseUserToken)
 
-        user.updateUserInfo(name, nickname, email, birthday)
+        user.updateUserInfo(name, nickname, birthday)
 
         return UpdateUserInfoServiceResponse(
             firebaseUserToken = user.firebaseUserToken,
             name = user.name,
             nickname = user.nickname,
-            email = user.email.value,
             birthday = user.birthday
         )
     }
@@ -34,7 +33,6 @@ data class UpdateUserInfoServiceRequest(
     val firebaseUserToken: String,
     val name: String,
     val nickname: String,
-    val email: String,
     val birthday: ZonedDateTime
 )
 
@@ -42,6 +40,5 @@ data class UpdateUserInfoServiceResponse(
     val firebaseUserToken: String,
     val name: String,
     val nickname: String,
-    val email: String,
     val birthday: ZonedDateTime
 )

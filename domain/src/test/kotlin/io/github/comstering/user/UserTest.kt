@@ -43,7 +43,7 @@ class UserTest : BehaviorSpec({
         }
         When("유저 정보를 업데이트할 때") {
 
-            defaultUser.updateUserInfo(nameInput, nicknameInput, emailInput, birthdayInput)
+            defaultUser.updateUserInfo(nameInput, nicknameInput, birthdayInput)
             Then("유저 정보를 업데이트할 수 있다") {
                 defaultUser.name shouldBe nameInput
                 defaultUser.nickname shouldBe nicknameInput
@@ -72,7 +72,7 @@ class UserTest : BehaviorSpec({
         When("유저 정보를 업데이트할 때") {
             Then("에외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {
-                    defaultUser.updateUserInfo(nameInput, "nickname", "email@gmail.com", ZonedDateTime.now())
+                    defaultUser.updateUserInfo(nameInput, "nickname", ZonedDateTime.now())
                 }
             }
         }
@@ -96,7 +96,7 @@ class UserTest : BehaviorSpec({
         When("유저 정보를 업데이트할 때") {
             Then("에외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {
-                    defaultUser.updateUserInfo("name", nicknameInput, "email@gmail.com", ZonedDateTime.now())
+                    defaultUser.updateUserInfo("name", nicknameInput, ZonedDateTime.now())
                 }
             }
         }
@@ -120,7 +120,7 @@ class UserTest : BehaviorSpec({
         When("유저 정보를 업데이트할 때") {
             Then("예외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {
-                    defaultUser.updateUserInfo("name", "nickname", emailInput, ZonedDateTime.now())
+                    defaultUser.updateUserInfo("name", "nickname", ZonedDateTime.now())
                 }
             }
         }
@@ -144,7 +144,7 @@ class UserTest : BehaviorSpec({
         When("유저 정보를 업데이트할 때") {
             Then("예외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {
-                    defaultUser.updateUserInfo("name", "nickname", emailInput, ZonedDateTime.now())
+                    defaultUser.updateUserInfo("name", "nickname", ZonedDateTime.now())
                 }
             }
         }

@@ -43,11 +43,10 @@ class UserTest : BehaviorSpec({
         }
         When("유저 정보를 업데이트할 때") {
 
-            defaultUser.updateUserInfo(nameInput, nicknameInput, emailInput, birthdayInput)
+            defaultUser.updateUserInfo(nameInput, nicknameInput, birthdayInput)
             Then("유저 정보를 업데이트할 수 있다") {
                 defaultUser.name shouldBe nameInput
                 defaultUser.nickname shouldBe nicknameInput
-                defaultUser.email.value shouldBe emailInput
                 defaultUser.birthday shouldBe birthdayInput
             }
         }
@@ -72,7 +71,7 @@ class UserTest : BehaviorSpec({
         When("유저 정보를 업데이트할 때") {
             Then("에외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {
-                    defaultUser.updateUserInfo(nameInput, "nickname", "email@gmail.com", ZonedDateTime.now())
+                    defaultUser.updateUserInfo(nameInput, "nickname", ZonedDateTime.now())
                 }
             }
         }
@@ -96,7 +95,7 @@ class UserTest : BehaviorSpec({
         When("유저 정보를 업데이트할 때") {
             Then("에외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {
-                    defaultUser.updateUserInfo("name", nicknameInput, "email@gmail.com", ZonedDateTime.now())
+                    defaultUser.updateUserInfo("name", nicknameInput, ZonedDateTime.now())
                 }
             }
         }
@@ -117,13 +116,6 @@ class UserTest : BehaviorSpec({
                 }
             }
         }
-        When("유저 정보를 업데이트할 때") {
-            Then("예외가 발생해서 유저 정보를 업데이트할 수 없다") {
-                shouldThrow<Exception> {
-                    defaultUser.updateUserInfo("name", "nickname", emailInput, ZonedDateTime.now())
-                }
-            }
-        }
     }
     Given("이메일이 형식에 맞지 않으면") {
         val emailInput = "email"
@@ -138,13 +130,6 @@ class UserTest : BehaviorSpec({
                         birthday = ZonedDateTime.now(),
                         accountType = AccountType.FACEBOOK
                     )
-                }
-            }
-        }
-        When("유저 정보를 업데이트할 때") {
-            Then("예외가 발생해서 유저 정보를 업데이트할 수 없다") {
-                shouldThrow<Exception> {
-                    defaultUser.updateUserInfo("name", "nickname", emailInput, ZonedDateTime.now())
                 }
             }
         }

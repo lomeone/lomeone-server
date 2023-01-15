@@ -1,10 +1,12 @@
 package io.github.comstering.user.entity
 
+import io.github.comstering.converter.CryptoConverter
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.persistence.Column
+import javax.persistence.Convert
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
@@ -37,6 +39,7 @@ class User(
     var nickname: String
         private set
 
+    @Convert(converter = CryptoConverter::class)
     var email: Email
         private set
 

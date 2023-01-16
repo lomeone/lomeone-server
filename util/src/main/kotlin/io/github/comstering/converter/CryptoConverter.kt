@@ -9,17 +9,7 @@ class CryptoConverter : AttributeConverter<String,String> {
 
     private val crypto = AESCrypto("1234567890abcdef")
 
-    override fun convertToDatabaseColumn(attribute: String?): String {
-        if (attribute == null) {
-            return null.toString()
-        }
-        return this.crypto.encrypt(attribute)
-    }
+    override fun convertToDatabaseColumn(attribute: String) = this.crypto.encrypt(attribute)
 
-    override fun convertToEntityAttribute(dbData: String?): String {
-        if (dbData == null) {
-            return null.toString()
-        }
-        return this.crypto.decrypt(dbData)
-    }
+    override fun convertToEntityAttribute(dbData: String) = this.crypto.decrypt(dbData)
 }

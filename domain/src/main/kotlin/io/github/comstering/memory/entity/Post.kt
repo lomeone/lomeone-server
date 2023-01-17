@@ -5,15 +5,19 @@ import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import javax.persistence.AttributeOverride
+import javax.persistence.AttributeOverrides
 import javax.persistence.Column
 import javax.persistence.Embeddable
 import javax.persistence.Embedded
+import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
+@Entity
 class Post(
     title: String,
     content: String,
@@ -24,15 +28,19 @@ class Post(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
 
-    var title: String
-        private set
+    var title: String = title
+        protected set
 
-    var content: String
-        private set
+    var content: String = content
+        protected set
 
     @Embedded
-    var place: Place
-        private set
+    @AttributeOverrides(
+        AttributeOverride(name = "name", column = Column(name = "place_name")),
+        AttributeOverride(name = "address", column = Column(name = "place_address"))
+    )
+    var place: Place = place
+        protected set
 
     @CreatedDate
     @Column(updatable = false)
@@ -43,15 +51,11 @@ class Post(
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    val user: User
+    val user: User = user
 
     init {
         ensureTitleIsNotBlank(title)
         ensureContentIsNotBlank(content)
-        this.title = title
-        this.content = content
-        this.place = place
-        this.user = user
     }
 
     private fun ensureTitleIsNotBlank(title: String) {
@@ -65,21 +69,19 @@ class Post(
 
 @Embeddable
 class Place(
-    placeName: String,
+    name: String,
     address: String
 ) {
 
-    var placeName: String
+    var name: String = name
         protected set
 
-    var address: String
+    var address: String = address
         protected set
 
     init {
-        ensurePlaceNameIsNotBlank(placeName)
+        ensurePlaceNameIsNotBlank(name)
         ensureAddressIsNotBlank(address)
-        this.placeName = placeName
-        this.address = address
     }
 
     private fun ensurePlaceNameIsNotBlank(placeName: String) {

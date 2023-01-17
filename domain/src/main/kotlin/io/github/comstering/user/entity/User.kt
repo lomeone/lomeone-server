@@ -33,18 +33,18 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
 
-    var name: String
-        private set
+    var name: String = name
+        protected set
 
-    var nickname: String
-        private set
+    var nickname: String = nickname
+        protected set
 
     @Convert(converter = CryptoConverter::class)
-    var email: Email
-        private set
+    var email: Email = Email(email)
+        protected set
 
-    var birthday: ZonedDateTime
-        private set
+    var birthday: ZonedDateTime = birthday
+        protected set
 
     @CreatedDate
     @Column(updatable = false)
@@ -56,10 +56,6 @@ class User(
     init {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
-        this.name = name
-        this.nickname = nickname
-        this.email = Email(email)
-        this.birthday = birthday
     }
 
     private fun ensureNameIsNotBlank(name: String) {

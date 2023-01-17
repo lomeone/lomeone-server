@@ -40,8 +40,7 @@ class User(
         protected set
 
     @Convert(converter = CryptoConverter::class)
-    var email: Email = Email(email)
-        protected set
+    val email: Email = Email(email)
 
     var birthday: ZonedDateTime = birthday
         protected set

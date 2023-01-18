@@ -22,7 +22,9 @@ class Post(
     title: String,
     content: String,
     place: Place,
-    user: User
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    val user: User
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,10 +50,7 @@ class Post(
 
     @LastModifiedDate
     var updatedAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    val user: User = user
+        protected set
 
     init {
         ensureTitleIsNotBlank(title)
@@ -65,20 +64,23 @@ class Post(
     private fun ensureContentIsNotBlank(content: String) {
         content.isBlank() && throw IllegalArgumentException("content must not be blank")
     }
+
+    fun updatePost(title: String, content: String, place: Place) {
+        ensureTitleIsNotBlank(title)
+        ensureContentIsNotBlank(content)
+        this.title = title
+        this.content = content
+        this.place = place
+    }
 }
 
 @Embeddable
 class Place(
-    name: String,
-    address: String
+    @Column
+    val name: String,
+    @Column
+    val address: String
 ) {
-
-    var name: String = name
-        protected set
-
-    var address: String = address
-        protected set
-
     init {
         ensurePlaceNameIsNotBlank(name)
         ensureAddressIsNotBlank(address)

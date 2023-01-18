@@ -65,6 +65,10 @@ class Post(
         content.isBlank() && throw IllegalArgumentException("content must not be blank")
     }
 
+    override fun equals(other: Any?) = other is Post && other.id == this.id
+
+    override fun hashCode() = this.id.hashCode()
+
     fun updatePost(title: String, content: String, place: Place) {
         ensureTitleIsNotBlank(title)
         ensureContentIsNotBlank(content)

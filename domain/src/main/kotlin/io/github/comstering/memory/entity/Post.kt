@@ -19,6 +19,9 @@ import javax.persistence.ManyToOne
 
 @Entity
 class Post(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L,
     title: String,
     content: String,
     place: Place,
@@ -26,10 +29,6 @@ class Post(
     @JoinColumn(name = "user_id")
     val user: User
 ) {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
-
     var title: String = title
         protected set
 

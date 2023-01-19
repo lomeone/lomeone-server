@@ -120,6 +120,25 @@ class PostTest : FreeSpec({
         (post1 == post2) shouldBe true
     }
 
+    "포스트 id가 다르면 다른 포스트이다" - {
+        val post1 = Post(
+            id = 1L,
+            title = "title1",
+            content = "content1",
+            place = placeInput,
+            user = userInput
+        )
+
+        val post2 = Post(
+            id = 2L,
+            title = "title1",
+            content = "content1",
+            place = placeInput,
+            user = userInput
+        )
+        (post1 == post2) shouldBe false
+    }
+
     "포스트 id가 같으면 hash 값도 같다" - {
         val post1 = Post(
             id = 1L,
@@ -138,6 +157,26 @@ class PostTest : FreeSpec({
         )
 
         (post1.hashCode() == post2.hashCode()) shouldBe true
+    }
+
+    "포스트 id가 다르면 hash 값도 다르다" - {
+        val post1 = Post(
+            id = 1L,
+            title = "title1",
+            content = "content1",
+            place = placeInput,
+            user = userInput
+        )
+
+        val post2 = Post(
+            id = 2L,
+            title = "title1",
+            content = "content1",
+            place = placeInput,
+            user = userInput
+        )
+
+        (post1.hashCode() == post2.hashCode()) shouldBe false
     }
 })
 

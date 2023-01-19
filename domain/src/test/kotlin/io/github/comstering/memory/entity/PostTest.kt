@@ -23,7 +23,12 @@ class PostTest : FreeSpec({
             val titleInput = "title"
             val contentInput = "content"
 
-            val post = Post(titleInput, contentInput, placeInput, userInput)
+            val post = Post(
+                title = titleInput,
+                content = contentInput,
+                place = placeInput,
+                user = userInput
+            )
 
             post.title shouldBe titleInput
             post.content shouldBe contentInput
@@ -36,7 +41,12 @@ class PostTest : FreeSpec({
             val contentInput = "content"
 
             shouldThrow<IllegalArgumentException> {
-                Post(titleInput, contentInput, placeInput, userInput)
+                Post(
+                    title = titleInput,
+                    content = contentInput,
+                    place = placeInput,
+                    user = userInput
+                )
             }
         }
 
@@ -45,13 +55,23 @@ class PostTest : FreeSpec({
             val contentInput = ""
 
             shouldThrow<IllegalArgumentException> {
-                Post(titleInput, contentInput, placeInput, userInput)
+                Post(
+                    title = titleInput,
+                    content = contentInput,
+                    place = placeInput,
+                    user = userInput
+                )
             }
         }
     }
 
     "포스트의 정보를 업데이트할 때" - {
-        val post = Post("title", "content", placeInput, userInput)
+        val post = Post(
+            title = "title",
+            content = "content",
+            place = placeInput,
+            user = userInput
+        )
         "제목과 내용이 공백이 아니어야 업데이트 할 수 있다" - {
             val titleInput = "title"
             val contentInput = "content"
@@ -83,6 +103,7 @@ class PostTest : FreeSpec({
 
     "포스트 id가 같은면 같은 포스트이다." - {
         val post1 = Post(
+            id = 1L,
             title = "title1",
             content = "content1",
             place = placeInput,
@@ -90,19 +111,18 @@ class PostTest : FreeSpec({
         )
 
         val post2 = Post(
+            id = 1L,
             title = "title2",
             content = "content2",
             place = placeInput,
             user = userInput
         )
-
-        post1.id shouldBe null
-        post2.id shouldBe null
         (post1 == post2) shouldBe true
     }
 
     "포스트 id가 같으면 hash 값도 같다" - {
         val post1 = Post(
+            id = 1L,
             title = "title1",
             content = "content1",
             place = placeInput,
@@ -110,14 +130,13 @@ class PostTest : FreeSpec({
         )
 
         val post2 = Post(
+            id = 1L,
             title = "title2",
             content = "content2",
             place = placeInput,
             user = userInput
         )
 
-        post1.id shouldBe null
-        post2.id shouldBe null
         (post1.hashCode() == post2.hashCode()) shouldBe true
     }
 })

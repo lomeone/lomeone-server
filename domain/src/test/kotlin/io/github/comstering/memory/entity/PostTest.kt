@@ -139,6 +139,19 @@ class PostTest : FreeSpec({
         (post1 == post2) shouldBe false
     }
 
+    "포스트 객체가 아니면 다른 포스트이다" - {
+        val post1 = Post(
+            id = 1L,
+            title = "title1",
+            content = "content1",
+            place = placeInput,
+            user = userInput
+        )
+
+        val post2 = "post2"
+        (post1.equals(post2)) shouldBe false
+    }
+
     "포스트 id가 같으면 hash 값도 같다" - {
         val post1 = Post(
             id = 1L,

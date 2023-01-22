@@ -1,9 +1,7 @@
 package io.github.comstering.user.entity
 
+import io.github.comstering._abstract.entity.AuditEntity
 import io.github.comstering.converter.CryptoConverter
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
-import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.persistence.Column
 import javax.persistence.Convert
@@ -28,7 +26,7 @@ class User(
     birthday: ZonedDateTime,
     @Enumerated(EnumType.STRING)
     val accountType: AccountType
-) {
+) : AuditEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
@@ -44,13 +42,6 @@ class User(
 
     var birthday: ZonedDateTime = birthday
         protected set
-
-    @CreatedDate
-    @Column(updatable = false)
-    val createdAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
-
-    @LastModifiedDate
-    val updatedAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
 
     init {
         ensureNameIsNotBlank(name)

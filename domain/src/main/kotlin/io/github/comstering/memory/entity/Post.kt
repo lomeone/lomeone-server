@@ -1,10 +1,7 @@
 package io.github.comstering.memory.entity
 
+import io.github.comstering._abstract.entity.AuditEntity
 import io.github.comstering.user.entity.User
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import javax.persistence.AttributeOverride
 import javax.persistence.AttributeOverrides
 import javax.persistence.Column
@@ -28,7 +25,7 @@ class Post(
     @ManyToOne
     @JoinColumn(name = "user_id")
     val user: User
-) {
+) : AuditEntity() {
     var title: String = title
         protected set
 
@@ -41,14 +38,6 @@ class Post(
         AttributeOverride(name = "address", column = Column(name = "place_address"))
     )
     var place: Place = place
-        protected set
-
-    @CreatedDate
-    @Column(updatable = false)
-    val createdAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
-
-    @LastModifiedDate
-    var updatedAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
         protected set
 
     init {

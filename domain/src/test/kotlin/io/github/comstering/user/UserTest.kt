@@ -15,7 +15,7 @@ class UserTest : BehaviorSpec({
         nickname = "nickname",
         email = "test@gmail.com",
         birthday = ZonedDateTime.now(),
-        AccountType.GOOGLE
+        accountType = AccountType.GOOGLE
     )
 
     Given("이름이 공백이 아니고, 닉네임도 공백이 아니고, 이메일도 형식에 맞으면") {

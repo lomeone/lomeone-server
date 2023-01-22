@@ -18,6 +18,9 @@ import javax.persistence.Table
 @Entity
 @Table(name = "user_entity",indexes = [Index(name = "idx_user_firebaseUserToken", columnList = "firebaseUserToken", unique = true)])
 class User(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L,
     @Column(unique = true)
     val firebaseUserToken: String,
     name: String,
@@ -27,10 +30,6 @@ class User(
     @Enumerated(EnumType.STRING)
     val accountType: AccountType
 ) : AuditEntity() {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
-
     var name: String = name
         protected set
 

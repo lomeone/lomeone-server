@@ -1,6 +1,6 @@
-package io.github.comstering.user.entity
+package io.github.comstering.domain.user.entity
 
-import io.github.comstering.common.entity.AuditEntity
+import io.github.comstering.domain.common.entity.AuditEntity
 import io.github.comstering.converter.CryptoConverter
 import java.time.ZonedDateTime
 import javax.persistence.Column

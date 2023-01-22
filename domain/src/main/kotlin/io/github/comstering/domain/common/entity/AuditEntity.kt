@@ -1,4 +1,4 @@
-package io.github.comstering.common.entity
+package io.github.comstering.domain.common.entity
 
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate

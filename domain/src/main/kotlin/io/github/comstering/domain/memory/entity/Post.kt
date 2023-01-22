@@ -1,7 +1,7 @@
-package io.github.comstering.memory.entity
+package io.github.comstering.domain.memory.entity
 
-import io.github.comstering.common.entity.AuditEntity
-import io.github.comstering.user.entity.User
+import io.github.comstering.domain.common.entity.AuditEntity
+import io.github.comstering.domain.user.entity.User
 import javax.persistence.AttributeOverride
 import javax.persistence.AttributeOverrides
 import javax.persistence.Column

@@ -1,6 +1,6 @@
-package io.github.comstering.user.repository
+package io.github.comstering.domain.user.repository
 
-import io.github.comstering.user.entity.User
+import io.github.comstering.domain.user.entity.User
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRepository : JpaRepository<User, Long> {

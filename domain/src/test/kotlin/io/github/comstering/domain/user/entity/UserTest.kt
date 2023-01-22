@@ -1,7 +1,5 @@
-package io.github.comstering.user
+package io.github.comstering.domain.user.entity
 
-import io.github.comstering.user.entity.AccountType
-import io.github.comstering.user.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

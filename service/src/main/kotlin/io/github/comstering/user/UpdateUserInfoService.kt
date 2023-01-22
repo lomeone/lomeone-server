@@ -1,6 +1,6 @@
 package io.github.comstering.user
 
-import io.github.comstering.user.repository.UserRepository
+import io.github.comstering.domain.user.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.ZonedDateTime

@@ -42,12 +42,12 @@ class CreateUserServiceTest : BehaviorSpec({
                 createUserService.execute(request)
             }
             Then("유저가 생성된다") {
-                request.firebaseUserToken shouldBe response.firebaseUserToken
-                request.name shouldBe response.name
-                request.nickname shouldBe response.nickname
-                request.email shouldBe response.email
-                request.birthday shouldBe response.birthday
-                request.accountType shouldBe response.accountType
+                response.firebaseUserToken shouldBe request.firebaseUserToken
+                response.name shouldBe request.name
+                response.nickname shouldBe request.nickname
+                response.email shouldBe request.email
+                response.birthday shouldBe request.birthday
+                response.accountType shouldBe request.accountType
             }
         }
     }

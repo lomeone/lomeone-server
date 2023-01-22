@@ -34,15 +34,14 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
                 birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
             )
 
-            val result = withContext(Dispatchers.IO) {
+            val response = withContext(Dispatchers.IO) {
                 updateUserInfoService.execute(request)
             }
             Then("유저 정보가 업데이트된다") {
-                val (firebaseUserToken, name, nickname, birthday) = result
-                firebaseUserToken shouldBe request.firebaseUserToken
-                name shouldBe request.name
-                nickname shouldBe request.nickname
-                birthday shouldBe request.birthday
+                response.firebaseUserToken shouldBe request.firebaseUserToken
+                response.name shouldBe request.name
+                response.nickname shouldBe request.nickname
+                response.birthday shouldBe request.birthday
             }
         }
     }

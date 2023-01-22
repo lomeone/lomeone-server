@@ -18,7 +18,7 @@ import javax.persistence.Table
 
 
 @Entity
-@Table(indexes = [Index(name = "idx_user_firebaseUserToken", columnList = "firebaseUserToken", unique = true)])
+@Table(name = "user_entity",indexes = [Index(name = "idx_user_firebaseUserToken", columnList = "firebaseUserToken", unique = true)])
 class User(
     @Column(unique = true)
     val firebaseUserToken: String,

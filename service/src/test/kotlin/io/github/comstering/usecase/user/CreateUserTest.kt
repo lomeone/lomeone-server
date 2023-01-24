@@ -13,9 +13,9 @@ import kotlinx.coroutines.withContext
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-class CreateUserServiceTest : BehaviorSpec({
+class CreateUserTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
-    val createUserService = CreateUserService(userRepository)
+    val createUser = CreateUser(userRepository)
 
     Given("유저가 존재하지 않으면") {
         every { userRepository.findByFirebaseUserToken(any()) } returns null
@@ -39,7 +39,7 @@ class CreateUserServiceTest : BehaviorSpec({
             )
 
             val response = withContext(Dispatchers.IO) {
-                createUserService.execute(request)
+                createUser.execute(request)
             }
             Then("유저가 생성된다") {
                 response.id shouldBe 0L
@@ -66,7 +66,7 @@ class CreateUserServiceTest : BehaviorSpec({
             )
             Then("유저가 이미 존재한다는 예외가 발생해서 유저를 생성할 수 없다") {
                 shouldThrow<Exception> {
-                    createUserService.execute(request)
+                    createUser.execute(request)
                 }
             }
         }

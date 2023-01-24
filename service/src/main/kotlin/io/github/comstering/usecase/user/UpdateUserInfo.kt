@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.ZonedDateTime
 
 @Service
-class UpdateUserInfoService(
+class UpdateUserInfo(
     private val userRepository: UserRepository
 ) {
     @Transactional

@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 import javax.validation.constraints.NotBlank
 
 @Service
-class CreateUserService(
+class CreateUser(
     private val userRepository: UserRepository
 ) {
     @Transactional

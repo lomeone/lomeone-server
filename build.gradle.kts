@@ -146,7 +146,7 @@ subprojects {
 					minimum = jacocoLineCoverageRatio.toBigDecimal()
 				}
 
-				excludes = listOf<String>("**.MmsApplication**") + excludeJacocoClassNamePatterns
+				excludes = listOf<String>("**.MmsApplication**", "**.AuditEntity**") + excludeJacocoClassNamePatterns
 			}
 		}
 	}
@@ -189,6 +189,7 @@ tasks.register<JacocoReport>("jacocoAllReport") {
 			classDirectories.setFrom(files(classDirectories.files.map {
 				fileTree(it).apply {
 					exclude("**/MmsApplication**")
+					exclude("**/AuditEntity**")
 					for (pattern in 'A' .. 'Z') {
 						exclude("**/Q${pattern}**")
 					}

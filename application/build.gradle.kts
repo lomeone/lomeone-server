@@ -10,7 +10,6 @@ val serviceName: String by project
 
 dependencies {
     implementation(project(":domain"))
-    implementation(project(":service"))
     implementation(project(":infrastructure"))
 
     // Swagger

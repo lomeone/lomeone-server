@@ -1,9 +1,7 @@
-package io.github.comstering.user.entity
+package io.github.comstering.domain.user.entity
 
+import io.github.comstering.domain.common.entity.AuditEntity
 import io.github.comstering.converter.CryptoConverter
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
-import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.persistence.Column
 import javax.persistence.Convert
@@ -18,8 +16,11 @@ import javax.persistence.Table
 
 
 @Entity
-@Table(indexes = [Index(name = "idx_user_firebaseUserToken", columnList = "firebaseUserToken", unique = true)])
+@Table(name = "user_entity",indexes = [Index(name = "idx_user_firebaseUserToken", columnList = "firebaseUserToken", unique = true)])
 class User(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L,
     @Column(unique = true)
     val firebaseUserToken: String,
     name: String,
@@ -28,11 +29,7 @@ class User(
     birthday: ZonedDateTime,
     @Enumerated(EnumType.STRING)
     val accountType: AccountType
-) {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
-
+) : AuditEntity() {
     var name: String = name
         protected set
 
@@ -44,13 +41,6 @@ class User(
 
     var birthday: ZonedDateTime = birthday
         protected set
-
-    @CreatedDate
-    @Column(updatable = false)
-    val createdAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
-
-    @LastModifiedDate
-    val updatedAt: ZonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
 
     init {
         ensureNameIsNotBlank(name)

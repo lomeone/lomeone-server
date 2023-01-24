@@ -1,7 +1,5 @@
-package io.github.comstering.user
+package io.github.comstering.domain.user.entity
 
-import io.github.comstering.user.entity.AccountType
-import io.github.comstering.user.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -15,7 +13,7 @@ class UserTest : BehaviorSpec({
         nickname = "nickname",
         email = "test@gmail.com",
         birthday = ZonedDateTime.now(),
-        AccountType.GOOGLE
+        accountType = AccountType.GOOGLE
     )
 
     Given("이름이 공백이 아니고, 닉네임도 공백이 아니고, 이메일도 형식에 맞으면") {

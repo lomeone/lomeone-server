@@ -1,8 +1,8 @@
 package io.github.comstering.user
 
-import io.github.comstering.user.entity.AccountType
-import io.github.comstering.user.entity.User
-import io.github.comstering.user.repository.UserRepository
+import io.github.comstering.domain.user.entity.AccountType
+import io.github.comstering.domain.user.entity.User
+import io.github.comstering.domain.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -34,15 +34,14 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
                 birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
             )
 
-            val result = withContext(Dispatchers.IO) {
+            val response = withContext(Dispatchers.IO) {
                 updateUserInfoService.execute(request)
             }
             Then("유저 정보가 업데이트된다") {
-                val (firebaseUserToken, name, nickname, birthday) = result
-                firebaseUserToken shouldBe request.firebaseUserToken
-                name shouldBe request.name
-                nickname shouldBe request.nickname
-                birthday shouldBe request.birthday
+                response.firebaseUserToken shouldBe request.firebaseUserToken
+                response.name shouldBe request.name
+                response.nickname shouldBe request.nickname
+                response.birthday shouldBe request.birthday
             }
         }
     }

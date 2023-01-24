@@ -1,7 +1,9 @@
-package io.github.comstering.memory.entity
+package io.github.comstering.domain.memory.entity
 
-import io.github.comstering.user.entity.AccountType
-import io.github.comstering.user.entity.User
+import io.github.comstering.domain.memory.entity.Place
+import io.github.comstering.domain.memory.entity.Post
+import io.github.comstering.domain.user.entity.AccountType
+import io.github.comstering.domain.user.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe

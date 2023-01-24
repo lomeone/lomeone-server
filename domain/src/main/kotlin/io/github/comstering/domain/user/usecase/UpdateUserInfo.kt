@@ -1,4 +1,4 @@
-package io.github.comstering.user
+package io.github.comstering.domain.user.usecase
 
 import io.github.comstering.domain.user.repository.UserRepository
 import org.springframework.stereotype.Service
@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.ZonedDateTime
 
 @Service
-class UpdateUserInfoService(
+class UpdateUserInfo(
     private val userRepository: UserRepository
 ) {
     @Transactional

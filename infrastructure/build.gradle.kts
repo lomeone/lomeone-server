@@ -5,7 +5,6 @@ version = rootProject.version
 
 dependencies {
     implementation(project(":domain"))
-    implementation(project(":service"))
 }
 
 tasks.getByName<Test>("test") {

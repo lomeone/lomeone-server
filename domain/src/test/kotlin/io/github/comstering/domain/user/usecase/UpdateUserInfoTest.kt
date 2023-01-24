@@ -1,4 +1,4 @@
-package io.github.comstering.user
+package io.github.comstering.domain.user.usecase
 
 import io.github.comstering.domain.user.entity.AccountType
 import io.github.comstering.domain.user.entity.User
@@ -13,9 +13,9 @@ import kotlinx.coroutines.withContext
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-class UpdateUserInfoServiceTest : BehaviorSpec({
+class UpdateUserInfoTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
-    val updateUserInfoService = UpdateUserInfoService(userRepository)
+    val updateUserInfo = UpdateUserInfo(userRepository)
 
     Given("유저가 존재하면") {
         every { userRepository.findByFirebaseUserToken(any()) } returns User(
@@ -35,7 +35,7 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
             )
 
             val response = withContext(Dispatchers.IO) {
-                updateUserInfoService.execute(request)
+                updateUserInfo.execute(request)
             }
             Then("유저 정보가 업데이트된다") {
                 response.firebaseUserToken shouldBe request.firebaseUserToken
@@ -57,7 +57,7 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
             Then("예외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {
                     withContext(Dispatchers.IO) {
-                        updateUserInfoService.execute(request)
+                        updateUserInfo.execute(request)
                     }
                 }
             }

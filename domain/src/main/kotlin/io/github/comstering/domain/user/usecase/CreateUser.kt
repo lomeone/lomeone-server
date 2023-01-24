@@ -1,4 +1,4 @@
-package io.github.comstering.user
+package io.github.comstering.domain.user.usecase
 
 import io.github.comstering.domain.user.entity.AccountType
 import io.github.comstering.domain.user.entity.User
@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 import javax.validation.constraints.NotBlank
 
 @Service
-class CreateUserService(
+class CreateUser(
     private val userRepository: UserRepository
 ) {
     @Transactional
@@ -56,7 +56,7 @@ data class CreateUserServiceRequest(
 )
 
 data class CreateUserServiceResponse(
-    val id: Long?,
+    val id: Long,
     val firebaseUserToken: String,
     val name: String,
     val nickname: String,

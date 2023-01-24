@@ -1,4 +1,4 @@
-package io.github.comstering.user
+package io.github.comstering.usecase.user
 
 import io.github.comstering.domain.user.entity.AccountType
 import io.github.comstering.domain.user.entity.User

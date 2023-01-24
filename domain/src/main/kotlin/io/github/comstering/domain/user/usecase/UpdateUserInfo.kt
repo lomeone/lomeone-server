@@ -1,4 +1,4 @@
-package io.github.comstering.usecase.user
+package io.github.comstering.domain.user.usecase
 
 import io.github.comstering.domain.user.repository.UserRepository
 import org.springframework.stereotype.Service

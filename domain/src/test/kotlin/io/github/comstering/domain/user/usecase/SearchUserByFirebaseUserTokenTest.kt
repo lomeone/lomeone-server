@@ -36,4 +36,15 @@ class SearchUserByFirebaseUserTokenTest : BehaviorSpec({
             }
         }
     }
+    Given("firebaseUserToken을 가지고 있는 유저가 존재하지 않으면") {
+        val firebaseInput = "user1234"
+        every { userRepository.findByFirebaseUserToken(firebaseInput) } returns null
+        When("유저를 검색할 때") {
+            Then("유저를 찾을 수 없다는 예외가 발생해서 유저를 검색할 수 없다") {
+                shouldThrow<Exception> {
+                    searchUserByFirebaseUserToken.execute(SearchUserByFirebaseUserTokenRequest(firebaseInput))
+                }
+            }
+        }
+    }
 })

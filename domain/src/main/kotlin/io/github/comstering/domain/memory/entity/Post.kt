@@ -21,6 +21,7 @@ class Post(
     val id: Long = 0L,
     title: String,
     content: String,
+    visibility: Boolean,
     place: Place,
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -30,6 +31,9 @@ class Post(
         protected set
 
     var content: String = content
+        protected set
+
+    var visibility: Boolean = visibility
         protected set
 
     @Embedded

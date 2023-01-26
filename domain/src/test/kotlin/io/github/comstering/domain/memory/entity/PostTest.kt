@@ -28,6 +28,7 @@ class PostTest : FreeSpec({
             val post = Post(
                 title = titleInput,
                 content = contentInput,
+                visibility = true,
                 place = placeInput,
                 user = userInput
             )
@@ -47,6 +48,7 @@ class PostTest : FreeSpec({
                     title = titleInput,
                     content = contentInput,
                     place = placeInput,
+                    visibility = true,
                     user = userInput
                 )
             }
@@ -61,6 +63,7 @@ class PostTest : FreeSpec({
                     title = titleInput,
                     content = contentInput,
                     place = placeInput,
+                    visibility = true,
                     user = userInput
                 )
             }
@@ -72,16 +75,18 @@ class PostTest : FreeSpec({
             title = "title",
             content = "content",
             place = placeInput,
+            visibility = true,
             user = userInput
         )
         "제목과 내용이 공백이 아니어야 업데이트 할 수 있다" - {
             val titleInput = "title"
             val contentInput = "content"
 
-            post.updatePost(titleInput, contentInput, placeInput)
+            post.updatePost(titleInput, contentInput, false, placeInput)
 
             post.title shouldBe titleInput
             post.content shouldBe contentInput
+            post.visibility shouldBe false
             post.place shouldBe placeInput
         }
         "제목이 공백이면 업데이트 할 수 없다" - {
@@ -89,7 +94,7 @@ class PostTest : FreeSpec({
             val contentInput = "content"
 
             shouldThrow<IllegalArgumentException> {
-                post.updatePost(titleInput, contentInput, placeInput)
+                post.updatePost(titleInput, contentInput, false, placeInput)
             }
         }
 
@@ -98,7 +103,7 @@ class PostTest : FreeSpec({
             val contentInput = ""
 
             shouldThrow<IllegalArgumentException> {
-                post.updatePost(titleInput, contentInput, placeInput)
+                post.updatePost(titleInput, contentInput, false, placeInput)
             }
         }
     }
@@ -109,6 +114,7 @@ class PostTest : FreeSpec({
             title = "title1",
             content = "content1",
             place = placeInput,
+            visibility = true,
             user = userInput
         )
 
@@ -117,6 +123,7 @@ class PostTest : FreeSpec({
             title = "title2",
             content = "content2",
             place = placeInput,
+            visibility = true,
             user = userInput
         )
         (post1 == post2) shouldBe true
@@ -128,6 +135,7 @@ class PostTest : FreeSpec({
             title = "title1",
             content = "content1",
             place = placeInput,
+            visibility = true,
             user = userInput
         )
 
@@ -136,6 +144,7 @@ class PostTest : FreeSpec({
             title = "title1",
             content = "content1",
             place = placeInput,
+            visibility = true,
             user = userInput
         )
         (post1 == post2) shouldBe false
@@ -147,6 +156,7 @@ class PostTest : FreeSpec({
             title = "title1",
             content = "content1",
             place = placeInput,
+            visibility = true,
             user = userInput
         )
 
@@ -160,6 +170,7 @@ class PostTest : FreeSpec({
             title = "title1",
             content = "content1",
             place = placeInput,
+            visibility = true,
             user = userInput
         )
 
@@ -168,6 +179,7 @@ class PostTest : FreeSpec({
             title = "title2",
             content = "content2",
             place = placeInput,
+            visibility = true,
             user = userInput
         )
 
@@ -180,6 +192,7 @@ class PostTest : FreeSpec({
             title = "title1",
             content = "content1",
             place = placeInput,
+            visibility = true,
             user = userInput
         )
 
@@ -188,6 +201,7 @@ class PostTest : FreeSpec({
             title = "title1",
             content = "content1",
             place = placeInput,
+            visibility = true,
             user = userInput
         )
 

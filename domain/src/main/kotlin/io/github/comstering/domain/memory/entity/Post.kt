@@ -21,6 +21,7 @@ class Post(
     val id: Long = 0L,
     title: String,
     content: String,
+    visibility: Boolean,
     place: Place,
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -30,6 +31,9 @@ class Post(
         protected set
 
     var content: String = content
+        protected set
+
+    var visibility: Boolean = visibility
         protected set
 
     @Embedded
@@ -57,11 +61,12 @@ class Post(
 
     override fun hashCode() = this.id.hashCode()
 
-    fun updatePost(title: String, content: String, place: Place) {
+    fun updatePost(title: String, content: String, visibility: Boolean, place: Place) {
         ensureTitleIsNotBlank(title)
         ensureContentIsNotBlank(content)
         this.title = title
         this.content = content
+        this.visibility = visibility
         this.place = place
     }
 }

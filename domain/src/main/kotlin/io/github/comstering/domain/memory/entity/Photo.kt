@@ -25,6 +25,14 @@ class Photo(
     var isDelete: Boolean = isDelete
         protected set
 
+    init {
+        ensureUrlIsNotBlank(this.url)
+    }
+
+    private fun ensureUrlIsNotBlank(url: String) {
+        url.isBlank() && throw IllegalArgumentException("url must not be blank")
+    }
+
     fun updateMain(isMain: Boolean) {
         this.isMain = isMain
     }

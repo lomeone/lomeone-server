@@ -18,5 +18,15 @@ class PhotoTest : FreeSpec({
             photo.url shouldBe urlInput
             photo.post shouldBe postInput
         }
+        "url이 공백이면 생성할 수 없다" - {
+            val urlInput = ""
+            shouldThrow<IllegalArgumentException> {
+                Photo(
+                    post = postInput,
+                    url = urlInput,
+                    isMain = false
+                )
+            }
+        }
     }
 })

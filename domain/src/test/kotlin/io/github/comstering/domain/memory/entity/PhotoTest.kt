@@ -29,4 +29,28 @@ class PhotoTest : FreeSpec({
             }
         }
     }
+
+    "사진의 대표사진 여부를 변경할 수 있다" - {
+        val photo = Photo(
+            post = postInput,
+            url = "url",
+            isMain = false
+        )
+
+        photo.updateMain(true)
+
+        photo.isMain shouldBe true
+    }
+
+    "사진을 제거하면 Soft Delete가 된다" - {
+        val photo = Photo(
+            post = postInput,
+            url = "url",
+            isMain = false
+        )
+
+        photo.delete()
+
+        photo.isDelete shouldBe true
+    }
 })

@@ -53,4 +53,17 @@ class PhotoTest : FreeSpec({
 
         photo.isDelete shouldBe true
     }
+
+    "사진을 다시 복원할 수 있다" - {
+        val photo = Photo(
+            post = postInput,
+            url = "url",
+            isMain = false
+        )
+
+        photo.delete()
+        photo.restore()
+
+        photo.isDelete shouldBe false
+    }
 })

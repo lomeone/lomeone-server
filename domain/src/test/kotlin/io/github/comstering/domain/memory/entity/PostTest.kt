@@ -1,25 +1,14 @@
 package io.github.comstering.domain.memory.entity
 
-import io.github.comstering.domain.memory.entity.Place
-import io.github.comstering.domain.memory.entity.Post
-import io.github.comstering.domain.user.entity.AccountType
 import io.github.comstering.domain.user.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
-import java.time.ZoneId
-import java.time.ZonedDateTime
+import io.mockk.mockk
 
 class PostTest : FreeSpec({
     val placeInput = Place("placeName", "placeAddress")
-    val userInput = User(
-        firebaseUserToken = "user1234",
-        name = "name",
-        nickname = "nickname",
-        email = "email@gmail.com",
-        birthday = ZonedDateTime.now(ZoneId.of("Asia/Seoul")),
-        accountType = AccountType.GOOGLE
-    )
+    val userInput = mockk<User>()
     "포스트 생성할 때" - {
         "제목과 내용이 공백이 아니어야 생성할 수 있다" - {
             val titleInput = "title"
@@ -106,6 +95,32 @@ class PostTest : FreeSpec({
                 post.updatePost(titleInput, contentInput, false, placeInput)
             }
         }
+    }
+
+    "포스트를 삭제할 수 있다" - {
+        val post = Post(
+            title = "title",
+            content = "content",
+            place = placeInput,
+            visibility = true,
+            user = userInput
+        )
+        post.delete()
+        post.deleted shouldBe true
+    }
+
+    "포스트를 삭제하고 다시 복원할 수 있다" - {
+        val post = Post(
+            title = "title",
+            content = "content",
+            place = placeInput,
+            visibility = true,
+            user = userInput
+        )
+        post.delete()
+        post.deleted shouldBe true
+        post.restore()
+        post.deleted shouldBe false
     }
 
     "포스트 id가 같은면 같은 포스트이다." - {

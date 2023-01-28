@@ -44,6 +44,9 @@ class Post(
     var place: Place = place
         protected set
 
+    var deleted: Boolean = false
+        protected set
+
     init {
         ensureTitleIsNotBlank(title)
         ensureContentIsNotBlank(content)
@@ -68,6 +71,14 @@ class Post(
         this.content = content
         this.visibility = visibility
         this.place = place
+    }
+
+    fun delete() {
+        this.deleted = true
+    }
+
+    fun restore() {
+        this.deleted = false
     }
 }
 

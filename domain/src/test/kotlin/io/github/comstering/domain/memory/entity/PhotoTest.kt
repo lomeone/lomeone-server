@@ -51,7 +51,7 @@ class PhotoTest : FreeSpec({
 
         photo.delete()
 
-        photo.isDelete shouldBe true
+        photo.deleted shouldBe true
     }
 
     "사진을 다시 복원할 수 있다" - {
@@ -64,6 +64,6 @@ class PhotoTest : FreeSpec({
         photo.delete()
         photo.restore()
 
-        photo.isDelete shouldBe false
+        photo.deleted shouldBe false
     }
 })

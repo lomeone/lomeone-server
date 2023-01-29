@@ -16,13 +16,12 @@ class Photo(
     @JoinColumn(name = "post_id")
     val post: Post,
     val url: String,
-    isMain: Boolean,
-    isDelete: Boolean = false
+    isMain: Boolean
 ) {
     var isMain: Boolean = isMain
         protected set
 
-    var isDelete: Boolean = isDelete
+    var deleted: Boolean = false
         protected set
 
     init {
@@ -38,10 +37,10 @@ class Photo(
     }
 
     fun delete() {
-        isDelete = true
+        this.deleted = true
     }
 
     fun restore() {
-        isDelete = false
+        this.deleted = false
     }
 }

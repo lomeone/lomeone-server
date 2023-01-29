@@ -24,6 +24,7 @@ class UpdateUserInfoTest : BehaviorSpec({
             nickname = "nickname",
             email = "email@gmail.com",
             birthday = ZonedDateTime.now(),
+            photoUrl = "https://photo.com",
             accountType = AccountType.GOOGLE
         )
         When("유저 정보를 업데이트할 때") {
@@ -31,7 +32,8 @@ class UpdateUserInfoTest : BehaviorSpec({
                 firebaseUserToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
-                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
+                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
+                photoUrl = "https://photo.com",
             )
 
             val response = withContext(Dispatchers.IO) {
@@ -42,6 +44,7 @@ class UpdateUserInfoTest : BehaviorSpec({
                 response.name shouldBe request.name
                 response.nickname shouldBe request.nickname
                 response.birthday shouldBe request.birthday
+                response.photoUrl shouldBe request.photoUrl
             }
         }
     }
@@ -52,7 +55,8 @@ class UpdateUserInfoTest : BehaviorSpec({
                 firebaseUserToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
-                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul"))
+                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
+                photoUrl = "https://photo.com",
             )
             Then("예외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {

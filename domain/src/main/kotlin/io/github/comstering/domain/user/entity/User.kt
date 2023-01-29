@@ -27,6 +27,7 @@ class User(
     nickname: String,
     email: String,
     birthday: ZonedDateTime,
+    photoUrl: String,
     @Enumerated(EnumType.STRING)
     val accountType: AccountType
 ) : AuditEntity() {
@@ -42,9 +43,13 @@ class User(
     var birthday: ZonedDateTime = birthday
         protected set
 
+    var photoUrl: String = photoUrl
+        protected set
+
     init {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
+        ensurePhotoUrlIsNotBlank(photoUrl)
     }
 
     private fun ensureNameIsNotBlank(name: String) {
@@ -55,12 +60,18 @@ class User(
         nickname.isBlank() && throw Exception("Nickname is blank")
     }
 
-    fun updateUserInfo(name: String, nickname: String, birthday: ZonedDateTime) {
+    private fun ensurePhotoUrlIsNotBlank(photoUrl: String) {
+        photoUrl.isBlank() && throw Exception("PhotoUrl is blank")
+    }
+
+    fun updateUserInfo(name: String, nickname: String, birthday: ZonedDateTime, photoUrl: String) {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
+        ensurePhotoUrlIsNotBlank(photoUrl)
         this.name = name
         this.nickname = nickname
         this.birthday = birthday
+        this.photoUrl = photoUrl
     }
 
     @JvmInline

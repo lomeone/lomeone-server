@@ -25,6 +25,7 @@ class SearchUserByFirebaseUserTokenTest : BehaviorSpec({
             nickname = "nickname",
             email = "email@gmail.com",
             birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
+            photoUrl = "https://photo.com",
             accountType = AccountType.GOOGLE
         )
         When("유저를 검색할 때") {

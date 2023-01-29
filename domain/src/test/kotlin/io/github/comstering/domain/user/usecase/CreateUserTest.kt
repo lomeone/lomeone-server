@@ -26,6 +26,7 @@ class CreateUserTest : BehaviorSpec({
                 nickname = "nickname",
                 email = "test@gmail.com",
                 birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
+                photoUrl = "https://photo.com",
                 accountType = "GOOGLE"
             )
 
@@ -35,6 +36,7 @@ class CreateUserTest : BehaviorSpec({
                 nickname = "nickname",
                 email = "test@gmail.com",
                 birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
+                photoUrl = "https://photo.com",
                 accountType = AccountType.GOOGLE
             )
 
@@ -48,6 +50,7 @@ class CreateUserTest : BehaviorSpec({
                 response.nickname shouldBe request.nickname
                 response.email shouldBe request.email
                 response.birthday shouldBe request.birthday
+                response.photoUrl shouldBe request.photoUrl
                 response.accountType shouldBe request.accountType
             }
         }
@@ -62,6 +65,7 @@ class CreateUserTest : BehaviorSpec({
                 nickname = "nickname",
                 email = "test@gmail.com",
                 birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
+                photoUrl = "https://photo.com",
                 accountType = "GOOGLE"
             )
             Then("유저가 이미 존재한다는 예외가 발생해서 유저를 생성할 수 없다") {

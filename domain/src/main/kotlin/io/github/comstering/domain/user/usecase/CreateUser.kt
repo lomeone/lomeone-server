@@ -14,7 +14,7 @@ class CreateUser(
 ) {
     @Transactional
     fun execute(request: CreateUserServiceRequest): CreateUserServiceResponse {
-        val (firebaseUserToken, name, nickname, email, birthday, accountType) = request
+        val (firebaseUserToken, name, nickname, email, birthday,photoUrl, accountType) = request
 
         ensureUserNotExists(firebaseUserToken)
 
@@ -25,6 +25,7 @@ class CreateUser(
                 nickname = nickname,
                 email = email,
                 birthday = birthday,
+                photoUrl = photoUrl,
                 accountType = AccountType.valueOf(accountType)
             )
         )
@@ -36,6 +37,7 @@ class CreateUser(
             nickname = user.nickname,
             email = user.email.value,
             birthday = user.birthday,
+            photoUrl = user.photoUrl,
             accountType = user.accountType.name
         )
     }
@@ -52,6 +54,7 @@ data class CreateUserServiceRequest(
     @field:NotBlank val nickname: String,
     @field:NotBlank val email: String,
     val birthday: ZonedDateTime,
+    @field:NotBlank val photoUrl: String,
     @field:NotBlank val accountType: String
 )
 
@@ -62,5 +65,6 @@ data class CreateUserServiceResponse(
     val nickname: String,
     val email: String,
     val birthday: ZonedDateTime,
+    val photoUrl: String,
     val accountType: String
 )

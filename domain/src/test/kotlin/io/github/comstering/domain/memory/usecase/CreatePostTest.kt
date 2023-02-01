@@ -35,17 +35,17 @@ class CreatePostTest : BehaviorSpec({
                     user = user
                 )
 
+                val request = CreatePostRequest(
+                    title = titleInput,
+                    content = contentInput,
+                    visibility = true,
+                    placeName = placeNameInput,
+                    placeAddress = placeAddressInput,
+                    firebaseUserToken = "user1234"
+                )
+
                 val response = withContext(Dispatchers.IO) {
-                    createPost.execute(
-                        CreatePostRequest(
-                            title = titleInput,
-                            content = contentInput,
-                            visibility = true,
-                            placeName = placeNameInput,
-                            placeAddress = placeAddressInput,
-                            firebaseUserToken = "user1234"
-                        )
-                    )
+                    createPost.execute(request)
                 }
 
                 Then("포스트가 생성된다") {

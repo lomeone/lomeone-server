@@ -5,6 +5,7 @@ import io.github.comstering.domain.memory.entity.Post
 import io.github.comstering.domain.memory.repository.PostRepository
 import io.github.comstering.domain.user.entity.User
 import io.github.comstering.domain.user.repository.UserRepository
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -52,6 +53,25 @@ class CreatePostTest : BehaviorSpec({
                     response.content shouldBe contentInput
                     response.placeName shouldBe placeNameInput
                     response.placeAddress shouldBe placeAddressInput
+                }
+            }
+        }
+        And("유저가 존재하지 않으면") {
+            every { userRepository.findByFirebaseUserToken(any()) } returns null
+            When("포스트를 생성할 때") {
+                val request = CreatePostRequest(
+                    title = titleInput,
+                    content = contentInput,
+                    visibility = true,
+                    placeName = placeNameInput,
+                    placeAddress = placeAddressInput,
+                    firebaseUserToken = "user1234"
+                )
+
+                Then("유저를 찾지 못했다는 예외가 발생해서 포스트를 생성할 수 없다") {
+                    shouldThrow<Exception> {
+                        createPost.execute(request)
+                    }
                 }
             }
         }

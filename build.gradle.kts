@@ -14,8 +14,7 @@ val springCloudOpenFeignVersion: String by project
 val springCloudHystrixVersion: String by project
 val springCloudRibbonVersion: String by project
 val springCloudEurekaClientVersion: String by project
-
-val awsKotlinS3SdkVersion: String by project
+val springCloudAWSVersion: String by project
 
 plugins {
 	id("org.springframework.boot")
@@ -81,9 +80,7 @@ subprojects {
 		implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$springCloudOpenFeignVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix:$springCloudHystrixVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:$springCloudRibbonVersion")
-
-		// AWS
-		implementation("aws.sdk.kotlin:s3:$awsKotlinS3SdkVersion")
+		implementation("org.springframework.cloud:spring-cloud-starter-aws:$springCloudAWSVersion")
 
 		compileOnly("org.projectlombok:lombok")
 		runtimeOnly("com.h2database:h2")

@@ -28,9 +28,16 @@ class AwsS3Service(
                     .withCannedAcl(CannedAccessControlList.PublicRead)
             )
             amazonS3.getUrl(bucket, fileName).toString()
+        }
+
+    private fun getRandomFileName(fileName: String): String {
+        checkImageExtension(fileName)
+        return UUID.randomUUID().toString() + "_" + fileName
     }
 
-    private fun getRandomFileName(filename: String): String {
-        return UUID.randomUUID().toString() + "_" + filename
+    private fun checkImageExtension(fileName: String) {
+        val imageFileNamePattern = "(.*?)\\.(jpg|jpeg|png|gif|bmp)\$"
+        val regex = Regex(imageFileNamePattern)
+        !fileName.matches(regex) && throw Exception("Is not image file")
     }
 }

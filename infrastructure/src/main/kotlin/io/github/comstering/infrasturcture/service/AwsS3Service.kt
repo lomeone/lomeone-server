@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import java.util.*
 
 @Service
 class AwsS3Service(
@@ -17,7 +18,7 @@ class AwsS3Service(
     @Transactional
     fun uploadImages(multipartFiles: List<MultipartFile>): List<String> =
         multipartFiles.map { file ->
-            val fileName = file.originalFilename ?: "null"
+            val fileName = getRandomFileName(file.originalFilename ?: "null")
             val objectMetadata = ObjectMetadata()
             objectMetadata.contentLength = file.size
             objectMetadata.contentType = file.contentType
@@ -27,5 +28,9 @@ class AwsS3Service(
                     .withCannedAcl(CannedAccessControlList.PublicRead)
             )
             amazonS3.getUrl(bucket, fileName).toString()
+    }
+
+    private fun getRandomFileName(filename: String): String {
+        return UUID.randomUUID().toString() + "_" + filename
     }
 }

@@ -41,7 +41,7 @@ class AwsS3ServiceTest : BehaviorSpec({
 
     Given("파일 리스트의 파일 중 이미지 파일이 아닌 파일이 있으면") {
         val multipartFile = mockk<MultipartFile>()
-        every { multipartFile.originalFilename } returns "test.pdf"
+        every { multipartFile.originalFilename } returns null
         every { multipartFile.size } returns 1024
         every { multipartFile.contentType } returns "application/pdf"
         every { multipartFile.inputStream } returns mockk()

@@ -81,6 +81,7 @@ subprojects {
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix:$springCloudHystrixVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:$springCloudRibbonVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-aws:$springCloudAWSVersion")
+		implementation("org.springframework.cloud:spring-cloud-starter-aws-secrets-manager-config:$springCloudAWSVersion")
 
 		compileOnly("org.projectlombok:lombok")
 		runtimeOnly("com.h2database:h2")

@@ -4,19 +4,18 @@ import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
+import io.github.comstering.domain.memory.service.UploadImagesService
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @Service
 class AwsS3Service(
     private val amazonS3: AmazonS3
-) {
+) : UploadImagesService {
     private val bucket: String = "bucket"
 
-    @Transactional
-    fun uploadImages(multipartFiles: List<MultipartFile>): List<String> =
+    override fun uploadImages(multipartFiles: List<MultipartFile>): List<String> =
         multipartFiles.map { file ->
             val fileName = getRandomFileName(file.originalFilename ?: "null")
             val objectMetadata = ObjectMetadata()

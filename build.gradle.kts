@@ -80,7 +80,6 @@ subprojects {
 		implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$springCloudOpenFeignVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix:$springCloudHystrixVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:$springCloudRibbonVersion")
-		implementation("org.springframework.cloud:spring-cloud-starter-aws:$springCloudAWSVersion")
 
 		compileOnly("org.projectlombok:lombok")
 		runtimeOnly("com.h2database:h2")

@@ -20,6 +20,10 @@ spring:
       max-file-size: 10MB
       max-request-size: 100MB
 
+aws:
+  secretsmanager:
+    name: mms
+
 cloud:
   aws:
     region:

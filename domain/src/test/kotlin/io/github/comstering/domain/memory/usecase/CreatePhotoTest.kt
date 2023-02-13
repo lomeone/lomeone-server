@@ -47,5 +47,20 @@ class CreatePhotoTest : BehaviorSpec({
                 }
             }
         }
+        And("포스트가 존재하지 않으면") {
+            every { postRepository.findByIdOrNull(any()) } returns null
+            When("해당 포스트에 사진을 추가할 때") {
+                val request = CreatePhotoRequest(
+                    postId = 1,
+                    url = urlInput,
+                    isMain = true
+                )
+                Then("Post가 없다는 예외가 발생해서 사진이 추가되지 않는다") {
+                    shouldThrow<Exception> {
+                        createPhoto.execute(request)
+                    }
+                }
+            }
+        }
     }
 })

@@ -5,6 +5,7 @@ import io.github.comstering.domain.memory.repository.PhotoRepository
 import io.github.comstering.domain.memory.repository.PostRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import javax.validation.constraints.NotBlank
 
 @Service
@@ -12,6 +13,7 @@ class CreatePhoto(
     private val photoRepository: PhotoRepository,
     private val postRepository: PostRepository
 ) {
+    @Transactional
     fun execute(request: CreatePhotoRequest): CreatePhotoResponse {
         val (postId, url, isMain) = request
 

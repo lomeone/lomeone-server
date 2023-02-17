@@ -15,22 +15,20 @@ class CreatePhoto(
 ) {
     @Transactional
     fun execute(request: CreatePhotoRequest): CreatePhotoResponse {
-        val (postId, url, isMain) = request
+        val (postId, url) = request
 
         val post = getPost(postId)
 
         val photo = photoRepository.save(
             Photo(
                 post = post,
-                url = url,
-                isMain = isMain
+                url = url
             )
         )
 
         return CreatePhotoResponse(
             id = photo.id,
-            url = photo.url,
-            isMain = photo.isMain
+            url = photo.url
         )
     }
 
@@ -40,12 +38,10 @@ class CreatePhoto(
 
 data class CreatePhotoRequest(
     val postId: Long,
-    @field:NotBlank val url: String,
-    val isMain: Boolean
+    @field:NotBlank val url: String
 )
 
 data class CreatePhotoResponse(
     val id: Long,
-    val url: String,
-    val isMain: Boolean
+    val url: String
 )

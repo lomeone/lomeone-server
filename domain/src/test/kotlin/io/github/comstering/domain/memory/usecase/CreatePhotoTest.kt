@@ -26,15 +26,13 @@ class CreatePhotoTest : BehaviorSpec({
             When("해당 포스트에 사진을 추가할 때") {
                 val request = CreatePhotoRequest(
                     postId = 1,
-                    url = urlInput,
-                    isMain = true
+                    url = urlInput
                 )
 
                 every { photoRepository.save(any()) } returns Photo(
                     id = 1L,
                     url = urlInput,
-                    post = post,
-                    isMain = true
+                    post = post
                 )
 
                 val response = withContext(Dispatchers.IO) {
@@ -43,7 +41,6 @@ class CreatePhotoTest : BehaviorSpec({
                 Then("사진이 추가된다") {
                     response.id shouldBe 1L
                     response.url shouldBe urlInput
-                    response.isMain shouldBe true
                 }
             }
         }
@@ -52,8 +49,7 @@ class CreatePhotoTest : BehaviorSpec({
             When("해당 포스트에 사진을 추가할 때") {
                 val request = CreatePhotoRequest(
                     postId = 1,
-                    url = urlInput,
-                    isMain = true
+                    url = urlInput
                 )
                 Then("Post가 없다는 예외가 발생해서 사진이 추가되지 않는다") {
                     shouldThrow<Exception> {

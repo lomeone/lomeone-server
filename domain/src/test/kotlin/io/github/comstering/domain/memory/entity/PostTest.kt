@@ -10,7 +10,7 @@ class PostTest : FreeSpec({
     val placeInput = Place("placeName", "placeAddress")
     val userInput = mockk<User>()
     "포스트 생성할 때" - {
-        "제목과 내용이 공백이 아니어야 생성할 수 있다" - {
+        "제목과 내용이 공백이 아니어야 생성할 수 있다" {
             val titleInput = "title"
             val contentInput = "content"
 
@@ -28,7 +28,7 @@ class PostTest : FreeSpec({
             post.user shouldBe userInput
         }
 
-        "제목이 공백이면 생성할 수 없다" - {
+        "제목이 공백이면 생성할 수 없다" {
             val titleInput = ""
             val contentInput = "content"
 
@@ -43,7 +43,7 @@ class PostTest : FreeSpec({
             }
         }
 
-        "내용이 공백이면 생성할 수 없다" - {
+        "내용이 공백이면 생성할 수 없다" {
             val titleInput = "title"
             val contentInput = ""
 
@@ -67,7 +67,7 @@ class PostTest : FreeSpec({
             visibility = true,
             user = userInput
         )
-        "제목과 내용이 공백이 아니어야 업데이트 할 수 있다" - {
+        "제목과 내용이 공백이 아니어야 업데이트 할 수 있다" {
             val titleInput = "title"
             val contentInput = "content"
 
@@ -78,7 +78,7 @@ class PostTest : FreeSpec({
             post.visibility shouldBe false
             post.place shouldBe placeInput
         }
-        "제목이 공백이면 업데이트 할 수 없다" - {
+        "제목이 공백이면 업데이트 할 수 없다" {
             val titleInput = ""
             val contentInput = "content"
 
@@ -87,7 +87,7 @@ class PostTest : FreeSpec({
             }
         }
 
-        "내용이 공백이면 업데이트 할 수 없다" - {
+        "내용이 공백이면 업데이트 할 수 없다" {
             val titleInput = "title"
             val contentInput = ""
 
@@ -97,7 +97,7 @@ class PostTest : FreeSpec({
         }
     }
 
-    "포스트를 삭제할 수 있다" - {
+    "포스트를 삭제할 수 있다" {
         val post = Post(
             title = "title",
             content = "content",
@@ -109,7 +109,7 @@ class PostTest : FreeSpec({
         post.deleted shouldBe true
     }
 
-    "포스트를 삭제하고 다시 복원할 수 있다" - {
+    "포스트를 삭제하고 다시 복원할 수 있다" {
         val post = Post(
             title = "title",
             content = "content",
@@ -123,7 +123,7 @@ class PostTest : FreeSpec({
         post.deleted shouldBe false
     }
 
-    "포스트 id가 같은면 같은 포스트이다." - {
+    "포스트 id가 같은면 같은 포스트이다." {
         val post1 = Post(
             id = 1L,
             title = "title1",
@@ -144,7 +144,7 @@ class PostTest : FreeSpec({
         (post1 == post2) shouldBe true
     }
 
-    "포스트 id가 다르면 다른 포스트이다" - {
+    "포스트 id가 다르면 다른 포스트이다" {
         val post1 = Post(
             id = 1L,
             title = "title1",
@@ -165,7 +165,7 @@ class PostTest : FreeSpec({
         (post1 == post2) shouldBe false
     }
 
-    "포스트 객체가 아니면 다른 포스트이다" - {
+    "포스트 객체가 아니면 다른 포스트이다" {
         val post1 = Post(
             id = 1L,
             title = "title1",
@@ -179,7 +179,7 @@ class PostTest : FreeSpec({
         (post1.equals(post2)) shouldBe false
     }
 
-    "포스트 id가 같으면 hash 값도 같다" - {
+    "포스트 id가 같으면 hash 값도 같다" {
         val post1 = Post(
             id = 1L,
             title = "title1",
@@ -201,7 +201,7 @@ class PostTest : FreeSpec({
         (post1.hashCode() == post2.hashCode()) shouldBe true
     }
 
-    "포스트 id가 다르면 hash 값도 다르다" - {
+    "포스트 id가 다르면 hash 값도 다르다" {
         val post1 = Post(
             id = 1L,
             title = "title1",
@@ -225,7 +225,7 @@ class PostTest : FreeSpec({
 })
 
 class PlaceTest : FreeSpec({
-    "장소 이름과 주소에 공백이 없으면 장소를 생성할 수 있다" - {
+    "장소 이름과 주소에 공백이 없으면 장소를 생성할 수 있다" {
         val nameInput = "name"
         val addressInput = "address"
 
@@ -235,7 +235,7 @@ class PlaceTest : FreeSpec({
         place.address shouldBe addressInput
     }
 
-    "장소 이름에 공백이 있으면 장소 이름이 공백이라는 예외가 발생해서 장소를 생성할 수 없다" - {
+    "장소 이름에 공백이 있으면 장소 이름이 공백이라는 예외가 발생해서 장소를 생성할 수 없다" {
         val nameInput = " "
         val addressInput = "address"
 
@@ -244,7 +244,7 @@ class PlaceTest : FreeSpec({
         }
     }
 
-    "장소 주소에 공백이 있으면 장소 주소가 공백이라는 예외가 발생해서 장소를 생성할 수 없다" - {
+    "장소 주소에 공백이 있으면 장소 주소가 공백이라는 예외가 발생해서 장소를 생성할 수 없다" {
         val nameInput = "name"
         val addressInput = " "
 

@@ -16,12 +16,8 @@ class Photo(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     val post: Post,
-    val url: String,
-    isMain: Boolean
+    val url: String
 ) {
-    var isMain: Boolean = isMain
-        protected set
-
     var deleted: Boolean = false
         protected set
 
@@ -31,10 +27,6 @@ class Photo(
 
     private fun ensureUrlIsNotBlank(url: String) {
         url.isBlank() && throw IllegalArgumentException("url must not be blank")
-    }
-
-    fun updateMain(isMain: Boolean) {
-        this.isMain = isMain
     }
 
     fun delete() {

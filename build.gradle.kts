@@ -71,7 +71,7 @@ subprojects {
 
 		// JPA
 		implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-		implementation("com.querydsl:querydsl-jpa")
+		implementation("com.querydsl:querydsl-jpa:$queryDslVersion")
 		kapt("com.querydsl:querydsl-apt:$queryDslVersion:jpa")
 
 		// Spring Cloud
@@ -79,8 +79,6 @@ subprojects {
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix:$springCloudHystrixVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:$springCloudRibbonVersion")
 
-		runtimeOnly("com.h2database:h2")
-		runtimeOnly("org.postgresql:postgresql")
 		developmentOnly("org.springframework.boot:spring-boot-devtools")
 		testImplementation("org.springframework.boot:spring-boot-starter-test")
 		testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
@@ -110,7 +108,7 @@ subprojects {
 				fileTree(it).apply {
 					exclude("**/MmsApplication**")
 					for (pattern in 'A' .. 'Z') {
-						exclude("**/${pattern}**")
+						exclude("**/Q${pattern}**")
 					}
 				}
 			}))

@@ -12,6 +12,10 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":infrastructure"))
 
+    // Web
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
     // Swagger
     implementation("org.springdoc:springdoc-openapi-ui:$springdocOpenapiVersion")
     implementation("org.springdoc:springdoc-openapi-kotlin:$springdocOpenapiVersion")

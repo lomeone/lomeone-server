@@ -67,9 +67,7 @@ subprojects {
 		implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
 		// Spring
-		implementation("org.springframework.boot:spring-boot-starter-actuator")
 		implementation("org.springframework.boot:spring-boot-starter-validation")
-		implementation("org.springframework.boot:spring-boot-starter-web")
 
 		// JPA
 		implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -81,11 +79,9 @@ subprojects {
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix:$springCloudHystrixVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:$springCloudRibbonVersion")
 
-		compileOnly("org.projectlombok:lombok")
 		runtimeOnly("com.h2database:h2")
 		runtimeOnly("org.postgresql:postgresql")
 		developmentOnly("org.springframework.boot:spring-boot-devtools")
-		annotationProcessor("org.projectlombok:lombok")
 		testImplementation("org.springframework.boot:spring-boot-starter-test")
 		testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
 

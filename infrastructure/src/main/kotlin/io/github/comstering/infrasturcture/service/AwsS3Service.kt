@@ -6,16 +6,19 @@ import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import io.github.comstering.domain.memory.service.UploadImagesService
 import io.github.comstering.domain.memory.service.Url
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 @Service
 class AwsS3Service(
-    private val amazonS3: AmazonS3
+    private val amazonS3: AmazonS3,
+    @Qualifier("awsS3Bucket")
+    private val awsS3Bucket: String,
+    @Qualifier("awsImageUploadPath")
+    private val awsImageUploadPath: String
 ) : UploadImagesService {
-    private val bucket: String = "bucket"
-
     override fun uploadImages(multipartFiles: List<MultipartFile>): List<Url> =
         multipartFiles.map { file ->
             val fileName = getRandomFileName(file.originalFilename ?: "null")
@@ -24,10 +27,10 @@ class AwsS3Service(
             objectMetadata.contentType = file.contentType
 
             amazonS3.putObject(
-                PutObjectRequest(bucket, fileName, file.inputStream, objectMetadata)
+                PutObjectRequest(awsS3Bucket, setFilePath(fileName), file.inputStream, objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead)
             )
-            Url(amazonS3.getUrl(bucket, fileName).toString())
+            Url(amazonS3.getUrl(awsS3Bucket, fileName).toString())
         }
 
     private fun getRandomFileName(fileName: String): String {
@@ -40,4 +43,6 @@ class AwsS3Service(
         val regex = Regex(imageFileNamePattern)
         !fileName.matches(regex) && throw Exception("Is not image file")
     }
+
+    private fun setFilePath(fileName: String): String = awsImageUploadPath + fileName
 }

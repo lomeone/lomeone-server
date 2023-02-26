@@ -1,6 +1,7 @@
 package io.github.comstering.infrastructure.service
 
 import com.amazonaws.services.s3.AmazonS3
+import io.github.comstering.infrasturcture.config.AwsS3Config
 import io.github.comstering.infrasturcture.service.AwsS3Service
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
@@ -10,11 +11,15 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.web.multipart.MultipartFile
 
-class AwsS3ServiceTest : BehaviorSpec({
+@SpringBootTest(classes = [AwsS3Config::class])
+class AwsS3ServiceTest(
+    private val awsS3Config: AwsS3Config
+) : BehaviorSpec({
     val amazonS3: AmazonS3 = mockk()
-    val awsS3Service = AwsS3Service(amazonS3)
+    val awsS3Service = AwsS3Service(amazonS3, awsS3Config.awsS3Bucket(), awsS3Config.awsImageUploadPath())
 
     Given("파일 리스트의 파일이 모두 이미지파일이면") {
         val multipartFile = mockk<MultipartFile>()

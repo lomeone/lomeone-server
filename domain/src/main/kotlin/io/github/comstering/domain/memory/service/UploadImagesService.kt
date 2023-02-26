@@ -6,5 +6,4 @@ interface UploadImagesService {
     fun uploadImages(multipartFiles: List<MultipartFile>): List<Url>
 }
 
-@JvmInline
-value class Url(val value: String)
+data class Url(val value: String)

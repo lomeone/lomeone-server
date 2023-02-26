@@ -1,23 +1,29 @@
 package io.github.comstering.infrasturcture.config
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider
-import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3Client
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
 
 @Configuration
 class AwsS3Config {
-    private val accessKey: String = "access"
-    private val secretKey: String = "secret"
-    private val region: String = "ap-northeast-2"
+    @Value("\${cloud.aws.region.static}")
+    private var region: String = "ap-northeast-2"
+
+    @Value("\${cloud.aws.s3.bucket}")
+    private var bucket: String = "mms-images-bucket"
+
+    private var uploadPath: String = "data/images/"
 
     @Bean
-    fun awsS3Client(): AmazonS3Client {
-        val credential = AWSStaticCredentialsProvider(BasicAWSCredentials(accessKey, secretKey))
-        return AmazonS3Client.builder()
-            .withCredentials(credential)
-            .withRegion(region)
-            .build() as AmazonS3Client
-    }
+    @Primary
+    fun awsS3Client(): AmazonS3 = AmazonS3Client.builder().withRegion(region).build()
+
+    @Bean
+    fun awsS3Bucket(): String = bucket
+
+    @Bean
+    fun awsImageUploadPath(): String = uploadPath
 }

@@ -13,6 +13,12 @@ jobs:
       - name: Checkout my code
         uses: actions/checkout@v3
 
+      - name: Configure AWS Credential
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Set up jdk
         uses: actions/setup-java@v3
         with:
@@ -46,6 +52,12 @@ jobs:
     steps:
       - name: Checkout my code
         uses: actions/checkout@v3
+
+      - name: Configure AWS Credential
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Sign in DockerHub
         uses: docker/login-action@v2

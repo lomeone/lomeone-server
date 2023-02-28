@@ -1,4 +1,4 @@
-package com.lomeone.infrastructure
+package com.lomeone.infrastructure.service
 
 import com.amazonaws.services.s3.AmazonS3
 import com.lomeone.infrastructure.config.AwsS3Config

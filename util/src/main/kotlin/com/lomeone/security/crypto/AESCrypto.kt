@@ -1,4 +1,4 @@
-package com.lomeone.crypto
+package com.lomeone.security.crypto
 
 import java.nio.charset.StandardCharsets
 import java.util.Base64

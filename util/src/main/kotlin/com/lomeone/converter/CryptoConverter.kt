@@ -1,6 +1,6 @@
 package com.lomeone.converter
 
-import com.lomeone.crypto.AESCrypto
+import com.lomeone.security.crypto.AESCrypto
 import javax.persistence.AttributeConverter
 import javax.persistence.Converter
 

@@ -1,6 +1,6 @@
 package com.lomeone.domain.memory.entity
 
-import com.lomeone.domain.entity.AuditEntity
+import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.user.entity.User
 import javax.persistence.AttributeOverride
 import javax.persistence.AttributeOverrides

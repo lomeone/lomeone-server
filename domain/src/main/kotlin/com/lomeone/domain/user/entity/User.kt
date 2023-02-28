@@ -1,7 +1,7 @@
 package com.lomeone.domain.user.entity
 
 import com.lomeone.converter.CryptoConverter
-import com.lomeone.domain.entity.AuditEntity
+import com.lomeone.domain.common.entity.AuditEntity
 import java.time.ZonedDateTime
 import javax.persistence.Column
 import javax.persistence.Convert

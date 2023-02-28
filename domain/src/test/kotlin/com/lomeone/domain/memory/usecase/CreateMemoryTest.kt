@@ -1,13 +1,7 @@
-package com.lomeone.memory.usecase
+package com.lomeone.domain.memory.usecase
 
 import com.lomeone.domain.memory.service.UploadImagesService
 import com.lomeone.domain.memory.service.Url
-import com.lomeone.domain.memory.usecase.CreateMemory
-import com.lomeone.domain.memory.usecase.CreateMemoryRequest
-import com.lomeone.domain.memory.usecase.CreatePhoto
-import com.lomeone.domain.memory.usecase.CreatePhotoResponse
-import com.lomeone.domain.memory.usecase.CreatePost
-import com.lomeone.domain.memory.usecase.CreatePostResponse
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every

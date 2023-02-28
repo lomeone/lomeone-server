@@ -1,7 +1,5 @@
-package com.lomeone.user.entity
+package com.lomeone.domain.user.entity
 
-import com.lomeone.domain.user.entity.AccountType
-import com.lomeone.domain.user.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

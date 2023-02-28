@@ -1,7 +1,5 @@
-package com.lomeone.memory.entity
+package com.lomeone.domain.memory.entity
 
-import com.lomeone.domain.memory.entity.Place
-import com.lomeone.domain.memory.entity.Post
 import com.lomeone.domain.user.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec

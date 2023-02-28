@@ -1,10 +1,8 @@
-package com.lomeone.user.usecase
+package com.lomeone.domain.user.usecase
 
 import com.lomeone.domain.user.entity.AccountType
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.repository.UserRepository
-import com.lomeone.domain.user.usecase.SearchUserByFirebaseUserToken
-import com.lomeone.domain.user.usecase.SearchUserByFirebaseUserTokenRequest
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

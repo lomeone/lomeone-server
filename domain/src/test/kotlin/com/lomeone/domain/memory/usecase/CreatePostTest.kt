@@ -1,10 +1,8 @@
-package com.lomeone.memory.usecase
+package com.lomeone.domain.memory.usecase
 
 import com.lomeone.domain.memory.entity.Place
 import com.lomeone.domain.memory.entity.Post
 import com.lomeone.domain.memory.repository.PostRepository
-import com.lomeone.domain.memory.usecase.CreatePost
-import com.lomeone.domain.memory.usecase.CreatePostRequest
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow

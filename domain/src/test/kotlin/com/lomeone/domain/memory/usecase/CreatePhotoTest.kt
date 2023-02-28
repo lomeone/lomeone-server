@@ -1,11 +1,9 @@
-package com.lomeone.memory.usecase
+package com.lomeone.domain.memory.usecase
 
 import com.lomeone.domain.memory.entity.Photo
 import com.lomeone.domain.memory.entity.Post
 import com.lomeone.domain.memory.repository.PhotoRepository
 import com.lomeone.domain.memory.repository.PostRepository
-import com.lomeone.domain.memory.usecase.CreatePhoto
-import com.lomeone.domain.memory.usecase.CreatePhotoRequest
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

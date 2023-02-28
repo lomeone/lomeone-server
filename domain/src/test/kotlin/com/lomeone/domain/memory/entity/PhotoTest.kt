@@ -1,7 +1,5 @@
-package com.lomeone.memory.entity
+package com.lomeone.domain.memory.entity
 
-import com.lomeone.domain.memory.entity.Photo
-import com.lomeone.domain.memory.entity.Post
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe

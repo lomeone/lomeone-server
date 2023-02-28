@@ -1,10 +1,8 @@
-package com.lomeone.user.usecase
+package com.lomeone.domain.user.usecase
 
 import com.lomeone.domain.user.entity.AccountType
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.repository.UserRepository
-import com.lomeone.domain.user.usecase.UpdateUserInfo
-import com.lomeone.domain.user.usecase.UpdateUserInfoServiceRequest
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

@@ -1,4 +1,4 @@
-namespace: template
+namespace: lomeone
 
 container:
   healthCheck: /actuator/health
@@ -7,9 +7,9 @@ container:
   replicas: 1
 
 image:
-  repository: comstering  # Change this to your image repository(i.e. docker hub or ecr)
-  name: demo              # Change this to your image name
-  tag: "develop"           # Change this to your image tag, Overrides the image tag whose default is the chart appVersion.
+  repository: comstering
+  name: lomeone-server
+  tag: "develop"
   pullPolicy: Always
   # IfNotPresent | Always
   # IfNotPresent: Don't pull the image if it already exists

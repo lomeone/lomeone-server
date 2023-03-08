@@ -9,7 +9,7 @@ container:
 image:
   repository: comstering
   name: lomeone-server
-  tag: "develop"
+  tag: develop
   pullPolicy: Always
   # IfNotPresent | Always
   # IfNotPresent: Don't pull the image if it already exists
@@ -45,7 +45,8 @@ service:
   containerPort: 8080
 
 ingress:
-  enabled: false
+  enable: true
+  internal: true
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"

@@ -10,7 +10,11 @@ service:
   annotations: {}
 
 ingress:
-  domain: server.lomeone.com
+  hosts:
+    - host: server.lomeone.com
+      paths:
+          - path: /
+            pathType: ImplementationSpecific
   annotations: {}
 
 resources:

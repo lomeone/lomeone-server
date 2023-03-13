@@ -105,4 +105,4 @@ jobs:
           config-files: helm-chart-springboot/dev-values.yaml
           chart-path: helm-chart-springboot/
           namespace: ${{ secrets.EKS_NAMESPACE }}
-          name: lomeone-server
+          name: preview-lomeone-server

@@ -90,18 +90,18 @@ jobs:
       - name: Checkout my code
         uses: actions/checkout@v3
 
-      - name: Configure AWS Credential
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Deploy to staging
-        uses: bitovi/github-actions-deploye-eks-helm@v1.1.0
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          cluster-name: ${{ secrets.EKS_CLUSTER_NAME }}
-          config-files: helm-chart-springboot/staging-values.yaml
-          chart-path: helm-chart-springboot/
-          namespace: ${{ secrets.EKS_NAMESPACE }}
-          name: staging-lomeone-server
+#      - name: Configure AWS Credential
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+#          aws-region: ${{ secrets.AWS_REGION }}
+#
+#      - name: Deploy to staging
+#        uses: bitovi/github-actions-deploye-eks-helm@v1.1.0
+#        with:
+#          aws-region: ${{ secrets.AWS_REGION }}
+#          cluster-name: ${{ secrets.EKS_CLUSTER_NAME }}
+#          config-files: helm-chart-springboot/staging-values.yaml
+#          chart-path: helm-chart-springboot/
+#          namespace: ${{ secrets.EKS_NAMESPACE }}
+#          name: staging-lomeone-server

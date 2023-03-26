@@ -22,7 +22,7 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     @Column(unique = true)
-    val firebaseUserToken: String,
+    val userToken: String,
     name: String,
     nickname: String,
     email: String,

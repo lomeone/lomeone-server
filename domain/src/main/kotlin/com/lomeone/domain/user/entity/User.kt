@@ -16,7 +16,7 @@ import javax.persistence.Table
 
 
 @Entity
-@Table(name = "user_entity",indexes = [Index(name = "idx_user_firebaseUserToken", columnList = "firebaseUserToken", unique = true)])
+@Table(name = "user_entity",indexes = [Index(name = "idx_user_userToken", columnList = "userToken", unique = true)])
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

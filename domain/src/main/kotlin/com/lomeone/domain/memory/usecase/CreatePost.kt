@@ -38,7 +38,7 @@ class CreatePost(
     }
 
     private fun getUser(firebaseUserToken: String) =
-        userRepository.findByFirebaseUserToken(firebaseUserToken) ?: throw Exception("User not found")
+        userRepository.findByUserToken(firebaseUserToken) ?: throw Exception("User not found")
 }
 
 data class CreatePostRequest(

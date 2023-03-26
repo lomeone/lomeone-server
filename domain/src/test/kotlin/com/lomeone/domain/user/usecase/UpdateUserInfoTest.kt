@@ -18,7 +18,7 @@ class UpdateUserInfoTest : BehaviorSpec({
     val updateUserInfo = UpdateUserInfo(userRepository)
 
     Given("유저가 존재하면") {
-        every { userRepository.findByFirebaseUserToken(any()) } returns User(
+        every { userRepository.findByUserToken(any()) } returns User(
             userToken = "user1234",
             name = "name",
             nickname = "nickname",
@@ -29,7 +29,7 @@ class UpdateUserInfoTest : BehaviorSpec({
         )
         When("유저 정보를 업데이트할 때") {
             val request = UpdateUserInfoServiceRequest(
-                firebaseUserToken = "user1234",
+                userToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
                 birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
@@ -40,7 +40,7 @@ class UpdateUserInfoTest : BehaviorSpec({
                 updateUserInfo.execute(request)
             }
             Then("유저 정보가 업데이트된다") {
-                response.firebaseUserToken shouldBe request.firebaseUserToken
+                response.userToken shouldBe request.userToken
                 response.name shouldBe request.name
                 response.nickname shouldBe request.nickname
                 response.birthday shouldBe request.birthday
@@ -49,10 +49,10 @@ class UpdateUserInfoTest : BehaviorSpec({
         }
     }
     Given("유저가 존재하지 않으면") {
-        every { userRepository.findByFirebaseUserToken(any()) } returns null
+        every { userRepository.findByUserToken(any()) } returns null
         When("유저 정보를 업데이트할 때") {
             val request = UpdateUserInfoServiceRequest(
-                firebaseUserToken = "user1234",
+                userToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
                 birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),

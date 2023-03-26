@@ -18,10 +18,10 @@ class CreateUserTest : BehaviorSpec({
     val createUser = CreateUser(userRepository)
 
     Given("유저가 존재하지 않으면") {
-        every { userRepository.findByFirebaseUserToken(any()) } returns null
+        every { userRepository.findByUserToken(any()) } returns null
         When("유저를 생성할 때") {
             val request = CreateUserServiceRequest(
-                firebaseUserToken = "user1234",
+                userToken = "user1234",
                 name = "name",
                 nickname = "nickname",
                 email = "test@gmail.com",
@@ -45,7 +45,7 @@ class CreateUserTest : BehaviorSpec({
             }
             Then("유저가 생성된다") {
                 response.id shouldBe 0L
-                response.firebaseUserToken shouldBe request.firebaseUserToken
+                response.userToken shouldBe request.userToken
                 response.name shouldBe request.name
                 response.nickname shouldBe request.nickname
                 response.email shouldBe request.email
@@ -57,10 +57,10 @@ class CreateUserTest : BehaviorSpec({
     }
 
     Given("유저가 이미 존재하면") {
-        every { userRepository.findByFirebaseUserToken(any()) } returns mockk<User>()
+        every { userRepository.findByUserToken(any()) } returns mockk<User>()
         When("유저를 생성할 때") {
             val request = CreateUserServiceRequest(
-                firebaseUserToken = "user1234",
+                userToken = "user1234",
                 name = "name",
                 nickname = "nickname",
                 email = "test@gmail.com",

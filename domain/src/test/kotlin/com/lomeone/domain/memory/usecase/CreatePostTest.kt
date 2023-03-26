@@ -41,7 +41,7 @@ class CreatePostTest : BehaviorSpec({
                     visibility = true,
                     placeName = placeNameInput,
                     placeAddress = placeAddressInput,
-                    firebaseUserToken = "user1234"
+                    userToken = "user1234"
                 )
 
                 val response = withContext(Dispatchers.IO) {
@@ -65,7 +65,7 @@ class CreatePostTest : BehaviorSpec({
                     visibility = true,
                     placeName = placeNameInput,
                     placeAddress = placeAddressInput,
-                    firebaseUserToken = "user1234"
+                    userToken = "user1234"
                 )
 
                 Then("유저를 찾지 못했다는 예외가 발생해서 포스트를 생성할 수 없다") {

@@ -15,8 +15,8 @@ class CreatePost(
 ) {
     @Transactional
     fun execute(request: CreatePostRequest): CreatePostResponse {
-        val (title, content, visibility, placeName, placeAddress, firebaseUserToken) = request
-        val user = getUser(firebaseUserToken)
+        val (title, content, visibility, placeName, placeAddress, userToken) = request
+        val user = getUser(userToken)
         val place = Place(placeName, placeAddress)
         val post = postRepository.save(
             Post(
@@ -37,8 +37,8 @@ class CreatePost(
         )
     }
 
-    private fun getUser(firebaseUserToken: String) =
-        userRepository.findByUserToken(firebaseUserToken) ?: throw Exception("User not found")
+    private fun getUser(userToken: String) =
+        userRepository.findByUserToken(userToken) ?: throw Exception("User not found")
 }
 
 data class CreatePostRequest(
@@ -47,7 +47,7 @@ data class CreatePostRequest(
     val visibility: Boolean,
     @field:NotBlank val placeName: String,
     @field:NotBlank val placeAddress: String,
-    @field:NotBlank val firebaseUserToken: String
+    @field:NotBlank val userToken: String
 )
 
 data class CreatePostResponse(

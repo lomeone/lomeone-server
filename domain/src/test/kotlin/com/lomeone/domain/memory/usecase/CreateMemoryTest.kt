@@ -22,7 +22,7 @@ class CreateMemoryTest : BehaviorSpec({
         val visibilityInput = true
         val placeNameInput = "placeName"
         val placeAddressInput = "placeAddress"
-        val firebaseUserTokenInput = "firebaseUserToken"
+        val userTokenInput = "userToken"
         val multipartFileInput = listOf<MultipartFile>()
 
         When("Memory를 만들 때") {
@@ -48,7 +48,7 @@ class CreateMemoryTest : BehaviorSpec({
                         visibility = visibilityInput,
                         placeName = placeNameInput,
                         placeAddress = placeAddressInput,
-                        firebaseUserToken = firebaseUserTokenInput,
+                        userToken = userTokenInput,
                         multipartFile = multipartFileInput
                     )
                 )

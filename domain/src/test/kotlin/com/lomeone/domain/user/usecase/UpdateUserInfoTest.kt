@@ -19,7 +19,7 @@ class UpdateUserInfoTest : BehaviorSpec({
 
     Given("유저가 존재하면") {
         every { userRepository.findByFirebaseUserToken(any()) } returns User(
-            firebaseUserToken = "user1234",
+            userToken = "user1234",
             name = "name",
             nickname = "nickname",
             email = "email@gmail.com",

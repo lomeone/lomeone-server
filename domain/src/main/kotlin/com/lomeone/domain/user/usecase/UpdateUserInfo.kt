@@ -18,7 +18,7 @@ class UpdateUserInfo(
         user.updateUserInfo(name, nickname, birthday, photoUrl)
 
         return UpdateUserInfoServiceResponse(
-            firebaseUserToken = user.firebaseUserToken,
+            firebaseUserToken = user.userToken,
             name = user.name,
             nickname = user.nickname,
             photoUrl = user.photoUrl,

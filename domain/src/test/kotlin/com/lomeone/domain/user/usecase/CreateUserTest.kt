@@ -31,7 +31,7 @@ class CreateUserTest : BehaviorSpec({
             )
 
             every { userRepository.save(any()) } returns User(
-                firebaseUserToken = "user1234",
+                userToken = "user1234",
                 name = "name",
                 nickname = "nickname",
                 email = "test@gmail.com",

@@ -8,7 +8,7 @@ import java.time.ZonedDateTime
 
 class UserTest : BehaviorSpec({
     val defaultUser = User(
-        firebaseUserToken = "user1234",
+        userToken = "user1234",
         name = "name",
         nickname = "nickname",
         email = "test@gmail.com",
@@ -25,7 +25,7 @@ class UserTest : BehaviorSpec({
         val photoUrlInput = "https://update.photo.com"
         When("유저를 생성할 때") {
             val user = User(
-                firebaseUserToken = "user1234",
+                userToken = "user1234",
                 name = nameInput,
                 nickname = nicknameInput,
                 email = emailInput,
@@ -34,7 +34,7 @@ class UserTest : BehaviorSpec({
                 accountType = AccountType.GOOGLE
             )
             Then("유저를 생성할 수 있다") {
-                user.firebaseUserToken shouldBe "user1234"
+                user.userToken shouldBe "user1234"
                 user.name shouldBe nameInput
                 user.nickname shouldBe nicknameInput
                 user.email.value shouldBe emailInput
@@ -59,7 +59,7 @@ class UserTest : BehaviorSpec({
             Then("이름이 공백이라는 에외가 발생해서 유저를 생성할 수 없다") {
                 shouldThrow<Exception> {
                     User(
-                        firebaseUserToken = "user1234",
+                        userToken = "user1234",
                         name = nameInput,
                         nickname = "nickname",
                         email = "email@gmail.com",
@@ -85,7 +85,7 @@ class UserTest : BehaviorSpec({
             Then("닉네임이 공백이라는 예외가 발생해서 유저를 생성할 수 없다") {
                 shouldThrow<Exception> {
                     User(
-                        firebaseUserToken = "user1234",
+                        userToken = "user1234",
                         name = "name",
                         nickname = nicknameInput,
                         email = "email@gmail.com",
@@ -110,7 +110,7 @@ class UserTest : BehaviorSpec({
             Then("사진 경로가 공백이라는 예외가 발생해서 유저를 생성할 수 없다") {
                 shouldThrow<Exception> {
                     User(
-                        firebaseUserToken = "user1234",
+                        userToken = "user1234",
                         name = "name",
                         nickname = "nickname",
                         email = "email@gmail.com",
@@ -135,7 +135,7 @@ class UserTest : BehaviorSpec({
             Then("이메일이 공백이라는 예외가 발생해서 유저를 생성할 수 없다") {
                 shouldThrow<Exception> {
                     User(
-                        firebaseUserToken = "user1234",
+                        userToken = "user1234",
                         name = "name",
                         nickname = "nickname",
                         email = emailInput,
@@ -153,7 +153,7 @@ class UserTest : BehaviorSpec({
             Then("이메일 혁식이 맞지 않는다는 예외가 발생해서 유저를 생성할 수 없다") {
                 shouldThrow<Exception> {
                     User(
-                        firebaseUserToken = "user1234",
+                        userToken = "user1234",
                         name = "name",
                         nickname = "nickname",
                         email = emailInput,

@@ -20,7 +20,7 @@ class SearchUserByFirebaseUserTokenTest : BehaviorSpec({
     Given("firebaseUserToken을 가지고 있는 유저가 존재하면") {
         val firebaseInput = "user1234"
         every { userRepository.findByFirebaseUserToken(firebaseInput) } returns User(
-            firebaseUserToken = firebaseInput,
+            userToken = firebaseInput,
             name = "name",
             nickname = "nickname",
             email = "email@gmail.com",
@@ -33,7 +33,7 @@ class SearchUserByFirebaseUserTokenTest : BehaviorSpec({
                 searchUserByFirebaseUserToken.execute(SearchUserByFirebaseUserTokenRequest(firebaseInput))
             }
             Then("유저가 검색된다") {
-                response.user.firebaseUserToken shouldBe firebaseInput
+                response.user.userToken shouldBe firebaseInput
             }
         }
     }

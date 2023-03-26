@@ -20,7 +20,7 @@ class CreateUser(
 
         val user = userRepository.save(
             User(
-                firebaseUserToken = firebaseUserToken,
+                userToken = firebaseUserToken,
                 name = name,
                 nickname = nickname,
                 email = email,
@@ -32,7 +32,7 @@ class CreateUser(
 
         return CreateUserServiceResponse(
             id = user.id,
-            firebaseUserToken = user.firebaseUserToken,
+            firebaseUserToken = user.userToken,
             name = user.name,
             nickname = user.nickname,
             email = user.email.value,

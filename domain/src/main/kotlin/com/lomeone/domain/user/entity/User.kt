@@ -16,13 +16,13 @@ import javax.persistence.Table
 
 
 @Entity
-@Table(name = "user_entity",indexes = [Index(name = "idx_user_firebaseUserToken", columnList = "firebaseUserToken", unique = true)])
+@Table(name = "user_entity",indexes = [Index(name = "idx_user_userToken", columnList = "userToken", unique = true)])
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     @Column(unique = true)
-    val firebaseUserToken: String,
+    val userToken: String,
     name: String,
     nickname: String,
     email: String,

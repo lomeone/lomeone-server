@@ -25,7 +25,7 @@ class CreatePostTest : BehaviorSpec({
         val placeAddressInput = "placeAddress"
         And("유저가 존재하면") {
             val user = mockk<User>()
-            every { userRepository.findByFirebaseUserToken(any()) } returns user
+            every { userRepository.findByUserToken(any()) } returns user
             When("해당 유저가 포스트를 생성할 때") {
                 every { postRepository.save(any()) } returns Post(
                     title = titleInput,
@@ -41,7 +41,7 @@ class CreatePostTest : BehaviorSpec({
                     visibility = true,
                     placeName = placeNameInput,
                     placeAddress = placeAddressInput,
-                    firebaseUserToken = "user1234"
+                    userToken = "user1234"
                 )
 
                 val response = withContext(Dispatchers.IO) {
@@ -57,7 +57,7 @@ class CreatePostTest : BehaviorSpec({
             }
         }
         And("유저가 존재하지 않으면") {
-            every { userRepository.findByFirebaseUserToken(any()) } returns null
+            every { userRepository.findByUserToken(any()) } returns null
             When("포스트를 생성할 때") {
                 val request = CreatePostRequest(
                     title = titleInput,
@@ -65,7 +65,7 @@ class CreatePostTest : BehaviorSpec({
                     visibility = true,
                     placeName = placeNameInput,
                     placeAddress = placeAddressInput,
-                    firebaseUserToken = "user1234"
+                    userToken = "user1234"
                 )
 
                 Then("유저를 찾지 못했다는 예외가 발생해서 포스트를 생성할 수 없다") {

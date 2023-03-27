@@ -13,14 +13,14 @@ class CreateMemory(
 ) {
     @Transactional
     fun execute(createMemoryRequest: CreateMemoryRequest): CreateMemoryResponse {
-        val (title, content, visibility, placeName, placeAddress, firebaseUserToken, multipartFile) = createMemoryRequest
+        val (title, content, visibility, placeName, placeAddress, userToken, multipartFile) = createMemoryRequest
         val createPostRequest = CreatePostRequest(
             title = title,
             content = content,
             visibility = visibility,
             placeName = placeName,
             placeAddress = placeAddress,
-            firebaseUserToken = firebaseUserToken
+            userToken = userToken
         )
         val createPostResponse = createPost.execute(createPostRequest)
 
@@ -49,7 +49,7 @@ data class CreateMemoryRequest(
     val visibility: Boolean,
     val placeName: String,
     val placeAddress: String,
-    val firebaseUserToken: String,
+    val userToken: String,
     val multipartFile: List<MultipartFile>
 )
 

@@ -14,13 +14,13 @@ class CreateUser(
 ) {
     @Transactional
     fun execute(request: CreateUserServiceRequest): CreateUserServiceResponse {
-        val (firebaseUserToken, name, nickname, email, birthday,photoUrl, accountType) = request
+        val (userToken, name, nickname, email, birthday,photoUrl, accountType) = request
 
-        ensureUserNotExists(firebaseUserToken)
+        ensureUserNotExists(userToken)
 
         val user = userRepository.save(
             User(
-                firebaseUserToken = firebaseUserToken,
+                userToken = userToken,
                 name = name,
                 nickname = nickname,
                 email = email,
@@ -32,7 +32,7 @@ class CreateUser(
 
         return CreateUserServiceResponse(
             id = user.id,
-            firebaseUserToken = user.firebaseUserToken,
+            userToken = user.userToken,
             name = user.name,
             nickname = user.nickname,
             email = user.email.value,
@@ -42,14 +42,14 @@ class CreateUser(
         )
     }
 
-    private fun ensureUserNotExists(firebaseUserToken: String) {
-        userRepository.findByFirebaseUserToken(firebaseUserToken) != null
+    private fun ensureUserNotExists(userToken: String) {
+        userRepository.findByUserToken(userToken) != null
             && throw Exception("User already exists")
     }
 }
 
 data class CreateUserServiceRequest(
-    @field:NotBlank val firebaseUserToken: String,
+    @field:NotBlank val userToken: String,
     @field:NotBlank val name: String,
     @field:NotBlank val nickname: String,
     @field:NotBlank val email: String,
@@ -60,7 +60,7 @@ data class CreateUserServiceRequest(
 
 data class CreateUserServiceResponse(
     val id: Long,
-    val firebaseUserToken: String,
+    val userToken: String,
     val name: String,
     val nickname: String,
     val email: String,

@@ -11,14 +11,14 @@ class UpdateUserInfo(
 ) {
     @Transactional
     fun execute(request: UpdateUserInfoServiceRequest): UpdateUserInfoServiceResponse {
-        val (firebaseUserToken, name, nickname, birthday, photoUrl) = request
+        val (userToken, name, nickname, birthday, photoUrl) = request
 
-        val user = getUser(firebaseUserToken)
+        val user = getUser(userToken)
 
         user.updateUserInfo(name, nickname, birthday, photoUrl)
 
         return UpdateUserInfoServiceResponse(
-            firebaseUserToken = user.firebaseUserToken,
+            userToken = user.userToken,
             name = user.name,
             nickname = user.nickname,
             photoUrl = user.photoUrl,
@@ -26,12 +26,12 @@ class UpdateUserInfo(
         )
     }
 
-    private fun getUser(firebaseUserToken: String) = userRepository.findByFirebaseUserToken(firebaseUserToken)
+    private fun getUser(userToken: String) = userRepository.findByUserToken(userToken)
         ?: throw Exception("User not found")
 }
 
 data class UpdateUserInfoServiceRequest(
-    val firebaseUserToken: String,
+    val userToken: String,
     val name: String,
     val nickname: String,
     val birthday: ZonedDateTime,
@@ -39,7 +39,7 @@ data class UpdateUserInfoServiceRequest(
 )
 
 data class UpdateUserInfoServiceResponse(
-    val firebaseUserToken: String,
+    val userToken: String,
     val name: String,
     val nickname: String,
     val birthday: ZonedDateTime,

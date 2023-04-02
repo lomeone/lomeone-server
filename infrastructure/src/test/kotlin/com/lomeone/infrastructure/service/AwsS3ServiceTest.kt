@@ -1,8 +1,7 @@
 package com.lomeone.infrastructure.service
 
 import com.amazonaws.services.s3.AmazonS3
-import com.lomeone.infrastructure.config.AwsS3Config
-import com.lomeone.infrastructure.service.AwsS3Service
+import com.lomeone.infrastructure.config.aws.AwsS3Config
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

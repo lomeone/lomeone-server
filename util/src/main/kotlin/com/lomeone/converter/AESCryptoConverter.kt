@@ -5,7 +5,7 @@ import javax.persistence.AttributeConverter
 import javax.persistence.Converter
 
 @Converter
-class CryptoConverter : AttributeConverter<String,String> {
+class AESCryptoConverter : AttributeConverter<String,String> {
 
     private val crypto = AESCrypto("1234567890abcdef")
 

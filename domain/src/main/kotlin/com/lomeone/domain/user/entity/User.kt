@@ -1,6 +1,6 @@
 package com.lomeone.domain.user.entity
 
-import com.lomeone.converter.CryptoConverter
+import com.lomeone.converter.AESCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import java.time.ZonedDateTime
 import javax.persistence.Column
@@ -37,7 +37,7 @@ class User(
     var nickname: String = nickname
         protected set
 
-    @Convert(converter = CryptoConverter::class)
+    @Convert(converter = AESCryptoConverter::class)
     val email: Email = Email(email)
 
     var birthday: ZonedDateTime = birthday

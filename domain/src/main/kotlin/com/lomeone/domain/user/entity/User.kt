@@ -30,7 +30,7 @@ class User(
     photoUrl: String,
     @Enumerated(EnumType.STRING)
     val accountType: AccountType,
-    val isActive: Boolean = true
+    val actived: Boolean = true
 ) : AuditEntity() {
     var name: String = name
         protected set

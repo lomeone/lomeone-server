@@ -32,4 +32,16 @@ class DeleteUserTest : BehaviorSpec({
             }
         }
     }
+
+    Given("유저가 존재하지 않으면") {
+        every { userRepository.findByUserToken(any()) } returns null
+        When("유저를 삭제할 때") {
+            val request = DeleteUserRequest("user1234")
+            Then("유저를 찾을 수 없다는 예외가 발생해서 유저를 삭제할 수 없다") {
+                shouldThrow<Exception> {
+                    deleteUser.execute(request)
+                }
+            }
+        }
+    }
 })

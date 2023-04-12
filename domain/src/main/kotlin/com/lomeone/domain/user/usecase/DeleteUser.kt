@@ -13,7 +13,7 @@ class DeleteUser(
     fun execute(request: DeleteUserRequest): DeleteUserResponse {
         val user = getUser(request.userToken)
 
-        user.inactive()
+        user.inactivate()
 
         return DeleteUserResponse(user.userToken)
     }

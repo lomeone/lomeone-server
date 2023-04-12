@@ -18,7 +18,7 @@ class DeleteUserTest : BehaviorSpec({
 
     Given("유저가 존재하면") {
         every { userRepository.findByUserToken(any()) } returns user
-        every { user.inactive() } returns Unit
+        every { user.inactivate() } returns Unit
         every { user.userToken } returns "user1234"
 
         When("유저를 삭제할 때") {
@@ -28,7 +28,7 @@ class DeleteUserTest : BehaviorSpec({
                 deleteUser.execute(request)
             }
             Then("유저가 삭제된다") {
-                verify { user.inactive() }
+                verify { user.inactivate() }
             }
         }
     }

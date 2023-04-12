@@ -75,7 +75,7 @@ class User(
         this.photoUrl = photoUrl
     }
 
-    fun inactive() {
+    fun inactivate() {
         this.activated = false
     }
 

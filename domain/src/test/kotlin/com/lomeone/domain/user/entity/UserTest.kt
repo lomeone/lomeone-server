@@ -165,4 +165,12 @@ class UserTest : BehaviorSpec({
             }
         }
     }
+    Given("유저 탈퇴 요청시") {
+        When("유저 탈퇴할 때") {
+            defaultUser.inactivate()
+            Then("탈퇴할 수 있다.") {
+                defaultUser.activated shouldBe false
+            }
+        }
+    }
 })

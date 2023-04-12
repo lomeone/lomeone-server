@@ -29,7 +29,8 @@ class User(
     birthday: ZonedDateTime,
     photoUrl: String,
     @Enumerated(EnumType.STRING)
-    val accountType: AccountType
+    val accountType: AccountType,
+    var activated: Boolean = true
 ) : AuditEntity() {
     var name: String = name
         protected set
@@ -72,6 +73,10 @@ class User(
         this.nickname = nickname
         this.birthday = birthday
         this.photoUrl = photoUrl
+    }
+
+    fun inactivate() {
+        this.activated = false
     }
 
     @JvmInline

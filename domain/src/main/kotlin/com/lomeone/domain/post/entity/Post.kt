@@ -70,12 +70,13 @@ class Post(
 
     override fun hashCode() = this.id.hashCode()
 
-    fun updatePost(title: String, content: String, visibility: Boolean) {
+    fun updatePost(title: String, content: String, visibility: Boolean, place: Place) {
         ensureTitleIsNotBlank(title)
         ensureContentIsNotBlank(content)
         this.title = title
         this.content = content
         this.visibility = visibility
+        this.place = place
     }
 
     fun delete() {

@@ -259,3 +259,33 @@ class PostTest : FreeSpec({
         post1.hashCode() shouldNotBe post2.hashCode()
     }
 })
+
+class PlaceTest : FreeSpec({
+    "장소 이름과 주소에 공백이 없으면 장소를 생성할 수 있다" {
+        val name = "name"
+        val address = "address"
+
+        val place = Place(name, address)
+
+        place.name shouldBe name
+        place.address shouldBe address
+    }
+
+    "장소 이름이 공백이면 장소 이름이 공백이라는 예외가 발생해서 장소를 생성할 수 없다" {
+        val name = ""
+        val address = "address"
+
+        shouldThrow<IllegalArgumentException> {
+            Place(name, address)
+        }
+    }
+
+    "장소 주소가 공백이면 장소 주소가 공백이라는 예외가 발생해서 장소를 생성할 수 없다" {
+        val name = "name"
+        val address = ""
+
+        shouldThrow<IllegalArgumentException> {
+            Place(name, address)
+        }
+    }
+})

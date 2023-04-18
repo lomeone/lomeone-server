@@ -28,7 +28,7 @@ class Post(
     visibility: Boolean,
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    val photos: MutableList<Photo>,
+    val photos: List<Photo>,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val user: User

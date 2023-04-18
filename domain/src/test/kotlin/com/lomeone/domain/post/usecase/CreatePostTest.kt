@@ -44,7 +44,7 @@ class CreatePostTest : BehaviorSpec({
                         content = contentInput,
                         visibility = visibilityInput,
                         place = Place(placeNameInput, placeAddressInput),
-                        photos = mutableListOf(),
+                        photos = listOf(),
                         user = user
                     )
 

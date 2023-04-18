@@ -21,7 +21,7 @@ class PostTest : FreeSpec({
                 content = contentInput,
                 place = placeInput,
                 visibility = true,
-                photos = emptyList<Photo>().toMutableList(),
+                photos = emptyList(),
                 user = userInput
             )
 
@@ -41,7 +41,7 @@ class PostTest : FreeSpec({
                     content = contentInput,
                     place = placeInput,
                     visibility = true,
-                    photos = emptyList<Photo>().toMutableList(),
+                    photos = emptyList(),
                     user = userInput
                 )
             }
@@ -57,7 +57,7 @@ class PostTest : FreeSpec({
                     content = contentInput,
                     place = placeInput,
                     visibility = true,
-                    photos = emptyList<Photo>().toMutableList(),
+                    photos = emptyList(),
                     user = userInput
                 )
             }
@@ -70,7 +70,7 @@ class PostTest : FreeSpec({
             content = "content",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
 
@@ -126,7 +126,7 @@ class PostTest : FreeSpec({
             content = "content",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
 
@@ -141,7 +141,7 @@ class PostTest : FreeSpec({
             content = "content",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
 
@@ -158,7 +158,7 @@ class PostTest : FreeSpec({
             content = "content1",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
 
@@ -168,7 +168,7 @@ class PostTest : FreeSpec({
             content = "content2",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
 
@@ -182,7 +182,7 @@ class PostTest : FreeSpec({
             content = "content",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
         val post2 = Post(
@@ -191,7 +191,7 @@ class PostTest : FreeSpec({
             content = "content",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
 
@@ -205,7 +205,7 @@ class PostTest : FreeSpec({
             content = "content",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
         val post2 = "post2"
@@ -220,7 +220,7 @@ class PostTest : FreeSpec({
             content = "content",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
         val post2 = Post(
@@ -229,7 +229,7 @@ class PostTest : FreeSpec({
             content = "content",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
 
@@ -243,7 +243,7 @@ class PostTest : FreeSpec({
             content = "content",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
         val post2 = Post(
@@ -252,7 +252,7 @@ class PostTest : FreeSpec({
             content = "content",
             place = placeInput,
             visibility = true,
-            photos = emptyList<Photo>().toMutableList(),
+            photos = emptyList(),
             user = userInput
         )
 

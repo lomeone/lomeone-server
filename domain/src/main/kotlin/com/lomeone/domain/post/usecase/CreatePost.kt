@@ -44,9 +44,9 @@ class CreatePost(
     private fun getUser(userToken: String): User =
         userRepository.findByUserToken(userToken) ?: throw Exception("User not found")
 
-    private fun getPhotos(multipartFiles: List<MultipartFile>): MutableList<Photo> {
+    private fun getPhotos(multipartFiles: List<MultipartFile>): List<Photo> {
         val photoUrls = uploadImagesService.uploadImages(multipartFiles)
-        return photoUrls.map { Photo(url = it.value) }.toMutableList()
+        return photoUrls.map { Photo(url = it.value) }
     }
 }
 

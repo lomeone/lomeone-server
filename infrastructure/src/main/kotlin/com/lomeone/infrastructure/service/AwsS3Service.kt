@@ -4,8 +4,8 @@ import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
-import com.lomeone.domain.memory.service.UploadImagesService
-import com.lomeone.domain.memory.service.Url
+import com.lomeone.domain.post.service.UploadImagesService
+import com.lomeone.domain.post.service.Url
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile

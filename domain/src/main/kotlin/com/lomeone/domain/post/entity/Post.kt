@@ -44,12 +44,13 @@ class Post(
     var place: Place = place
         protected set
 
-    var visibility: Boolean = visibility
-        protected set
-
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    val photos: List<Photo> = photos
+    var photos: List<Photo> = photos
+        protected set
+
+    var visibility: Boolean = visibility
+        protected set
 
     var deleted: Boolean = false
         protected set

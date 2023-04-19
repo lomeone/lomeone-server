@@ -34,7 +34,7 @@ class CreatePostTest : BehaviorSpec({
             every { userRepository.findByUserToken(any()) } returns user
 
             And("이미지 파일 업로드에 성공하면") {
-                val urls = listOf<Url>()
+                val urls = listOf(Url("url"))
                 every { uploadImagesService.uploadImages(any()) } returns urls
 
                 When("포스트를 생성할 때") {

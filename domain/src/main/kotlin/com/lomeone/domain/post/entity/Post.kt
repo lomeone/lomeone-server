@@ -1,7 +1,6 @@
 package com.lomeone.domain.post.entity
 
 import com.lomeone.domain.common.entity.AuditEntity
-import com.lomeone.domain.memory.entity.Post
 import com.lomeone.domain.user.entity.User
 import javax.persistence.AttributeOverride
 import javax.persistence.AttributeOverrides
@@ -26,9 +25,7 @@ class Post(
     content: String,
     place: Place,
     visibility: Boolean,
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    val photos: List<Photo>,
+    photos: List<Photo>,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val user: User
@@ -49,6 +46,10 @@ class Post(
 
     var visibility: Boolean = visibility
         protected set
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    val photos: List<Photo> = photos
 
     var deleted: Boolean = false
         protected set

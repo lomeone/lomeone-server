@@ -46,8 +46,7 @@ class Post(
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    var photos: List<Photo> = photos
-        protected set
+    val photos: MutableList<Photo> = photos.toMutableList()
 
     var visibility: Boolean = visibility
         protected set

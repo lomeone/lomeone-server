@@ -1,4 +1,4 @@
-package com.lomeone.domain.memory.service
+package com.lomeone.domain.post.service
 
 import org.springframework.web.multipart.MultipartFile
 

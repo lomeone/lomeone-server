@@ -1,4 +1,4 @@
-package com.lomeone.domain.memory.entity
+package com.lomeone.domain.post.entity
 
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.user.entity.User
@@ -14,6 +14,7 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 
 @Entity
 class Post(
@@ -22,8 +23,9 @@ class Post(
     val id: Long = 0L,
     title: String,
     content: String,
-    visibility: Boolean,
     place: Place,
+    visibility: Boolean,
+    photos: List<Photo>,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     val user: User
@@ -34,15 +36,20 @@ class Post(
     var content: String = content
         protected set
 
-    var visibility: Boolean = visibility
-        protected set
-
     @Embedded
     @AttributeOverrides(
         AttributeOverride(name = "name", column = Column(name = "place_name")),
         AttributeOverride(name = "address", column = Column(name = "place_address"))
     )
     var place: Place = place
+        protected set
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private val _photos: MutableList<Photo> = photos.toMutableList()
+    val photos: List<Photo> get() = _photos
+
+    var visibility: Boolean = visibility
         protected set
 
     var deleted: Boolean = false
@@ -91,15 +98,15 @@ class Place(
     val address: String
 ) {
     init {
-        ensurePlaceNameIsNotBlank(name)
-        ensureAddressIsNotBlank(address)
+        ensureNameIsNotBlank()
+        ensureAddressIsNotBlank()
     }
 
-    private fun ensurePlaceNameIsNotBlank(placeName: String) {
-        placeName.isBlank() && throw IllegalArgumentException("placeName must not be blank")
+    private fun ensureNameIsNotBlank() {
+        this.name.isBlank() && throw IllegalArgumentException("name must not be blank")
     }
 
-    private fun ensureAddressIsNotBlank(address: String) {
-        address.isBlank() && throw IllegalArgumentException("address must not be blank")
+    private fun ensureAddressIsNotBlank() {
+        this.address.isBlank() && throw IllegalArgumentException("address must not be blank")
     }
 }

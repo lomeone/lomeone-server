@@ -23,6 +23,10 @@ class Photo(
         this.url.isBlank() && throw IllegalArgumentException("url must not be blank")
     }
 
+    override fun equals(other: Any?) = other is Photo && other.id == this.id
+
+    override fun hashCode() = this.id.hashCode()
+
     fun delete() {
         this.deleted = true
     }

@@ -64,6 +64,22 @@ class PostTest : FreeSpec({
         }
     }
 
+    "포스트의 사진 리스트를 얻을 수 있다" {
+        val photoInput = Photo(url = "photo1")
+        val post = Post(
+            title = "title",
+            content = "content",
+            place = placeInput,
+            visibility = true,
+            photos = listOf(photoInput),
+            user = userInput
+        )
+
+        post.photos.forEach { photo ->
+            photo shouldBe photoInput
+        }
+    }
+
     "포스트 정보를 업데이트할 때" - {
         val post = Post(
             title = "title",
@@ -175,6 +191,21 @@ class PostTest : FreeSpec({
         (post1 == post2) shouldBe true
     }
 
+    "포스트 객체가 아니면 다른 포스트이다" {
+        val post1 = Post(
+            id = 1L,
+            title = "title",
+            content = "content",
+            place = placeInput,
+            visibility = true,
+            photos = emptyList(),
+            user = userInput
+        )
+        val post2 = "post2"
+
+        post1 shouldNotBe post2
+    }
+
     "포스트 id가 다르면 다른 포스트이다" {
         val post1 = Post(
             id = 1L,
@@ -195,22 +226,7 @@ class PostTest : FreeSpec({
             user = userInput
         )
 
-        (post1 == post2) shouldBe false
-    }
-
-    "포스트 객체가 아니면 다른 포스트이다" {
-        val post1 = Post(
-            id = 1L,
-            title = "title",
-            content = "content",
-            place = placeInput,
-            visibility = true,
-            photos = emptyList(),
-            user = userInput
-        )
-        val post2 = "post2"
-
-        (post1.equals(post2)) shouldBe false
+        post1 shouldNotBe post2
     }
 
     "포스트 id가 같으면 hash 값도 같다" {

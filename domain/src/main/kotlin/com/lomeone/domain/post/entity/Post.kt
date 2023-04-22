@@ -44,9 +44,10 @@ class Post(
     var place: Place = place
         protected set
 
-    @Embedded
-    var photos: Photos = Photos(photos)
-        protected set
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private val _photos: MutableList<Photo> = photos.toMutableList()
+    val photos: List<Photo> get() = _photos
 
     var visibility: Boolean = visibility
         protected set
@@ -108,12 +109,4 @@ class Place(
     private fun ensureAddressIsNotBlank() {
         this.address.isBlank() && throw IllegalArgumentException("address must not be blank")
     }
-}
-
-@Embeddable
-class Photos(
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    val photoList: List<Photo>
-) {
 }

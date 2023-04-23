@@ -4,6 +4,7 @@ import com.lomeone.domain.post.entity.Place
 import com.lomeone.domain.post.entity.Post
 import com.lomeone.domain.post.repository.PostRepository
 import com.lomeone.domain.user.entity.User
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -41,6 +42,18 @@ class GetPostByIdTest : BehaviorSpec({
                     response.placeAddress shouldBe "placeAddress"
                     response.photos shouldBe listOf()
                     response.userToken shouldBe "userToken"
+                }
+            }
+        }
+
+        And("포스트가 존재하지 않으면") {
+            every { postRepository.findById(any()) } returns Optional.empty()
+            When("포스트를 조회할 때") {
+                val request = GetPostByIdRequest(id = idInput)
+                Then("예외를 던진다") {
+                    shouldThrow<Exception> {
+                        getPostById.execute(request)
+                    }
                 }
             }
         }

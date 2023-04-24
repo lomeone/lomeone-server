@@ -1,6 +1,4 @@
-package com.lomeone.security.crypto
-
-import javax.crypto.spec.SecretKeySpec
+package com.lomeone.util.security.crypto
 
 interface Crypto {
     fun encrypt(plainText: String): String

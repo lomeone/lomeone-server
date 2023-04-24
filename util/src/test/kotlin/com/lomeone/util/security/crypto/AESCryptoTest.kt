@@ -1,6 +1,5 @@
-package com.lomeone.security.crypto
+package com.lomeone.util.security.crypto
 
-import com.lomeone.security.crypto.AESCrypto
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe

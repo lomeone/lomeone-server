@@ -1,4 +1,4 @@
-package com.lomeone.config
+package com.lomeone.application.config
 
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info

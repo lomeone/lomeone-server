@@ -48,7 +48,7 @@ class CreatePostTest : BehaviorSpec({
                         user = user
                     )
 
-                    val request = CreatePostRequest(
+                    val command = CreatePostCommand(
                         title = titleInput,
                         content = contentInput,
                         visibility = visibilityInput,
@@ -58,10 +58,10 @@ class CreatePostTest : BehaviorSpec({
                         multipartFiles = multipartFileInput
                     )
 
-                    val response = createPost.execute(request)
+                    val result = createPost.execute(command)
 
                     Then("포스트가 생성된다") {
-                        response.id shouldBe 1L
+                        result.id shouldBe 1L
                     }
                 }
             }
@@ -71,7 +71,7 @@ class CreatePostTest : BehaviorSpec({
             every { userRepository.findByUserToken(any()) } returns null
 
             When("포스트를 생성할 때") {
-                val request = CreatePostRequest(
+                val command = CreatePostCommand(
                     title = titleInput,
                     content = contentInput,
                     visibility = visibilityInput,
@@ -83,7 +83,7 @@ class CreatePostTest : BehaviorSpec({
 
                 Then("유저가 없다는 예외가 발생해서 포스트 생성에 실패한다") {
                     shouldThrow<Exception> {
-                        createPost.execute(request)
+                        createPost.execute(command)
                     }
                 }
             }

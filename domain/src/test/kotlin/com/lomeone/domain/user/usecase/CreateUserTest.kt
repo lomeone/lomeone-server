@@ -20,7 +20,7 @@ class CreateUserTest : BehaviorSpec({
     Given("유저가 존재하지 않으면") {
         every { userRepository.findByUserToken(any()) } returns null
         When("유저를 생성할 때") {
-            val request = CreateUserServiceRequest(
+            val command = CreateUserServiceCommand(
                 userToken = "user1234",
                 name = "name",
                 nickname = "nickname",
@@ -40,18 +40,18 @@ class CreateUserTest : BehaviorSpec({
                 accountType = AccountType.GOOGLE
             )
 
-            val response = withContext(Dispatchers.IO) {
-                createUser.execute(request)
+            val result = withContext(Dispatchers.IO) {
+                createUser.execute(command)
             }
             Then("유저가 생성된다") {
-                response.id shouldBe 0L
-                response.userToken shouldBe request.userToken
-                response.name shouldBe request.name
-                response.nickname shouldBe request.nickname
-                response.email shouldBe request.email
-                response.birthday shouldBe request.birthday
-                response.photoUrl shouldBe request.photoUrl
-                response.accountType shouldBe request.accountType
+                result.id shouldBe 0L
+                result.userToken shouldBe command.userToken
+                result.name shouldBe command.name
+                result.nickname shouldBe command.nickname
+                result.email shouldBe command.email
+                result.birthday shouldBe command.birthday
+                result.photoUrl shouldBe command.photoUrl
+                result.accountType shouldBe command.accountType
             }
         }
     }
@@ -59,7 +59,7 @@ class CreateUserTest : BehaviorSpec({
     Given("유저가 이미 존재하면") {
         every { userRepository.findByUserToken(any()) } returns mockk<User>()
         When("유저를 생성할 때") {
-            val request = CreateUserServiceRequest(
+            val command = CreateUserServiceCommand(
                 userToken = "user1234",
                 name = "name",
                 nickname = "nickname",
@@ -70,7 +70,7 @@ class CreateUserTest : BehaviorSpec({
             )
             Then("유저가 이미 존재한다는 예외가 발생해서 유저를 생성할 수 없다") {
                 shouldThrow<Exception> {
-                    createUser.execute(request)
+                    createUser.execute(command)
                 }
             }
         }

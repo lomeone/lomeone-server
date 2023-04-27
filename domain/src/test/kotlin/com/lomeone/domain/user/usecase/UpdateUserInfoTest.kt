@@ -28,7 +28,7 @@ class UpdateUserInfoTest : BehaviorSpec({
             accountType = AccountType.GOOGLE
         )
         When("유저 정보를 업데이트할 때") {
-            val request = UpdateUserInfoServiceRequest(
+            val command = UpdateUserInfoServiceCommand(
                 userToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
@@ -36,22 +36,22 @@ class UpdateUserInfoTest : BehaviorSpec({
                 photoUrl = "https://photo.com",
             )
 
-            val response = withContext(Dispatchers.IO) {
-                updateUserInfo.execute(request)
+            val result = withContext(Dispatchers.IO) {
+                updateUserInfo.execute(command)
             }
             Then("유저 정보가 업데이트된다") {
-                response.userToken shouldBe request.userToken
-                response.name shouldBe request.name
-                response.nickname shouldBe request.nickname
-                response.birthday shouldBe request.birthday
-                response.photoUrl shouldBe request.photoUrl
+                result.userToken shouldBe command.userToken
+                result.name shouldBe command.name
+                result.nickname shouldBe command.nickname
+                result.birthday shouldBe command.birthday
+                result.photoUrl shouldBe command.photoUrl
             }
         }
     }
     Given("유저가 존재하지 않으면") {
         every { userRepository.findByUserToken(any()) } returns null
         When("유저 정보를 업데이트할 때") {
-            val request = UpdateUserInfoServiceRequest(
+            val command = UpdateUserInfoServiceCommand(
                 userToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
@@ -61,7 +61,7 @@ class UpdateUserInfoTest : BehaviorSpec({
             Then("예외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {
                     withContext(Dispatchers.IO) {
-                        updateUserInfo.execute(request)
+                        updateUserInfo.execute(command)
                     }
                 }
             }

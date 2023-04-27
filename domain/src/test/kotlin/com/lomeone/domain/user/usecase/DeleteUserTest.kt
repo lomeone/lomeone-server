@@ -22,10 +22,10 @@ class DeleteUserTest : BehaviorSpec({
         every { user.userToken } returns "user1234"
 
         When("유저를 삭제할 때") {
-            val request = DeleteUserRequest("user1234")
+            val command = DeleteUserCommand("user1234")
 
             withContext(Dispatchers.IO) {
-                deleteUser.execute(request)
+                deleteUser.execute(command)
             }
             Then("유저가 삭제된다") {
                 verify { user.inactivate() }
@@ -36,10 +36,10 @@ class DeleteUserTest : BehaviorSpec({
     Given("유저가 존재하지 않으면") {
         every { userRepository.findByUserToken(any()) } returns null
         When("유저를 삭제할 때") {
-            val request = DeleteUserRequest("user1234")
+            val command = DeleteUserCommand("user1234")
             Then("유저를 찾을 수 없다는 예외가 발생해서 유저를 삭제할 수 없다") {
                 shouldThrow<Exception> {
-                    deleteUser.execute(request)
+                    deleteUser.execute(command)
                 }
             }
         }

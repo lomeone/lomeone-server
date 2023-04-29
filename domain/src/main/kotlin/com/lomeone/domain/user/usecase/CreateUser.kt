@@ -13,7 +13,7 @@ class CreateUser(
     private val userRepository: UserRepository
 ) {
     @Transactional
-    fun execute(request: CreateUserServiceRequest): CreateUserServiceResponse {
+    fun execute(request: CreateUserServiceCommand): CreateUserServiceResult {
         val (userToken, name, nickname, email, birthday,photoUrl, accountType) = request
 
         ensureUserNotExists(userToken)
@@ -30,7 +30,7 @@ class CreateUser(
             )
         )
 
-        return CreateUserServiceResponse(
+        return CreateUserServiceResult(
             id = user.id,
             userToken = user.userToken,
             name = user.name,
@@ -48,7 +48,7 @@ class CreateUser(
     }
 }
 
-data class CreateUserServiceRequest(
+data class CreateUserServiceCommand(
     @field:NotBlank val userToken: String,
     @field:NotBlank val name: String,
     @field:NotBlank val nickname: String,
@@ -58,7 +58,7 @@ data class CreateUserServiceRequest(
     @field:NotBlank val accountType: String
 )
 
-data class CreateUserServiceResponse(
+data class CreateUserServiceResult(
     val id: Long,
     val userToken: String,
     val name: String,

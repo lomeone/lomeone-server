@@ -19,7 +19,7 @@ class CreatePost(
     private val uploadImagesService: UploadImagesService
 ) {
     @Transactional
-    fun execute(request: CreatePostRequest): CreatePostResponse {
+    fun execute(request: CreatePostCommand): CreatePostResult {
         val (title, content, visibility, placeName, placeAddress, userToken, multipartFiles) = request
 
         val user = getUser(userToken)
@@ -37,7 +37,7 @@ class CreatePost(
             )
         )
 
-        return CreatePostResponse(
+        return CreatePostResult(
             id = post.id
         )
     }
@@ -50,7 +50,7 @@ class CreatePost(
     }
 }
 
-data class CreatePostRequest(
+data class CreatePostCommand(
     @field:NotBlank val title: String,
     @field:NotBlank val content: String,
     val visibility: Boolean,
@@ -60,6 +60,6 @@ data class CreatePostRequest(
     val multipartFiles: List<MultipartFile>
 )
 
-data class CreatePostResponse(
+data class CreatePostResult(
     val id: Long
 )

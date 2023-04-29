@@ -10,10 +10,10 @@ class GetPostById(
     private val postRepository: PostRepository
 ) {
     @Transactional(readOnly = true)
-    fun execute(request: GetPostByIdRequest): GetPostByIdResponse {
+    fun execute(request: GetPostByIdQuery): GetPostByIdResult {
         val post = getPost(request.id)
 
-        return GetPostByIdResponse(
+        return GetPostByIdResult(
             id = post.id,
             title = post.title,
             content = post.content,
@@ -29,11 +29,11 @@ class GetPostById(
         postRepository.findById(id).orElseThrow { Exception("Post not found") }
 }
 
-data class GetPostByIdRequest(
+data class GetPostByIdQuery(
     val id: Long
 )
 
-data class GetPostByIdResponse(
+data class GetPostByIdResult(
     val id: Long,
     val title: String,
     val content: String,

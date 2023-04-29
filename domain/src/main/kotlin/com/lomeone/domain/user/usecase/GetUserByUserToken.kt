@@ -10,15 +10,15 @@ class GetUserByUserToken(
     private val userRepository: UserRepository
 ) {
     @Transactional(readOnly = true)
-    fun execute(request: GetUserByUserTokenRequest): GetUserByUserTokenResponse {
+    fun execute(request: GetUserByUserTokenQuery): GetUserByUserTokenResult {
         val user = getUser(request.userToken)
-        return GetUserByUserTokenResponse(user)
+        return GetUserByUserTokenResult(user)
     }
 
     private fun getUser(userToken: String) =
         userRepository.findByUserToken(userToken) ?: throw Exception("User not found")
 }
 
-data class GetUserByUserTokenRequest(val userToken: String)
+data class GetUserByUserTokenQuery(val userToken: String)
 
-data class GetUserByUserTokenResponse(val user: User)
+data class GetUserByUserTokenResult(val user: User)

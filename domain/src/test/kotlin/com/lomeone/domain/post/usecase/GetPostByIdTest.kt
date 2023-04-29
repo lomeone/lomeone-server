@@ -31,17 +31,17 @@ class GetPostByIdTest : BehaviorSpec({
                 user = user
             ))
             When("포스트를 조회할 때") {
-                val request = GetPostByIdRequest(id = idInput)
-                val response = getPostById.execute(request)
+                val query = GetPostByIdQuery(id = idInput)
+                val result = getPostById.execute(query)
                 Then("포스트를 반환한다") {
-                    response.id shouldBe idInput
-                    response.title shouldBe "title"
-                    response.content shouldBe "content"
-                    response.visibility shouldBe true
-                    response.placeName shouldBe "placeName"
-                    response.placeAddress shouldBe "placeAddress"
-                    response.photos shouldBe listOf()
-                    response.userToken shouldBe "userToken"
+                    result.id shouldBe idInput
+                    result.title shouldBe "title"
+                    result.content shouldBe "content"
+                    result.visibility shouldBe true
+                    result.placeName shouldBe "placeName"
+                    result.placeAddress shouldBe "placeAddress"
+                    result.photos shouldBe listOf()
+                    result.userToken shouldBe "userToken"
                 }
             }
         }
@@ -49,10 +49,10 @@ class GetPostByIdTest : BehaviorSpec({
         And("포스트가 존재하지 않으면") {
             every { postRepository.findById(any()) } returns Optional.empty()
             When("포스트를 조회할 때") {
-                val request = GetPostByIdRequest(id = idInput)
+                val query = GetPostByIdQuery(id = idInput)
                 Then("예외를 던진다") {
                     shouldThrow<Exception> {
-                        getPostById.execute(request)
+                        getPostById.execute(query)
                     }
                 }
             }

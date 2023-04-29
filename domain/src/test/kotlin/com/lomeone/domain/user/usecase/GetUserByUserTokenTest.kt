@@ -29,11 +29,11 @@ class GetUserByUserTokenTest : BehaviorSpec({
             accountType = AccountType.GOOGLE
         )
         When("유저를 검색할 때") {
-            val response = withContext(Dispatchers.IO) {
-                getUserByUserToken.execute(GetUserByUserTokenRequest(userTokenInput))
+            val result = withContext(Dispatchers.IO) {
+                getUserByUserToken.execute(GetUserByUserTokenQuery(userTokenInput))
             }
             Then("유저가 검색된다") {
-                response.user.userToken shouldBe userTokenInput
+                result.user.userToken shouldBe userTokenInput
             }
         }
     }
@@ -43,7 +43,7 @@ class GetUserByUserTokenTest : BehaviorSpec({
         When("유저를 검색할 때") {
             Then("유저를 찾을 수 없다는 예외가 발생해서 유저를 검색할 수 없다") {
                 shouldThrow<Exception> {
-                    getUserByUserToken.execute(GetUserByUserTokenRequest(userTokenInput))
+                    getUserByUserToken.execute(GetUserByUserTokenQuery(userTokenInput))
                 }
             }
         }

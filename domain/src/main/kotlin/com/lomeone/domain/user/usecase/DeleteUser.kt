@@ -10,21 +10,21 @@ class DeleteUser(
     private val userRepository: UserRepository
 ) {
     @Transactional
-    fun execute(request: DeleteUserRequest): DeleteUserResponse {
+    fun execute(request: DeleteUserCommand): DeleteUserResult {
         val user = getUser(request.userToken)
 
         user.inactivate()
 
-        return DeleteUserResponse(user.userToken)
+        return DeleteUserResult(user.userToken)
     }
     private fun getUser(userToken: String) =
         userRepository.findByUserToken(userToken) ?: throw Exception("User not found")
 }
 
-data class DeleteUserRequest(
+data class DeleteUserCommand(
     @field:NotBlank val userToken: String
 )
 
-data class DeleteUserResponse(
+data class DeleteUserResult(
     val userToken: String
 )

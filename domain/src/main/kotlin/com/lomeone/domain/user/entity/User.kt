@@ -7,8 +7,6 @@ import java.time.ZonedDateTime
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -17,7 +15,7 @@ import javax.persistence.Table
 
 
 @Entity
-@Table(name = "user_entity", indexes = [Index(name = "idx_user_userToken", columnList = "userToken", unique = true)])
+@Table(name = "users", indexes = [Index(name = "idx_users_userToken", columnList = "userToken", unique = true)])
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +26,9 @@ class User(
     name: String,
     nickname: String,
     email: String,
+    phoneNumber: String,
     birthday: ZonedDateTime,
     photoUrl: String,
-    @Enumerated(EnumType.STRING)
-    val accountType: AccountType,
     var activated: Boolean = true
 ) : AuditEntity() {
     var name: String = name
@@ -41,7 +38,11 @@ class User(
         protected set
 
     @Convert(converter = AESCryptoConverter::class)
-    val email: Email = Email(email)
+    var email: Email = Email(email)
+        protected set
+
+    var phoneNumber: String = phoneNumber
+        protected set
 
     var birthday: ZonedDateTime = birthday
         protected set
@@ -52,6 +53,7 @@ class User(
     init {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
+        ensurePhoneNumberIsNotBlank(phoneNumber)
         ensurePhotoUrlIsNotBlank(photoUrl)
     }
 
@@ -61,6 +63,10 @@ class User(
 
     private fun ensureNicknameIsNotBlank(nickname: String) {
         nickname.isBlank() && throw Exception("Nickname is blank")
+    }
+
+    private fun ensurePhoneNumberIsNotBlank(phoneNumber: String) {
+        phoneNumber.isBlank() && throw Exception("PhoneNumber is blank")
     }
 
     private fun ensurePhotoUrlIsNotBlank(photoUrl: String) {
@@ -80,13 +86,4 @@ class User(
     fun inactivate() {
         this.activated = false
     }
-}
-
-enum class AccountType {
-    GOOGLE,
-    FACEBOOK,
-    APPLE,
-    KAKAO,
-    NAVER,
-    EMAIL
 }

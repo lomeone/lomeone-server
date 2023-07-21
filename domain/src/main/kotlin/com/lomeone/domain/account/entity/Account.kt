@@ -86,10 +86,14 @@ class Account(
     }
 
     fun changePassword(password: String) {
-        this.provider != Provider.EMAIL && throw IllegalArgumentException("provider must be EMAIL")
+        ensureEmailProvider()
         ensurePasswordValidity(password)
         this.password = password
         this.passwordUpdatedAt = LocalDateTime.now()
+    }
+
+    private fun ensureEmailProvider() {
+        this.provider != Provider.EMAIL && throw IllegalArgumentException("provider must be EMAIL")
     }
 }
 

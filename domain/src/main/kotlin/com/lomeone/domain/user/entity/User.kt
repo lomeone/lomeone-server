@@ -2,6 +2,7 @@ package com.lomeone.domain.user.entity
 
 import com.lomeone.util.converter.AESCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
+import com.lomeone.domain.common.entity.Email
 import java.time.ZonedDateTime
 import javax.persistence.Column
 import javax.persistence.Convert
@@ -20,6 +21,7 @@ import javax.persistence.Table
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "users_id")
     val id: Long = 0L,
     @Column(unique = true)
     val userToken: String,
@@ -77,23 +79,6 @@ class User(
 
     fun inactivate() {
         this.activated = false
-    }
-
-    @JvmInline
-    value class Email(val value: String) {
-        init {
-            checkValidity(value)
-        }
-
-        private fun checkValidity(email: String) {
-            email.isBlank() && throw Exception("Invalid email address")
-            checkFormatValid(email)
-        }
-
-        private fun checkFormatValid(email: String) {
-            val regex = Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]\$")
-            !regex.matches(email) && throw Exception("Invalid email address")
-        }
     }
 }
 

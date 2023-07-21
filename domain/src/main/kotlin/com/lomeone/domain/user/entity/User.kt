@@ -47,6 +47,7 @@ class User(
     var birthday: ZonedDateTime = birthday
         protected set
 
+    @Column(length = 4096)
     var photoUrl: String = photoUrl
         protected set
 
@@ -81,6 +82,15 @@ class User(
         this.nickname = nickname
         this.birthday = birthday
         this.photoUrl = photoUrl
+    }
+
+    fun updateEmail(email: String) {
+        this.email = Email(email)
+    }
+
+    fun updatePhoneNumber(phoneNumber: String) {
+        ensurePhoneNumberIsNotBlank(phoneNumber)
+        this.phoneNumber = phoneNumber
     }
 
     fun inactivate() {

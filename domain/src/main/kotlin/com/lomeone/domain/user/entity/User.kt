@@ -3,7 +3,7 @@ package com.lomeone.domain.user.entity
 import com.lomeone.util.converter.AESCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
-import java.time.ZonedDateTime
+import java.time.LocalDate
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity
@@ -27,7 +27,7 @@ class User(
     nickname: String,
     email: String,
     phoneNumber: String,
-    birthday: ZonedDateTime,
+    birthday: LocalDate,
     photoUrl: String,
     var activated: Boolean = true
 ) : AuditEntity() {
@@ -44,7 +44,7 @@ class User(
     var phoneNumber: String = phoneNumber
         protected set
 
-    var birthday: ZonedDateTime = birthday
+    var birthday: LocalDate = birthday
         protected set
 
     @Column(length = 4096)
@@ -74,7 +74,7 @@ class User(
         photoUrl.isBlank() && throw Exception("PhotoUrl is blank")
     }
 
-    fun updateUserInfo(name: String, nickname: String, birthday: ZonedDateTime, photoUrl: String) {
+    fun updateUserInfo(name: String, nickname: String, birthday: LocalDate, photoUrl: String) {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
         ensurePhotoUrlIsNotBlank(photoUrl)

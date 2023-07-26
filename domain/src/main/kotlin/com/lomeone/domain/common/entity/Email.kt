@@ -5,6 +5,7 @@ value class Email(val value: String) {
     init {
         checkValidity(value)
     }
+
     private fun checkValidity(email: String) {
         email.isBlank() && throw Exception("Invalid email address")
         checkFormatValid(email)

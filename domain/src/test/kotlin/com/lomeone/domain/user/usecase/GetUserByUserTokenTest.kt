@@ -1,6 +1,6 @@
 package com.lomeone.domain.user.usecase
 
-import com.lomeone.domain.user.entity.AccountType
+import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow
@@ -10,8 +10,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.ZoneId
-import java.time.ZonedDateTime
+import java.time.LocalDate
 
 class GetUserByUserTokenTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
@@ -23,10 +22,10 @@ class GetUserByUserTokenTest : BehaviorSpec({
             userToken = userTokenInput,
             name = "name",
             nickname = "nickname",
-            email = "email@gmail.com",
-            birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
-            photoUrl = "https://photo.com",
-            accountType = AccountType.GOOGLE
+            email = Email("email@gmail.com"),
+            phoneNumber = "+821012345678",
+            birthday = LocalDate.of(2000, 1, 1),
+            photoUrl = "https://photo.com"
         )
         When("유저를 검색할 때") {
             val result = withContext(Dispatchers.IO) {

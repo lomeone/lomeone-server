@@ -3,7 +3,7 @@ package com.lomeone.domain.user.entity
 import com.lomeone.util.converter.AESCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
-import java.time.ZonedDateTime
+import java.time.LocalDate
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity
@@ -25,11 +25,10 @@ class User(
     val userToken: String,
     name: String,
     nickname: String,
-    email: String,
+    email: Email,
     phoneNumber: String,
-    birthday: ZonedDateTime,
-    photoUrl: String,
-    var activated: Boolean = true
+    birthday: LocalDate,
+    photoUrl: String
 ) : AuditEntity() {
     var name: String = name
         protected set
@@ -38,13 +37,13 @@ class User(
         protected set
 
     @Convert(converter = AESCryptoConverter::class)
-    var email: Email = Email(email)
+    var email: Email = email
         protected set
 
     var phoneNumber: String = phoneNumber
         protected set
 
-    var birthday: ZonedDateTime = birthday
+    var birthday: LocalDate = birthday
         protected set
 
     @Column(length = 4096)
@@ -74,7 +73,7 @@ class User(
         photoUrl.isBlank() && throw Exception("PhotoUrl is blank")
     }
 
-    fun updateUserInfo(name: String, nickname: String, birthday: ZonedDateTime, photoUrl: String) {
+    fun updateUserInfo(name: String, nickname: String, birthday: LocalDate, photoUrl: String) {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
         ensurePhotoUrlIsNotBlank(photoUrl)
@@ -84,16 +83,12 @@ class User(
         this.photoUrl = photoUrl
     }
 
-    fun updateEmail(email: String) {
-        this.email = Email(email)
+    fun updateEmail(email: Email) {
+        this.email = email
     }
 
     fun updatePhoneNumber(phoneNumber: String) {
         ensurePhoneNumberIsNotBlank(phoneNumber)
         this.phoneNumber = phoneNumber
-    }
-
-    fun inactivate() {
-        this.activated = false
     }
 }

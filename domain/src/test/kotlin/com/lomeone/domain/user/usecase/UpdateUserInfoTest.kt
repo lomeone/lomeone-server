@@ -1,6 +1,6 @@
 package com.lomeone.domain.user.usecase
 
-import com.lomeone.domain.user.entity.AccountType
+import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow
@@ -10,8 +10,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.ZoneId
-import java.time.ZonedDateTime
+import java.time.LocalDate
 
 class UpdateUserInfoTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
@@ -22,18 +21,18 @@ class UpdateUserInfoTest : BehaviorSpec({
             userToken = "user1234",
             name = "name",
             nickname = "nickname",
-            email = "email@gmail.com",
-            birthday = ZonedDateTime.now(),
-            photoUrl = "https://photo.com",
-            accountType = AccountType.GOOGLE
+            email = Email("email@gmail.com"),
+            phoneNumber = "+821012345678",
+            birthday = LocalDate.now(),
+            photoUrl = "https://photo.com"
         )
         When("유저 정보를 업데이트할 때") {
             val command = UpdateUserInfoServiceCommand(
                 userToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
-                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
-                photoUrl = "https://photo.com",
+                birthday = LocalDate.of(2000, 1, 1),
+                photoUrl = "https://photo.com"
             )
 
             val result = withContext(Dispatchers.IO) {
@@ -55,10 +54,10 @@ class UpdateUserInfoTest : BehaviorSpec({
                 userToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
-                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
-                photoUrl = "https://photo.com",
+                birthday = LocalDate.of(2000, 1, 1),
+                photoUrl = "https://photo.com"
             )
-            Then("예외가 발생해서 유저 정보를 업데이트할 수 없다") {
+            Then("유저를 찾을 수 없다는 예외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {
                     withContext(Dispatchers.IO) {
                         updateUserInfo.execute(command)

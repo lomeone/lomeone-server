@@ -3,15 +3,15 @@ package com.lomeone.domain.user.usecase
 import com.lomeone.domain.user.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.ZonedDateTime
+import java.time.LocalDate
 
 @Service
 class UpdateUserInfo(
     private val userRepository: UserRepository
 ) {
     @Transactional
-    fun execute(request: UpdateUserInfoServiceCommand): UpdateUserInfoServiceResult {
-        val (userToken, name, nickname, birthday, photoUrl) = request
+    fun execute(command: UpdateUserInfoServiceCommand): UpdateUserInfoServiceResult {
+        val (userToken, name, nickname, birthday, photoUrl) = command
 
         val user = getUser(userToken)
 
@@ -34,7 +34,7 @@ data class UpdateUserInfoServiceCommand(
     val userToken: String,
     val name: String,
     val nickname: String,
-    val birthday: ZonedDateTime,
+    val birthday: LocalDate,
     val photoUrl: String
 )
 
@@ -42,6 +42,6 @@ data class UpdateUserInfoServiceResult(
     val userToken: String,
     val name: String,
     val nickname: String,
-    val birthday: ZonedDateTime,
+    val birthday: LocalDate,
     val photoUrl: String
 )

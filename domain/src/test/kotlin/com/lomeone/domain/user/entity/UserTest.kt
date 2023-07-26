@@ -19,7 +19,7 @@ class UserTest : FreeSpec({
         photoUrl = "https://photo.com"
     )
 
-    "유저를 생성할 때" {
+    "유저를 생성할 때" - {
         "이름, 닉네임, 핸드폰번호, 사진 경로가 공백이 아니고 이메일이 형식에 맞아야 생성할 수 있다" - {
             val nameInput = "John"
             val nicknameInput = "Tomy"
@@ -108,7 +108,7 @@ class UserTest : FreeSpec({
         }
     }
 
-    "유저 정보를 업데이트할 때" {
+    "유저 정보를 업데이트할 때" - {
         "이름, 닉네임, 사진 경로가 공백이 아니면 유저 정보를 업데이트할 수 있다" - {
             val nameInput = "John"
             val nicknameInput = "Tomy"
@@ -151,9 +151,9 @@ class UserTest : FreeSpec({
         defaultUser.email shouldBe emailInput
     }
 
-    "유저는 핸드폰 번호를 업데이트할 때 " {
+    "유저는 핸드폰 번호를 업데이트할 때 " - {
         "휴대폰 번호가 공백이 아니면 업데이트 할 수 있다" - {
-            val phoneNumberInput = "+821012345678"
+            val phoneNumberInput = "+821056781234"
             defaultUser.updatePhoneNumber(phoneNumberInput)
             defaultUser.phoneNumber shouldBe phoneNumberInput
         }

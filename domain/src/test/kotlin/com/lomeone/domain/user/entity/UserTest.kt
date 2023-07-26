@@ -8,7 +8,7 @@ import java.time.LocalDate
 
 const val USER_TOKEN = "user-token"
 
-class UserTest1 : FreeSpec({
+class UserTest : FreeSpec({
     val defaultUser = User(
         userToken = "user1234",
         name = "name",
@@ -47,7 +47,7 @@ class UserTest1 : FreeSpec({
             user.photoUrl shouldBe photoUrlInput
         }
 
-        "이름이 공백이면 이름이 공백이라는 예외가 발생한다" - {
+        "이름이 공백이면 이름이 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
             val nameInput = ""
             shouldThrow<Exception> {
                 User(
@@ -62,7 +62,7 @@ class UserTest1 : FreeSpec({
             }
         }
 
-        "닉네임이 공백이면 닉네임이 공백이라는 예외가 발생한다" - {
+        "닉네임이 공백이면 닉네임이 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
             val nicknameInput = ""
             shouldThrow<Exception> {
                 User(
@@ -77,7 +77,7 @@ class UserTest1 : FreeSpec({
             }
         }
 
-        "핸드폰 번호가 공백이면 핸드폰 번호가 공백이라는 예외가 발생한다" - {
+        "핸드폰 번호가 공백이면 핸드폰 번호가 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
             val phoneNumberInput = ""
             shouldThrow<Exception> {
                 User(
@@ -92,7 +92,7 @@ class UserTest1 : FreeSpec({
             }
         }
 
-        "사진 경로가 공백이면 사진 경로가 공백이라는 예외가 발생한다" - {
+        "사진 경로가 공백이면 사진 경로가 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
             val photoUrlInput = ""
             shouldThrow<Exception> {
                 User(
@@ -123,21 +123,21 @@ class UserTest1 : FreeSpec({
             defaultUser.photoUrl shouldBe photoUrlInput
         }
 
-        "이름이 공백이면 이름이 공백이라는 예외가 발생한다" - {
+        "이름이 공백이면 이름이 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val nameInput = ""
             shouldThrow<Exception> {
                 defaultUser.updateUserInfo(nameInput, "nickname", LocalDate.now(), "https://photo.com")
             }
         }
 
-        "닉네임이 공백이면 닉네임이 공백이라는 예외가 발생한다" - {
+        "닉네임이 공백이면 닉네임이 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val nicknameInput = ""
             shouldThrow<Exception> {
                 defaultUser.updateUserInfo("name", nicknameInput, LocalDate.now(), "https://photo.com")
             }
         }
 
-        "사진 경로가 공백이면 사진 경로가 공백이라는 예외가 발생한다" - {
+        "사진 경로가 공백이면 사진 경로가 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val photoUrlInput = ""
             shouldThrow<Exception> {
                 defaultUser.updateUserInfo("name", "nickname", LocalDate.now(), photoUrlInput)
@@ -158,7 +158,7 @@ class UserTest1 : FreeSpec({
             defaultUser.phoneNumber shouldBe phoneNumberInput
         }
 
-        "휴대폰 번호가 공백이면 휴대폰 번호가 공백이라는 예외가 발생한다" - {
+        "휴대폰 번호가 공백이면 휴대폰 번호가 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val phoneNumberInput = ""
             shouldThrow<Exception> {
                 defaultUser.updatePhoneNumber(phoneNumberInput)

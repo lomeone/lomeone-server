@@ -28,8 +28,7 @@ class User(
     email: Email,
     phoneNumber: String,
     birthday: LocalDate,
-    photoUrl: String,
-    var activated: Boolean = true
+    photoUrl: String
 ) : AuditEntity() {
     var name: String = name
         protected set
@@ -91,9 +90,5 @@ class User(
     fun updatePhoneNumber(phoneNumber: String) {
         ensurePhoneNumberIsNotBlank(phoneNumber)
         this.phoneNumber = phoneNumber
-    }
-
-    fun inactivate() {
-        this.activated = false
     }
 }

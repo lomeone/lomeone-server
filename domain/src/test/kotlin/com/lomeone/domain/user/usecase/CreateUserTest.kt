@@ -1,6 +1,6 @@
 package com.lomeone.domain.user.usecase
 
-import com.lomeone.domain.user.entity.AccountType
+import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow
@@ -10,8 +10,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.ZoneId
-import java.time.ZonedDateTime
+import java.time.LocalDate
 
 class CreateUserTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
@@ -24,20 +23,20 @@ class CreateUserTest : BehaviorSpec({
                 userToken = "user1234",
                 name = "name",
                 nickname = "nickname",
-                email = "test@gmail.com",
-                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
-                photoUrl = "https://photo.com",
-                accountType = "GOOGLE"
+                email = "email@gmail.com",
+                phoneNumber = "+821012345678",
+                birthday = LocalDate.of(2000, 1, 1),
+                photoUrl = "https://photo.com"
             )
 
             every { userRepository.save(any()) } returns User(
                 userToken = "user1234",
                 name = "name",
                 nickname = "nickname",
-                email = "test@gmail.com",
-                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
-                photoUrl = "https://photo.com",
-                accountType = AccountType.GOOGLE
+                email = Email("email@gmail.com"),
+                phoneNumber = "+821012345678",
+                birthday = LocalDate.of(2000, 1, 1),
+                photoUrl = "https://photo.com"
             )
 
             val result = withContext(Dispatchers.IO) {
@@ -49,9 +48,9 @@ class CreateUserTest : BehaviorSpec({
                 result.name shouldBe command.name
                 result.nickname shouldBe command.nickname
                 result.email shouldBe command.email
+                result.phoneNumber shouldBe command.phoneNumber
                 result.birthday shouldBe command.birthday
                 result.photoUrl shouldBe command.photoUrl
-                result.accountType shouldBe command.accountType
             }
         }
     }
@@ -63,10 +62,10 @@ class CreateUserTest : BehaviorSpec({
                 userToken = "user1234",
                 name = "name",
                 nickname = "nickname",
-                email = "test@gmail.com",
-                birthday = ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("Asia/Seoul")),
-                photoUrl = "https://photo.com",
-                accountType = "GOOGLE"
+                email = "email@gmail.com",
+                phoneNumber = "+821012345678",
+                birthday = LocalDate.of(2000, 1, 1),
+                photoUrl = "https://photo.com"
             )
             Then("유저가 이미 존재한다는 예외가 발생해서 유저를 생성할 수 없다") {
                 shouldThrow<Exception> {

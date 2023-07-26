@@ -12,5 +12,21 @@ class EmailTest : FreeSpec({
 
             email.value shouldBe  inputValue
         }
+
+        "이메일이 공백이면 이메일이 공백이라는 예외가 발생한다" - {
+            val inputValue = ""
+
+            shouldThrow<IllegalArgumentException> {
+                Email(inputValue)
+            }
+        }
+
+        "이메일이 형식에 맞지 않으면 이메일이 형식에 맞지 않는다는 예외가 발생한다" - {
+            val inputValue = "email"
+
+            shouldThrow<IllegalArgumentException> {
+                Email(inputValue)
+            }
+        }
     }
 })

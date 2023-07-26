@@ -25,7 +25,7 @@ class User(
     val userToken: String,
     name: String,
     nickname: String,
-    email: String,
+    email: Email,
     phoneNumber: String,
     birthday: LocalDate,
     photoUrl: String,
@@ -38,7 +38,7 @@ class User(
         protected set
 
     @Convert(converter = AESCryptoConverter::class)
-    var email: Email = Email(email)
+    var email: Email = email
         protected set
 
     var phoneNumber: String = phoneNumber
@@ -84,8 +84,8 @@ class User(
         this.photoUrl = photoUrl
     }
 
-    fun updateEmail(email: String) {
-        this.email = Email(email)
+    fun updateEmail(email: Email) {
+        this.email = email
     }
 
     fun updatePhoneNumber(phoneNumber: String) {

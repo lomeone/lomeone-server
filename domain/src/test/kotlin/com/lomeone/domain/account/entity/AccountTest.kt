@@ -3,6 +3,7 @@ package com.lomeone.domain.account.entity
 import com.lomeone.domain.common.entity.Email
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
+import io.kotest.matchers.comparables.shouldBeLessThan
 import io.kotest.matchers.shouldBe
 
 class AccountTest : FreeSpec({
@@ -87,6 +88,57 @@ class AccountTest : FreeSpec({
                         password = passwordInput,
                         provider = providerInput
                 )
+            }
+        }
+    }
+
+    "로그인을하면 로그인 시간이 변경된다" - {
+        val account = Account(
+                email = Email("email@gmail.com"),
+                password = "testPassword1324@",
+                provider = Provider.EMAIL
+        )
+
+        val signedInAtBefore = account.signedInAt
+        account.signIn()
+        val signedInAtAfter = account.signedInAt
+
+        signedInAtBefore shouldBeLessThan signedInAtAfter
+    }
+
+    "비밀번호 변경은 이메일 방식의 계정만 가능하다" - {
+        val emailAccount = Account(
+                email = Email("email@gmail.com"),
+                password = "testPassword1324@",
+                provider = Provider.EMAIL
+        )
+
+        "비밀번호 형식에 맞지 않으면 비밀번호가 형식에 맞지 않는다는 예외가 발생한다" - {
+            val passwordInput = "testPassword"
+
+            shouldThrow<Exception> {
+                emailAccount.changePassword(passwordInput)
+            }
+        }
+
+        "비밀번호 형식에 맞으면 비밀번호가 변경된다" - {
+            val passwordInput = "testPassword1324!"
+
+            emailAccount.changePassword(passwordInput)
+            emailAccount.password shouldBe passwordInput
+        }
+
+        "이메일 방식의 계정이 아니면 이메일 방식의 계정이 아니라는 예외가 발생한다" - {
+            val googleAccount = Account(
+                    email = Email("email@gmail.com"),
+                    password = null,
+                    provider = Provider.GOOGLE
+            )
+
+            val passwordInput = "testPassword1324!"
+
+            shouldThrow<Exception> {
+                googleAccount.changePassword(passwordInput)
             }
         }
     }

@@ -24,7 +24,8 @@ class Account(
     @Column(name = "accounts_id")
     val id: Long = 0L,
 
-    email: String,
+    @Convert(converter = AESCryptoConverter::class)
+    val email: Email,
 
     password: String?,
 
@@ -33,9 +34,6 @@ class Account(
 ) : AuditEntity() {
     @Column(unique = true)
     val uid: UUID = UUID.randomUUID()
-
-    @Convert(converter = AESCryptoConverter::class)
-    val email: Email = Email(email)
 
     var password: String? = password
         protected set

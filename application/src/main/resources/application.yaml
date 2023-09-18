@@ -1,3 +1,33 @@
+spring:
+  datasource:
+    url: jdbc-secretsmanager:postgresql://mms-db.chdq0o2eoge6.ap-northeast-2.rds.amazonaws.com:5432/mms_dev
+    username: prod/mms/postgres
+    hikari:
+      maximum-pool-size: 4
+    driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    s3:
+      bucket: mms-images-data
+
 logging:
   level:
     root: DEBUG

@@ -31,8 +31,7 @@ class User(
     nickname: String,
     email: Email,
     phoneNumber: String,
-    birthday: LocalDate,
-    photoUrl: String
+    birthday: LocalDate
 ) : AuditEntity() {
     var name: String = name
         protected set
@@ -50,10 +49,6 @@ class User(
     var birthday: LocalDate = birthday
         protected set
 
-    @Column(length = 4096)
-    var photoUrl: String = photoUrl
-        protected set
-
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private val _accounts: MutableList<Account> = mutableListOf()
@@ -63,7 +58,6 @@ class User(
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
         ensurePhoneNumberIsNotBlank(phoneNumber)
-        ensurePhotoUrlIsNotBlank(photoUrl)
     }
 
     private fun ensureNameIsNotBlank(name: String) {
@@ -78,18 +72,12 @@ class User(
         phoneNumber.isBlank() && throw Exception("PhoneNumber is blank")
     }
 
-    private fun ensurePhotoUrlIsNotBlank(photoUrl: String) {
-        photoUrl.isBlank() && throw Exception("PhotoUrl is blank")
-    }
-
-    fun updateUserInfo(name: String, nickname: String, birthday: LocalDate, photoUrl: String) {
+    fun updateUserInfo(name: String, nickname: String, birthday: LocalDate) {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
-        ensurePhotoUrlIsNotBlank(photoUrl)
         this.name = name
         this.nickname = nickname
         this.birthday = birthday
-        this.photoUrl = photoUrl
     }
 
     fun updateEmail(email: Email) {

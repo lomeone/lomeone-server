@@ -15,18 +15,16 @@ class UserTest : FreeSpec({
         nickname = "nickname",
         email = Email("test@gmail.com"),
         phoneNumber = "+821012345678",
-        birthday = LocalDate.now(),
-        photoUrl = "https://photo.com"
+        birthday = LocalDate.now()
     )
 
     "유저를 생성할 때" - {
-        "이름, 닉네임, 핸드폰번호, 사진 경로가 공백이 아니고 이메일이 형식에 맞아야 생성할 수 있다" - {
+        "이름, 닉네임, 핸드폰번호가 공백이 아니고 이메일이 형식에 맞아야 생성할 수 있다" - {
             val nameInput = "John"
             val nicknameInput = "Tomy"
             val emailInput = Email("email@gmail.com")
             val phoneNumberInput = "+821012345678"
             val birthdayInput = LocalDate.of(2000, 1, 1)
-            val photoUrlInput = "https://update.photo.com"
 
             val user = User(
                 userToken = USER_TOKEN,
@@ -34,8 +32,7 @@ class UserTest : FreeSpec({
                 nickname = nicknameInput,
                 email = emailInput,
                 phoneNumber = phoneNumberInput,
-                birthday = birthdayInput,
-                photoUrl = photoUrlInput
+                birthday = birthdayInput
             )
 
             user.userToken shouldBe USER_TOKEN
@@ -44,7 +41,6 @@ class UserTest : FreeSpec({
             user.email shouldBe emailInput
             user.phoneNumber shouldBe phoneNumberInput
             user.birthday shouldBe birthdayInput
-            user.photoUrl shouldBe photoUrlInput
         }
 
         "이름이 공백이면 이름이 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
@@ -56,8 +52,7 @@ class UserTest : FreeSpec({
                     nickname = "nickname",
                     email = Email("email@gmail.com"),
                     phoneNumber = "+821012345678",
-                    birthday = LocalDate.now(),
-                    photoUrl = "https://photo.com"
+                    birthday = LocalDate.now()
                 )
             }
         }
@@ -71,8 +66,7 @@ class UserTest : FreeSpec({
                     nickname = nicknameInput,
                     email = Email("email@gmail.com"),
                     phoneNumber = "+821012345678",
-                    birthday = LocalDate.now(),
-                    photoUrl = "https://photo.com"
+                    birthday = LocalDate.now()
                 )
             }
         }
@@ -86,61 +80,36 @@ class UserTest : FreeSpec({
                     nickname = "nickname",
                     email = Email("email@gmail.com"),
                     phoneNumber = phoneNumberInput,
-                    birthday = LocalDate.now(),
-                    photoUrl = "https://photo.com"
-                )
-            }
-        }
-
-        "사진 경로가 공백이면 사진 경로가 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
-            val photoUrlInput = ""
-            shouldThrow<Exception> {
-                User(
-                    userToken = USER_TOKEN,
-                    name = "name",
-                    nickname = "nickname",
-                    email = Email("email@gmail.com"),
-                    phoneNumber = "+821012345678",
-                    birthday = LocalDate.now(),
-                    photoUrl = photoUrlInput
+                    birthday = LocalDate.now()
                 )
             }
         }
     }
 
     "유저 정보를 업데이트할 때" - {
-        "이름, 닉네임, 사진 경로가 공백이 아니면 유저 정보를 업데이트할 수 있다" - {
+        "이름, 닉네임이 공백이 아니면 유저 정보를 업데이트할 수 있다" - {
             val nameInput = "John"
             val nicknameInput = "Tomy"
             val birthdayInput = LocalDate.of(2000, 1, 1)
-            val photoUrlInput = "https://update.photo.com"
 
-            defaultUser.updateUserInfo(nameInput, nicknameInput, birthdayInput, photoUrlInput)
+            defaultUser.updateUserInfo(nameInput, nicknameInput, birthdayInput)
 
             defaultUser.name shouldBe nameInput
             defaultUser.nickname shouldBe nicknameInput
             defaultUser.birthday shouldBe birthdayInput
-            defaultUser.photoUrl shouldBe photoUrlInput
         }
 
         "이름이 공백이면 이름이 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val nameInput = ""
             shouldThrow<Exception> {
-                defaultUser.updateUserInfo(nameInput, "nickname", LocalDate.now(), "https://photo.com")
+                defaultUser.updateUserInfo(nameInput, "nickname", LocalDate.now())
             }
         }
 
         "닉네임이 공백이면 닉네임이 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val nicknameInput = ""
             shouldThrow<Exception> {
-                defaultUser.updateUserInfo("name", nicknameInput, LocalDate.now(), "https://photo.com")
-            }
-        }
-
-        "사진 경로가 공백이면 사진 경로가 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
-            val photoUrlInput = ""
-            shouldThrow<Exception> {
-                defaultUser.updateUserInfo("name", "nickname", LocalDate.now(), photoUrlInput)
+                defaultUser.updateUserInfo("name", nicknameInput, LocalDate.now())
             }
         }
     }

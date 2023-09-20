@@ -1,5 +1,6 @@
 package com.lomeone.domain.user.entity
 
+import com.lomeone.domain.account.entity.Account
 import com.lomeone.util.converter.AESCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
@@ -7,10 +8,13 @@ import java.time.LocalDate
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Index
+import javax.persistence.JoinColumn
+import javax.persistence.OneToMany
 import javax.persistence.Table
 
 
@@ -49,6 +53,11 @@ class User(
     @Column(length = 4096)
     var photoUrl: String = photoUrl
         protected set
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private val _accounts: MutableList<Account> = mutableListOf()
+    val accounts: List<Account> get() = _accounts
 
     init {
         ensureNameIsNotBlank(name)

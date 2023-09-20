@@ -17,7 +17,10 @@ import javax.persistence.Index
 import javax.persistence.Table
 
 @Entity
-@Table(name = "accounts", indexes = [Index(name = "idx_accounts_uid", columnList = "uid", unique = true)])
+@Table(name = "accounts", indexes = [
+    Index(name = "idx_accounts_uid", columnList = "uid", unique = true),
+    Index(name = "idx_accounts_email_provider", columnList = "email, provider", unique = true)
+])
 class Account(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

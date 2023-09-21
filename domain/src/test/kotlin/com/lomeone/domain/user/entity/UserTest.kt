@@ -6,11 +6,8 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 
-const val USER_TOKEN = "user-token"
-
 class UserTest : FreeSpec({
     val defaultUser = User(
-        userToken = "user1234",
         name = "name",
         nickname = "nickname",
         email = Email("test@gmail.com"),
@@ -27,7 +24,6 @@ class UserTest : FreeSpec({
             val birthdayInput = LocalDate.of(2000, 1, 1)
 
             val user = User(
-                userToken = USER_TOKEN,
                 name = nameInput,
                 nickname = nicknameInput,
                 email = emailInput,
@@ -35,7 +31,6 @@ class UserTest : FreeSpec({
                 birthday = birthdayInput
             )
 
-            user.userToken shouldBe USER_TOKEN
             user.name shouldBe nameInput
             user.nickname shouldBe nicknameInput
             user.email shouldBe emailInput
@@ -47,7 +42,6 @@ class UserTest : FreeSpec({
             val nameInput = ""
             shouldThrow<Exception> {
                 User(
-                    userToken = USER_TOKEN,
                     name = nameInput,
                     nickname = "nickname",
                     email = Email("email@gmail.com"),
@@ -61,7 +55,6 @@ class UserTest : FreeSpec({
             val nicknameInput = ""
             shouldThrow<Exception> {
                 User(
-                    userToken = USER_TOKEN,
                     name = "name",
                     nickname = nicknameInput,
                     email = Email("email@gmail.com"),
@@ -75,7 +68,6 @@ class UserTest : FreeSpec({
             val phoneNumberInput = ""
             shouldThrow<Exception> {
                 User(
-                    userToken = USER_TOKEN,
                     name = "name",
                     nickname = "nickname",
                     email = Email("email@gmail.com"),

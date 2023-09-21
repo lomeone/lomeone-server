@@ -5,7 +5,7 @@ import com.lomeone.util.converter.AESCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity
@@ -20,7 +20,7 @@ import javax.persistence.Table
 
 
 @Entity
-@Table(name = "users", indexes = [Index(name = "idx_users_userToken", columnList = "userToken", unique = true)])
+@Table(name = "users", indexes = [Index(name = "idx_users_userToken_u1", columnList = "userToken", unique = true)])
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

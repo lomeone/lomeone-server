@@ -18,14 +18,17 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "accounts", indexes = [
-    Index(name = "idx_accounts_uid", columnList = "uid", unique = true),
-    Index(name = "idx_accounts_email_provider", columnList = "email, provider", unique = true)
+    Index(name = "idx_accounts_uid_u1", columnList = "uid", unique = true),
+    Index(name = "idx_accounts_email_m1", columnList = "email")
 ])
 class Account(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "accounts_id")
     val id: Long = 0L,
+
+    @Column(unique = true)
+    val uid: String = UUID.randomUUID().toString(),
 
     @Convert(converter = AESCryptoConverter::class)
     val email: Email,
@@ -35,9 +38,6 @@ class Account(
     @Enumerated(EnumType.STRING)
     val provider: Provider
 ) : AuditEntity() {
-    @Column(unique = true)
-    val uid: UUID = UUID.randomUUID()
-
     var password: String? = password
         protected set
 

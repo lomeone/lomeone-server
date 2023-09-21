@@ -14,19 +14,15 @@ class CreateUser(
 ) {
     @Transactional
     fun execute(command: CreateUserServiceCommand): CreateUserServiceResult {
-        val (userToken, name, nickname, email, phoneNumber, birthday, photoUrl) = command
-
-        ensureUserNotExists(userToken)
+        val (name, nickname, email, phoneNumber, birthday) = command
 
         val user = userRepository.save(
             User(
-                userToken = userToken,
                 name = name,
                 nickname = nickname,
                 email = Email(email),
                 phoneNumber = phoneNumber,
-                birthday = birthday,
-                photoUrl = photoUrl
+                birthday = birthday
             )
         )
 
@@ -37,25 +33,17 @@ class CreateUser(
             nickname = user.nickname,
             email = user.email.value,
             phoneNumber = user.phoneNumber,
-            birthday = user.birthday,
-            photoUrl = user.photoUrl
+            birthday = user.birthday
         )
-    }
-
-    private fun ensureUserNotExists(userToken: String) {
-        userRepository.findByUserToken(userToken) != null
-            && throw Exception("User already exists")
     }
 }
 
 data class CreateUserServiceCommand(
-    @field:NotBlank val userToken: String,
     @field:NotBlank val name: String,
     @field:NotBlank val nickname: String,
     @field:NotBlank val email: String,
     @field:NotBlank val phoneNumber: String,
-    val birthday: LocalDate,
-    @field:NotBlank val photoUrl: String
+    val birthday: LocalDate
 )
 
 data class CreateUserServiceResult(
@@ -65,6 +53,5 @@ data class CreateUserServiceResult(
     val nickname: String,
     val email: String,
     val phoneNumber: String,
-    val birthday: LocalDate,
-    val photoUrl: String
+    val birthday: LocalDate
 )

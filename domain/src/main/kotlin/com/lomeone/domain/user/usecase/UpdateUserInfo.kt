@@ -11,17 +11,16 @@ class UpdateUserInfo(
 ) {
     @Transactional
     fun execute(command: UpdateUserInfoServiceCommand): UpdateUserInfoServiceResult {
-        val (userToken, name, nickname, birthday, photoUrl) = command
+        val (userToken, name, nickname, birthday) = command
 
         val user = getUser(userToken)
 
-        user.updateUserInfo(name, nickname, birthday, photoUrl)
+        user.updateUserInfo(name, nickname, birthday)
 
         return UpdateUserInfoServiceResult(
             userToken = user.userToken,
             name = user.name,
             nickname = user.nickname,
-            photoUrl = user.photoUrl,
             birthday = user.birthday
         )
     }
@@ -34,14 +33,12 @@ data class UpdateUserInfoServiceCommand(
     val userToken: String,
     val name: String,
     val nickname: String,
-    val birthday: LocalDate,
-    val photoUrl: String
+    val birthday: LocalDate
 )
 
 data class UpdateUserInfoServiceResult(
     val userToken: String,
     val name: String,
     val nickname: String,
-    val birthday: LocalDate,
-    val photoUrl: String
+    val birthday: LocalDate
 )

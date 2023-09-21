@@ -5,6 +5,7 @@ import com.lomeone.util.converter.AESCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
 import java.time.LocalDate
+import java.util.*
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity
@@ -25,14 +26,14 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "users_id")
     val id: Long = 0L,
-    @Column(unique = true)
-    val userToken: String,
     name: String,
     nickname: String,
     email: Email,
     phoneNumber: String,
     birthday: LocalDate
 ) : AuditEntity() {
+    @Column(unique = true)
+    val userToken: String = UUID.randomUUID().toString()
     var name: String = name
         protected set
 

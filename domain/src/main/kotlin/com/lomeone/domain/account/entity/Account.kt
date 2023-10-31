@@ -19,7 +19,7 @@ import javax.persistence.Table
 @Entity
 @Table(name = "accounts", indexes = [
     Index(name = "idx_accounts_uid_u1", columnList = "uid", unique = true),
-    Index(name = "idx_accounts_email_m1", columnList = "email")
+    Index(name = "idx_accounts_email_provider_m1", columnList = "email, provider")
 ])
 class Account(
     @Id

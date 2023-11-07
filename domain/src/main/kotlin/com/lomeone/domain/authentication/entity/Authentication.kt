@@ -1,4 +1,4 @@
-package com.lomeone.domain.account.entity
+package com.lomeone.domain.authentication.entity
 
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
@@ -17,14 +17,14 @@ import javax.persistence.Index
 import javax.persistence.Table
 
 @Entity
-@Table(name = "accounts", indexes = [
-    Index(name = "idx_accounts_uid_u1", columnList = "uid", unique = true),
-    Index(name = "idx_accounts_email_provider_m1", columnList = "email, provider")
+@Table(name = "authentications", indexes = [
+    Index(name = "idx_authentications_uid_u1", columnList = "uid", unique = true),
+    Index(name = "idx_authentications_email_provider_m1", columnList = "email, provider")
 ])
-class Account(
+class Authentication(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "accounts_id")
+    @Column(name = "authentications_id")
     val id: Long = 0L,
 
     @Column(unique = true)

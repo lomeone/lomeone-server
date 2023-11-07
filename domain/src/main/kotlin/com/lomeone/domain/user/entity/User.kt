@@ -1,6 +1,6 @@
 package com.lomeone.domain.user.entity
 
-import com.lomeone.domain.account.entity.Account
+import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.util.converter.AESCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
@@ -52,8 +52,8 @@ class User(
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
-    private val _accounts: MutableList<Account> = mutableListOf()
-    val accounts: List<Account> get() = _accounts
+    private val _authentications: MutableList<Authentication> = mutableListOf()
+    val authentications: List<Authentication> get() = _authentications
 
     init {
         ensureNameIsNotBlank(name)

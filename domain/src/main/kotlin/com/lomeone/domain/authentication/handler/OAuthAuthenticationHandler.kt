@@ -10,6 +10,7 @@ interface OAuthAuthenticationHandler {
 
 data class OAuthTokensRequest(
     val code: String,
+    val state: String,
     val anotherRequiredData: Map<String, String> = mapOf()
 )
 

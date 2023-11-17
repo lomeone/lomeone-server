@@ -36,7 +36,7 @@ class Authentication(
     password: String?,
 
     @Enumerated(EnumType.STRING)
-    val provider: Provider
+    val provider: AuthProvider
 ) : AuditEntity() {
     var password: String? = password
         protected set
@@ -61,11 +61,11 @@ class Authentication(
     }
 
     private fun checkPasswordIsNotNullIfEmailProvider(password: String?) {
-        this.provider == Provider.EMAIL && password == null && throw IllegalArgumentException("password must not be null")
+        this.provider == AuthProvider.EMAIL && password == null && throw IllegalArgumentException("password must not be null")
     }
 
     private fun checkPasswordIsNullByOtherProvider(password: String?) {
-        this.provider != Provider.EMAIL && password != null && throw IllegalArgumentException("password must be null")
+        this.provider != AuthProvider.EMAIL && password != null && throw IllegalArgumentException("password must be null")
     }
 
     private fun ensurePasswordValidity(password: String) {
@@ -94,11 +94,11 @@ class Authentication(
     }
 
     private fun ensureEmailProvider() {
-        this.provider != Provider.EMAIL && throw IllegalArgumentException("provider must be EMAIL")
+        this.provider != AuthProvider.EMAIL && throw IllegalArgumentException("provider must be EMAIL")
     }
 }
 
-enum class Provider(val value: String) {
+enum class AuthProvider(val value: String) {
     EMAIL("EMAIL"),
     GOOGLE("GOOGLE"),
     FACEBOOK("FACEBOOK"),

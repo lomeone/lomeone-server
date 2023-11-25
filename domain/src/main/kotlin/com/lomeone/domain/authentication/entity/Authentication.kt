@@ -1,4 +1,4 @@
-package com.lomeone.domain.account.entity
+package com.lomeone.domain.authentication.entity
 
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
@@ -17,12 +17,18 @@ import javax.persistence.Index
 import javax.persistence.Table
 
 @Entity
-@Table(name = "accounts", indexes = [Index(name = "idx_accounts_uid", columnList = "uid", unique = true)])
-class Account(
+@Table(name = "authentications", indexes = [
+    Index(name = "idx_authentications_uid_u1", columnList = "uid", unique = true),
+    Index(name = "idx_authentications_email_provider_m1", columnList = "email, provider")
+])
+class Authentication(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "accounts_id")
+    @Column(name = "authentications_id")
     val id: Long = 0L,
+
+    @Column(unique = true)
+    val uid: String = UUID.randomUUID().toString(),
 
     @Convert(converter = AESCryptoConverter::class)
     val email: Email,
@@ -30,11 +36,8 @@ class Account(
     password: String?,
 
     @Enumerated(EnumType.STRING)
-    val provider: Provider
+    val provider: AuthProvider
 ) : AuditEntity() {
-    @Column(unique = true)
-    val uid: UUID = UUID.randomUUID()
-
     var password: String? = password
         protected set
 
@@ -58,11 +61,11 @@ class Account(
     }
 
     private fun checkPasswordIsNotNullIfEmailProvider(password: String?) {
-        this.provider == Provider.EMAIL && password == null && throw IllegalArgumentException("password must not be null")
+        this.provider == AuthProvider.EMAIL && password == null && throw IllegalArgumentException("password must not be null")
     }
 
     private fun checkPasswordIsNullByOtherProvider(password: String?) {
-        this.provider != Provider.EMAIL && password != null && throw IllegalArgumentException("password must be null")
+        this.provider != AuthProvider.EMAIL && password != null && throw IllegalArgumentException("password must be null")
     }
 
     private fun ensurePasswordValidity(password: String) {
@@ -91,11 +94,11 @@ class Account(
     }
 
     private fun ensureEmailProvider() {
-        this.provider != Provider.EMAIL && throw IllegalArgumentException("provider must be EMAIL")
+        this.provider != AuthProvider.EMAIL && throw IllegalArgumentException("provider must be EMAIL")
     }
 }
 
-enum class Provider(val value: String) {
+enum class AuthProvider(val value: String) {
     EMAIL("EMAIL"),
     GOOGLE("GOOGLE"),
     FACEBOOK("FACEBOOK"),

@@ -18,13 +18,11 @@ class UpdateUserInfoTest : BehaviorSpec({
 
     Given("유저가 존재하면") {
         every { userRepository.findByUserToken(any()) } returns User(
-            userToken = "user1234",
             name = "name",
             nickname = "nickname",
             email = Email("email@gmail.com"),
             phoneNumber = "+821012345678",
             birthday = LocalDate.now(),
-            photoUrl = "https://photo.com"
         )
         When("유저 정보를 업데이트할 때") {
             val command = UpdateUserInfoServiceCommand(
@@ -32,18 +30,15 @@ class UpdateUserInfoTest : BehaviorSpec({
                 name = "John",
                 nickname = "Tomy",
                 birthday = LocalDate.of(2000, 1, 1),
-                photoUrl = "https://photo.com"
             )
 
             val result = withContext(Dispatchers.IO) {
                 updateUserInfo.execute(command)
             }
             Then("유저 정보가 업데이트된다") {
-                result.userToken shouldBe command.userToken
                 result.name shouldBe command.name
                 result.nickname shouldBe command.nickname
                 result.birthday shouldBe command.birthday
-                result.photoUrl shouldBe command.photoUrl
             }
         }
     }
@@ -55,7 +50,6 @@ class UpdateUserInfoTest : BehaviorSpec({
                 name = "John",
                 nickname = "Tomy",
                 birthday = LocalDate.of(2000, 1, 1),
-                photoUrl = "https://photo.com"
             )
             Then("유저를 찾을 수 없다는 예외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {

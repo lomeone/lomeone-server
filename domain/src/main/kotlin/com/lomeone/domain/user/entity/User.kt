@@ -1,35 +1,39 @@
 package com.lomeone.domain.user.entity
 
+import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.util.converter.AESCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
 import java.time.LocalDate
+import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Index
+import javax.persistence.JoinColumn
+import javax.persistence.OneToMany
 import javax.persistence.Table
 
 
 @Entity
-@Table(name = "users", indexes = [Index(name = "idx_users_userToken", columnList = "userToken", unique = true)])
+@Table(name = "users", indexes = [Index(name = "idx_users_userToken_u1", columnList = "userToken", unique = true)])
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "users_id")
     val id: Long = 0L,
-    @Column(unique = true)
-    val userToken: String,
     name: String,
     nickname: String,
     email: Email,
     phoneNumber: String,
-    birthday: LocalDate,
-    photoUrl: String
+    birthday: LocalDate
 ) : AuditEntity() {
+    @Column(unique = true)
+    val userToken: String = UUID.randomUUID().toString()
     var name: String = name
         protected set
 
@@ -46,15 +50,15 @@ class User(
     var birthday: LocalDate = birthday
         protected set
 
-    @Column(length = 4096)
-    var photoUrl: String = photoUrl
-        protected set
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private val _authentications: MutableList<Authentication> = mutableListOf()
+    val authentications: List<Authentication> get() = _authentications
 
     init {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
         ensurePhoneNumberIsNotBlank(phoneNumber)
-        ensurePhotoUrlIsNotBlank(photoUrl)
     }
 
     private fun ensureNameIsNotBlank(name: String) {
@@ -69,18 +73,12 @@ class User(
         phoneNumber.isBlank() && throw Exception("PhoneNumber is blank")
     }
 
-    private fun ensurePhotoUrlIsNotBlank(photoUrl: String) {
-        photoUrl.isBlank() && throw Exception("PhotoUrl is blank")
-    }
-
-    fun updateUserInfo(name: String, nickname: String, birthday: LocalDate, photoUrl: String) {
+    fun updateUserInfo(name: String, nickname: String, birthday: LocalDate) {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
-        ensurePhotoUrlIsNotBlank(photoUrl)
         this.name = name
         this.nickname = nickname
         this.birthday = birthday
-        this.photoUrl = photoUrl
     }
 
     fun updateEmail(email: Email) {

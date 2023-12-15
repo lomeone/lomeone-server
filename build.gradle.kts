@@ -59,7 +59,8 @@ configurations {
 }
 
 subprojects {
-	java.sourceCompatibility = JavaVersion.VERSION_11
+	java.sourceCompatibility = JavaVersion.VERSION_17
+	java.targetCompatibility = JavaVersion.VERSION_17
 
 	dependencies {
 		// Kotlin
@@ -149,7 +150,7 @@ subprojects {
 	tasks.withType<KotlinCompile> {
 		kotlinOptions {
 			freeCompilerArgs = listOf("-Xjsr305=strict")
-			jvmTarget = "11"
+			jvmTarget = "17"
 		}
 	}
 }

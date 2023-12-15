@@ -1,4 +1,4 @@
-package com.lomeone.domain.user.usecase
+package com.lomeone.domain.user.service
 
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User

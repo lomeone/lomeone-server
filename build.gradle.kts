@@ -6,6 +6,7 @@ val groupName: String by project
 val queryDslVersion: String by project
 
 val kotestVersion: String by project
+val kotestSpringVersion: String by project
 val springMockkVersion: String by project
 val jacocoBranchCoverageRatio: String by project
 val jacocoLineCoverageRatio: String by project
@@ -72,8 +73,10 @@ subprojects {
 
 		// JPA
 		implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-		implementation("com.querydsl:querydsl-jpa:$queryDslVersion")
-		kapt("com.querydsl:querydsl-apt:$queryDslVersion:jpa")
+		implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
+		kapt("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
+		kapt("jakarta.persistence:jakarta.persistence-api")
+		kapt("jakarta.annotation:jakarta.annotation-api")
 
 		// Spring Cloud
 		implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$springCloudOpenFeignVersion")
@@ -87,7 +90,7 @@ subprojects {
 		// kotest
 		testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
 		testImplementation("io.kotest:kotest-property:$kotestVersion")
-		testImplementation("io.kotest:kotest-extensions-spring:$kotestVersion")
+		testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
 	}
 
 	tasks.withType<Test> {

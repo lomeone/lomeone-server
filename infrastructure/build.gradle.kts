@@ -15,7 +15,7 @@ dependencies {
 
     // JDBC Driver
     runtimeOnly("com.h2database:h2")
-    runtimeOnly("mysql:mysql-connector-java")
+    runtimeOnly("com.mysql:mysql-connector-j")
 }
 
 tasks.getByName<Test>("test") {

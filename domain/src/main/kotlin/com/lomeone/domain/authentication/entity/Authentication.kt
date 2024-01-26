@@ -2,7 +2,7 @@ package com.lomeone.domain.authentication.entity
 
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
-import com.lomeone.util.converter.AESCryptoConverter
+import com.lomeone.util.converter.EmailCryptoConverter
 import java.time.LocalDateTime
 import java.util.UUID
 import jakarta.persistence.Column
@@ -30,7 +30,7 @@ class Authentication(
     @Column(unique = true)
     val uid: String = UUID.randomUUID().toString(),
 
-    @Convert(converter = AESCryptoConverter::class)
+    @Convert(converter = EmailCryptoConverter::class)
     val email: Email,
 
     password: String?,

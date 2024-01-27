@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Service
-class UpdateUserInfo(
+class UpdateUserInfoService(
     private val userRepository: UserRepository
 ) {
     @Transactional

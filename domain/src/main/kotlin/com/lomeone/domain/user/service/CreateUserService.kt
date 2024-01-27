@@ -9,11 +9,11 @@ import java.time.LocalDate
 import jakarta.validation.constraints.NotBlank
 
 @Service
-class CreateUser(
+class CreateUserService(
     private val userRepository: UserRepository
 ) {
     @Transactional
-    fun execute(command: CreateUserServiceCommand): CreateUserServiceResult {
+    fun createUser(command: CreateUserCommand): CreateUserResult {
         val (name, nickname, email, phoneNumber, birthday) = command
 
         val user = userRepository.save(
@@ -26,7 +26,7 @@ class CreateUser(
             )
         )
 
-        return CreateUserServiceResult(
+        return CreateUserResult(
             id = user.id,
             userToken = user.userToken,
             name = user.name,
@@ -38,7 +38,7 @@ class CreateUser(
     }
 }
 
-data class CreateUserServiceCommand(
+data class CreateUserCommand(
     @field:NotBlank val name: String,
     @field:NotBlank val nickname: String,
     @field:NotBlank val email: String,
@@ -46,7 +46,7 @@ data class CreateUserServiceCommand(
     val birthday: LocalDate
 )
 
-data class CreateUserServiceResult(
+data class CreateUserResult(
     val id: Long,
     val userToken: String,
     val name: String,

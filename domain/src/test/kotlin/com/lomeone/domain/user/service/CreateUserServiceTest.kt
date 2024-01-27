@@ -11,14 +11,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-class CreateUserTest : BehaviorSpec({
+class CreateUserServiceTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
-    val createUser = CreateUser(userRepository)
+    val createUserService = CreateUserService(userRepository)
 
     Given("유저가 존재하지 않으면") {
         every { userRepository.findByUserToken(any()) } returns null
         When("유저를 생성할 때") {
-            val command = CreateUserServiceCommand(
+            val command = CreateUserCommand(
                 name = "name",
                 nickname = "nickname",
                 email = "email@gmail.com",
@@ -35,7 +35,7 @@ class CreateUserTest : BehaviorSpec({
             )
 
             val result = withContext(Dispatchers.IO) {
-                createUser.execute(command)
+                createUserService.createUser(command)
             }
             Then("유저가 생성된다") {
                 result.id shouldBe 0L

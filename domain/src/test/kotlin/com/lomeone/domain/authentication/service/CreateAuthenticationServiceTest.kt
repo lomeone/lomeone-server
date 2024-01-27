@@ -47,4 +47,48 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
             }
         }
     }
+
+    Given("같은 provider에 동이한 이메일 인증정보가 있으면") {
+        every { authenticationRepository.findByEmailAndProvider(emailInput, providerInput) } returns Authentication(
+            uid = uidInput,
+            email = Email(emailInput),
+            password = passwordInput,
+            provider = providerInput
+        )
+        When("인증정보를 생성할 때") {
+            val command = CreateAccountCommand(
+                email = emailInput,
+                uid = uidInput,
+                password = passwordInput,
+                provider = providerInput
+            )
+            Then("중복된 인증정보가 있다는 예외가 발생해서 인증정보 생성에 실패한다") {
+                shouldThrow<Exception> {
+                    createAuthenticationService.createAuthentication(command)
+                }
+            }
+        }
+    }
+
+    Given("동일한 UID의 인증정보가 있으면") {
+        every { authenticationRepository.findByUid(uidInput) } returns Authentication(
+            uid = uidInput,
+            email = Email(emailInput),
+            password = passwordInput,
+            provider = providerInput
+        )
+        When("인증정보를 생성할 때") {
+            val command = CreateAccountCommand(
+                email = emailInput,
+                uid = uidInput,
+                password = passwordInput,
+                provider = providerInput
+            )
+            Then("중복된 인증정보가 있다는 예외가 발생해서 인증정보 생성에 실패한다") {
+                shouldThrow<Exception> {
+                    createAuthenticationService.createAuthentication(command)
+                }
+            }
+        }
+    }
 })

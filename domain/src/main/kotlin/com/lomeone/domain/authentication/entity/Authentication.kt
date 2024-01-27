@@ -79,7 +79,7 @@ class Authentication(
 
     private fun checkPasswordFormatValid(password: String) {
         val regex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\$@\$!%*?&])[A-Za-z\\d\$@!%*?&]{10,}")
-        !regex.matches(password) && throw IllegalArgumentException("password must be at least 8 characters, including at least one uppercase letter, one lowercase letter, one number and one special character")
+        !regex.matches(password) && throw IllegalArgumentException("password must be at least 10 characters, including at least one uppercase letter, one lowercase letter, one number and one special character")
     }
 
     fun signIn() {

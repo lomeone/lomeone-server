@@ -40,9 +40,9 @@ class CreateAuthenticationService(
 
 data class CreateAccountCommand(
     val email: String,
-    val provider: AuthProvider,
     val uid: String = UUID.randomUUID().toString(),
-    val password: String?
+    val password: String?,
+    val provider: AuthProvider
 )
 
 data class CreateAccountResult(

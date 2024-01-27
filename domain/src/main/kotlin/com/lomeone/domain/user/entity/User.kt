@@ -1,7 +1,7 @@
 package com.lomeone.domain.user.entity
 
 import com.lomeone.domain.authentication.entity.Authentication
-import com.lomeone.util.converter.AESCryptoConverter
+import com.lomeone.util.converter.EmailCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
 import java.time.LocalDate
@@ -40,7 +40,7 @@ class User(
     var nickname: String = nickname
         protected set
 
-    @Convert(converter = AESCryptoConverter::class)
+    @Convert(converter = EmailCryptoConverter::class)
     var email: Email = email
         protected set
 

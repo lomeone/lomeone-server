@@ -4,8 +4,8 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 
-class AESCryptoConverterTest : FreeSpec({
-    val converter = AESCryptoConverter()
+class EmailCryptoConverterTest : FreeSpec({
+    val converter = EmailCryptoConverter()
 
     "convertToDatabaseColumn" - {
         "암호화하여 저장한다" {

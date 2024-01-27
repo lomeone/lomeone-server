@@ -1,4 +1,4 @@
-package com.lomeone.domain.user.usecase
+package com.lomeone.domain.user.service
 
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
@@ -6,7 +6,7 @@ import com.lomeone.domain.user.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
-import javax.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotBlank
 
 @Service
 class CreateUser(

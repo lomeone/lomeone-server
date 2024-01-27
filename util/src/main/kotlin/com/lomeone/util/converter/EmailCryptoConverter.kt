@@ -5,7 +5,7 @@ import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
 
 @Converter
-class AESCryptoConverter : AttributeConverter<String,String> {
+class EmailCryptoConverter : AttributeConverter<String,String> {
 
     private val crypto = AESCrypto("1234567890abcdef")
 

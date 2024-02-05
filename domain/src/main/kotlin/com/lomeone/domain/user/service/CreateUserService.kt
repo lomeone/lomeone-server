@@ -1,5 +1,6 @@
 package com.lomeone.domain.user.service
 
+import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.repository.UserRepository
@@ -14,26 +15,28 @@ class CreateUserService(
 ) {
     @Transactional
     fun createUser(command: CreateUserCommand): CreateUserResult {
-        val (name, nickname, email, phoneNumber, birthday) = command
+        val (name, nickname, email, phoneNumber, birthday, authentication) = command
 
-        val user = userRepository.save(
-            User(
-                name = name,
-                nickname = nickname,
-                email = Email(email),
-                phoneNumber = phoneNumber,
-                birthday = birthday
-            )
+        val user = User(
+            name = name,
+            nickname = nickname,
+            email = Email(email),
+            phoneNumber = phoneNumber,
+            birthday = birthday
         )
 
+        user.addAuthentication(authentication)
+
+        val savedUser = userRepository.save(user)
+
         return CreateUserResult(
-            id = user.id,
-            userToken = user.userToken,
-            name = user.name,
-            nickname = user.nickname,
-            email = user.email.value,
-            phoneNumber = user.phoneNumber,
-            birthday = user.birthday
+            id = savedUser.id,
+            userToken = savedUser.userToken,
+            name = savedUser.name,
+            nickname = savedUser.nickname,
+            email = savedUser.email.value,
+            phoneNumber = savedUser.phoneNumber,
+            birthday = savedUser.birthday
         )
     }
 }
@@ -43,7 +46,8 @@ data class CreateUserCommand(
     @field:NotBlank val nickname: String,
     @field:NotBlank val email: String,
     @field:NotBlank val phoneNumber: String,
-    val birthday: LocalDate
+    val birthday: LocalDate,
+    val authentication: Authentication
 )
 
 data class CreateUserResult(

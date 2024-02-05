@@ -1,5 +1,7 @@
 package com.lomeone.domain.user.service
 
+import com.lomeone.domain.authentication.entity.AuthProvider
+import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.repository.UserRepository
@@ -15,6 +17,12 @@ class CreateUserServiceTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
     val createUserService = CreateUserService(userRepository)
 
+    val authenticationInput = Authentication(
+        email = Email("test@gmail.com"),
+        password = "testPassword1324@",
+        provider = AuthProvider.EMAIL
+    )
+
     Given("유저가 존재하지 않으면") {
         every { userRepository.findByUserToken(any()) } returns null
         When("유저를 생성할 때") {
@@ -24,6 +32,7 @@ class CreateUserServiceTest : BehaviorSpec({
                 email = "email@gmail.com",
                 phoneNumber = "+821012345678",
                 birthday = LocalDate.of(2000, 1, 1),
+                authentication = authenticationInput
             )
 
             every { userRepository.save(any()) } returns User(

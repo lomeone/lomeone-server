@@ -20,7 +20,7 @@ import jakarta.persistence.Table
 
 
 @Entity
-@Table(name = "users", indexes = [Index(name = "idx_users_userToken_u1", columnList = "userToken", unique = true)])
+@Table(name = "users", indexes = [Index(name = "idx_users_user_token_u1", columnList = "userToken", unique = true)])
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -88,5 +88,9 @@ class User(
     fun updatePhoneNumber(phoneNumber: String) {
         ensurePhoneNumberIsNotBlank(phoneNumber)
         this.phoneNumber = phoneNumber
+    }
+
+    fun addAuthentication(authentication: Authentication) {
+        this._authentications.add(authentication)
     }
 }

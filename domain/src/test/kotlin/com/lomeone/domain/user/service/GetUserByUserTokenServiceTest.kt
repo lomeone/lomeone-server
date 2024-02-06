@@ -12,9 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-class GetUserByUserTokenTest : BehaviorSpec({
+class GetUserByUserTokenServiceTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
-    val getUserByUserToken = GetUserByUserToken(userRepository)
+    val getUserByUserTokenService = GetUserByUserTokenService(userRepository)
 
     Given("userToken을 가지고 있는 유저가 존재하면") {
         val userTokenInput = "user1234"
@@ -27,7 +27,7 @@ class GetUserByUserTokenTest : BehaviorSpec({
         )
         When("유저를 검색할 때") {
             val result = withContext(Dispatchers.IO) {
-                getUserByUserToken.execute(GetUserByUserTokenQuery(userTokenInput))
+                getUserByUserTokenService.getUserByUserToken(GetUserByUserTokenQuery(userTokenInput))
             }
             Then("유저가 검색된다") {
                 result.user.name shouldBe "name"
@@ -38,13 +38,14 @@ class GetUserByUserTokenTest : BehaviorSpec({
             }
         }
     }
+
     Given("userToken을 가지고 있는 유저가 존재하지 않으면") {
         val userTokenInput = "user1234"
         every { userRepository.findByUserToken(userTokenInput) } returns null
         When("유저를 검색할 때") {
             Then("유저를 찾을 수 없다는 예외가 발생해서 유저를 검색할 수 없다") {
                 shouldThrow<Exception> {
-                    getUserByUserToken.execute(GetUserByUserTokenQuery(userTokenInput))
+                    getUserByUserTokenService.getUserByUserToken(GetUserByUserTokenQuery(userTokenInput))
                 }
             }
         }

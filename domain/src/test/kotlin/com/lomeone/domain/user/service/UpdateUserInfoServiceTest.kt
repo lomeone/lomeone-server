@@ -12,9 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-class UpdateUserInfoTest : BehaviorSpec({
+class UpdateUserInfoServiceTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
-    val updateUserInfo = UpdateUserInfo(userRepository)
+    val updateUserInfoService = UpdateUserInfoService(userRepository)
 
     Given("유저가 존재하면") {
         every { userRepository.findByUserToken(any()) } returns User(
@@ -33,7 +33,7 @@ class UpdateUserInfoTest : BehaviorSpec({
             )
 
             val result = withContext(Dispatchers.IO) {
-                updateUserInfo.execute(command)
+                updateUserInfoService.execute(command)
             }
             Then("유저 정보가 업데이트된다") {
                 result.name shouldBe command.name
@@ -54,7 +54,7 @@ class UpdateUserInfoTest : BehaviorSpec({
             Then("유저를 찾을 수 없다는 예외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<Exception> {
                     withContext(Dispatchers.IO) {
-                        updateUserInfo.execute(command)
+                        updateUserInfoService.execute(command)
                     }
                 }
             }

@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class GetUserByUserToken(
+class GetUserByUserTokenService(
     private val userRepository: UserRepository
 ) {
     @Transactional(readOnly = true)
-    fun execute(request: GetUserByUserTokenQuery): GetUserByUserTokenResult {
+    fun getUserByUserToken(request: GetUserByUserTokenQuery): GetUserByUserTokenResult {
         val user = getUser(request.userToken)
         return GetUserByUserTokenResult(user)
     }

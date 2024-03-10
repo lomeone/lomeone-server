@@ -4,6 +4,7 @@ import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
+import com.lomeone.domain.user.entity.User
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -13,7 +14,7 @@ class CreateAuthenticationService(
     private val authenticationRepository: AuthenticationRepository
 ) {
     @Transactional
-    fun createAuthentication(command: CreateAccountCommand): CreateAccountResult {
+    fun createAuthentication(command: CreateAuthenticationCommand): CreateAuthenticationResult {
         verifyDuplicate(command)
 
         val account = authenticationRepository.save(
@@ -21,14 +22,15 @@ class CreateAuthenticationService(
                 uid = command.uid,
                 email = Email(command.email),
                 password = command.password,
-                provider = command.provider
+                provider = command.provider,
+                user = command.user
             )
         )
 
-        return CreateAccountResult(account.uid)
+        return CreateAuthenticationResult(account.uid)
     }
 
-    private fun verifyDuplicate(command: CreateAccountCommand) {
+    private fun verifyDuplicate(command: CreateAuthenticationCommand) {
         val emailAuthentication = authenticationRepository.findByEmailAndProvider(email = command.email, provider = command.provider)
         val uidAuthentication = authenticationRepository.findByUid(command.uid)
 
@@ -38,13 +40,14 @@ class CreateAuthenticationService(
     }
 }
 
-data class CreateAccountCommand(
+data class CreateAuthenticationCommand(
     val email: String,
-    val uid: String = UUID.randomUUID().toString(),
     val password: String?,
-    val provider: AuthProvider
+    val provider: AuthProvider,
+    val uid: String = UUID.randomUUID().toString(),
+    val user: User
 )
 
-data class CreateAccountResult(
+data class CreateAuthenticationResult(
     val uid: String
 )

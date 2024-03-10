@@ -31,7 +31,13 @@ class User(
     email: Email,
     phoneNumber: String,
     birthday: LocalDate,
-    userRoles: MutableList<UserRole>
+    userRoles: MutableList<UserRole> = mutableListOf(
+        UserRole(
+            role = Role(
+                roleName = RoleName.MEMBER
+            )
+        )
+    )
 ) : AuditEntity() {
     @Column(unique = true)
     val userToken: String = UUID.randomUUID().toString()

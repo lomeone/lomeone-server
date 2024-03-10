@@ -52,9 +52,9 @@ class CreateUserService(
     }
 
     private fun verifyDuplicate(userInfo: CreateUserCommand.UserInfo) {
-        userRepository.findByEmail(userInfo.email)?.let { throw Exception("User with same email already exists") }
-        userRepository.findByPhoneNumber(userInfo.phoneNumber)
-            ?.let { throw Exception("User with same phone number already exists") }
+        userRepository.findByEmail(userInfo.email) != null && throw Exception("User with same email already exists")
+        userRepository.findByPhoneNumber(userInfo.phoneNumber) != null
+            && throw Exception("User with same phone number already exists")
     }
 }
 

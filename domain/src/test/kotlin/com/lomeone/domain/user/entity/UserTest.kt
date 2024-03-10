@@ -1,9 +1,12 @@
 package com.lomeone.domain.user.entity
 
+import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.common.entity.Email
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
+import io.mockk.mockk
 import java.time.LocalDate
 
 class UserTest : FreeSpec({
@@ -160,5 +163,12 @@ class UserTest : FreeSpec({
                 defaultUser.updatePhoneNumber(phoneNumberInput)
             }
         }
+    }
+
+    "유저는 인증을 추가할 수 있다" - {
+        val authenticationInput: Authentication = mockk()
+
+        defaultUser.addAuthentication(authenticationInput)
+        defaultUser.authentications shouldContain authenticationInput
     }
 })

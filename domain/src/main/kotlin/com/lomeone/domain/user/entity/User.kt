@@ -102,8 +102,4 @@ class User(
         ensurePhoneNumberIsNotBlank(phoneNumber)
         this.phoneNumber = phoneNumber
     }
-
-    fun addAuthentication(authentication: Authentication) {
-        this._authentications.add(authentication)
-    }
 }

@@ -2,6 +2,7 @@ package com.lomeone.domain.authentication.entity
 
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
+import com.lomeone.domain.user.entity.User
 import com.lomeone.util.converter.EmailCryptoConverter
 import java.time.LocalDateTime
 import java.util.UUID
@@ -10,10 +11,12 @@ import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Index
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -36,7 +39,10 @@ class Authentication(
     password: String?,
 
     @Enumerated(EnumType.STRING)
-    val provider: AuthProvider
+    val provider: AuthProvider,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    val user: User
 ) : AuditEntity() {
     var password: String? = password
         protected set

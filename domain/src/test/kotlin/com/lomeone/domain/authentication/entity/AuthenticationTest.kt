@@ -5,18 +5,20 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.comparables.shouldBeLessThan
 import io.kotest.matchers.shouldBe
+import io.mockk.mockk
 
 class AuthenticationTest : FreeSpec({
     "계정을 생성할 때" - {
         val emailInput = Email("email@gmail.com")
-        "이메일 방식이고 비밀번호가 null이 아니고 형식에 맞으면 계정이 생성된다" - {
+        "이메일 방식이고 비밀번호가 null이 아니고 형식에 맞으면가 계정이 생성된다" - {
             val providerInput = AuthProvider.EMAIL
             val passwordInput = "testPassword1324@"
 
             val authentication = Authentication(
-                    email = emailInput,
-                    password = passwordInput,
-                    provider = providerInput
+                email = emailInput,
+                password = passwordInput,
+                provider = providerInput,
+                user = mockk()
             )
 
             authentication.email shouldBe emailInput
@@ -30,9 +32,10 @@ class AuthenticationTest : FreeSpec({
 
             shouldThrow<Exception> {
                 Authentication(
-                        email = emailInput,
-                        password = passwordInput,
-                        provider = providerInput
+                    email = emailInput,
+                    password = passwordInput,
+                    provider = providerInput,
+                    user = mockk()
                 )
             }
         }
@@ -43,9 +46,10 @@ class AuthenticationTest : FreeSpec({
 
             shouldThrow<Exception> {
                 Authentication(
-                        email = emailInput,
-                        password = passwordInput,
-                        provider = providerInput
+                    email = emailInput,
+                    password = passwordInput,
+                    provider = providerInput,
+                    user = mockk()
                 )
             }
         }
@@ -56,9 +60,10 @@ class AuthenticationTest : FreeSpec({
 
             shouldThrow<Exception> {
                 Authentication(
-                        email = emailInput,
-                        password = passwordInput,
-                        provider = providerInput
+                    email = emailInput,
+                    password = passwordInput,
+                    provider = providerInput,
+                    user = mockk()
                 )
             }
         }
@@ -68,9 +73,10 @@ class AuthenticationTest : FreeSpec({
             val passwordInput = null
 
             val authentication = Authentication(
-                    email = emailInput,
-                    password = passwordInput,
-                    provider = providerInput
+                email = emailInput,
+                password = passwordInput,
+                provider = providerInput,
+                user = mockk()
             )
 
             authentication.email shouldBe emailInput
@@ -84,9 +90,10 @@ class AuthenticationTest : FreeSpec({
 
             shouldThrow<Exception> {
                 Authentication(
-                        email = emailInput,
-                        password = passwordInput,
-                        provider = providerInput
+                    email = emailInput,
+                    password = passwordInput,
+                    provider = providerInput,
+                    user = mockk()
                 )
             }
         }
@@ -94,9 +101,10 @@ class AuthenticationTest : FreeSpec({
 
     "로그인을하면 로그인 시간이 변경된다" - {
         val authentication = Authentication(
-                email = Email("email@gmail.com"),
-                password = "testPassword1324@",
-                provider = AuthProvider.EMAIL
+            email = Email("email@gmail.com"),
+            password = "testPassword1324@",
+            provider = AuthProvider.EMAIL,
+            user = mockk()
         )
 
         val signedInAtBefore = authentication.signedInAt
@@ -108,9 +116,10 @@ class AuthenticationTest : FreeSpec({
 
     "비밀번호 변경은 이메일 방식의 계정만 가능하다" - {
         val emailAuthentication = Authentication(
-                email = Email("email@gmail.com"),
-                password = "testPassword1324@",
-                provider = AuthProvider.EMAIL
+            email = Email("email@gmail.com"),
+            password = "testPassword1324@",
+            provider = AuthProvider.EMAIL,
+            user = mockk()
         )
 
         "비밀번호 형식에 맞지 않으면 비밀번호가 형식에 맞지 않는다는 예외가 발생한다" - {
@@ -130,9 +139,10 @@ class AuthenticationTest : FreeSpec({
 
         "이메일 방식의 계정이 아니면 이메일 방식의 계정이 아니라는 예외가 발생한다" - {
             val googleAuthentication = Authentication(
-                    email = Email("email@gmail.com"),
-                    password = null,
-                    provider = AuthProvider.GOOGLE
+                email = Email("email@gmail.com"),
+                password = null,
+                provider = AuthProvider.GOOGLE,
+                user = mockk()
             )
 
             val passwordInput = "testPassword1324!"

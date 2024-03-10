@@ -25,18 +25,20 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
         every { authenticationRepository.findByEmailAndProvider(any(), any()) } returns null
         every { authenticationRepository.findByUid(any()) } returns null
         When("인증정보를 생성할 때") {
-            val command = CreateAccountCommand(
+            val command = CreateAuthenticationCommand(
                 email = emailInput,
                 uid = uidInput,
                 password = passwordInput,
-                provider = providerInput
+                provider = providerInput,
+                user = mockk()
             )
 
             every { authenticationRepository.save(any()) } returns Authentication(
                 uid = uidInput,
                 email = Email(emailInput),
                 password = passwordInput,
-                provider = providerInput
+                provider = providerInput,
+                user = mockk()
             )
 
             val result = withContext(Dispatchers.IO) {
@@ -53,14 +55,16 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
             uid = uidInput,
             email = Email(emailInput),
             password = passwordInput,
-            provider = providerInput
+            provider = providerInput,
+            user = mockk()
         )
         When("인증정보를 생성할 때") {
-            val command = CreateAccountCommand(
+            val command = CreateAuthenticationCommand(
                 email = emailInput,
                 uid = uidInput,
                 password = passwordInput,
-                provider = providerInput
+                provider = providerInput,
+                user = mockk()
             )
             Then("중복된 인증정보가 있다는 예외가 발생해서 인증정보 생성에 실패한다") {
                 shouldThrow<Exception> {
@@ -75,14 +79,16 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
             uid = uidInput,
             email = Email(emailInput),
             password = passwordInput,
-            provider = providerInput
+            provider = providerInput,
+            user = mockk()
         )
         When("인증정보를 생성할 때") {
-            val command = CreateAccountCommand(
+            val command = CreateAuthenticationCommand(
                 email = emailInput,
                 uid = uidInput,
                 password = passwordInput,
-                provider = providerInput
+                provider = providerInput,
+                user = mockk()
             )
             Then("중복된 인증정보가 있다는 예외가 발생해서 인증정보 생성에 실패한다") {
                 shouldThrow<Exception> {

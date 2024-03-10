@@ -112,4 +112,8 @@ class User(
     fun addAuthentication(authentication: Authentication) {
         this._authentications.add(authentication)
     }
+
+    fun addRole(role: Role) {
+        _userRoles.add(UserRole(role = role))
+    }
 }

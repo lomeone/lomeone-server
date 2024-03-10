@@ -171,4 +171,10 @@ class UserTest : FreeSpec({
         defaultUser.addAuthentication(authenticationInput)
         defaultUser.authentications shouldContain authenticationInput
     }
+
+    "유저는 역할을 추가할 수 있다" - {
+        val roleInput = Role(roleName = RoleName.MEMBER)
+        defaultUser.addRole(roleInput)
+        defaultUser.userRoles.map { it.role } shouldContain (roleInput)
+    }
 })

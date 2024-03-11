@@ -5,13 +5,16 @@ import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
+import com.lomeone.util.security.authentication.PasswordUtils.checkPasswordValidity
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @Service
 class CreateAuthenticationService(
-    private val authenticationRepository: AuthenticationRepository
+    private val authenticationRepository: AuthenticationRepository,
+    private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
     @Transactional
     fun createAuthentication(command: CreateAuthenticationCommand): CreateAuthenticationResult {
@@ -21,7 +24,7 @@ class CreateAuthenticationService(
             Authentication(
                 uid = command.uid,
                 email = Email(command.email),
-                password = command.password,
+                password = encodePassword(command.password),
                 provider = command.provider,
                 user = command.user
             )
@@ -37,6 +40,12 @@ class CreateAuthenticationService(
         if (emailAuthentication != null || uidAuthentication != null) {
             throw Exception()
         }
+    }
+
+    private fun encodePassword(password: String?): String? {
+        if (password == null) return null
+        checkPasswordValidity(password)
+        return bCryptPasswordEncoder.encode(password)
     }
 }
 

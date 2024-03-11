@@ -11,10 +11,12 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 class CreateAuthenticationServiceTest : BehaviorSpec({
     val authenticationRepository: AuthenticationRepository = mockk()
-    val createAuthenticationService = CreateAuthenticationService(authenticationRepository)
+    val bCryptPasswordEncoder: BCryptPasswordEncoder = mockk()
+    val createAuthenticationService = CreateAuthenticationService(authenticationRepository, bCryptPasswordEncoder)
 
     val emailInput = "test@gmail.com"
     val uidInput = "testUid1234"
@@ -24,6 +26,8 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
     Given("중복된 인증정보가 없으면") {
         every { authenticationRepository.findByEmailAndProvider(any(), any()) } returns null
         every { authenticationRepository.findByUid(any()) } returns null
+        every { bCryptPasswordEncoder.encode(any()) } returns "encodePassword1324@"
+
         When("인증정보를 생성할 때") {
             val command = CreateAuthenticationCommand(
                 email = emailInput,

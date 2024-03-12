@@ -1,12 +1,12 @@
 package com.lomeone.domain.user.entity
 
-import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.common.entity.Email
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
+import io.mockk.mockk
 import java.time.LocalDate
 
 class UserTest : FreeSpec({
@@ -19,7 +19,7 @@ class UserTest : FreeSpec({
     )
 
     "유저를 생성할 때" - {
-        "이름, 닉네임, 핸드폰번호가 공백이 아니고 이메일이 형식에 맞아야 생성할 수 있다" - {
+        "이름, 닉네임, 핸드폰번호가 공백이 아니고 이메일이 형식에 맞고 유저 역할이 있어야 생성할 수 있다" - {
             val nameInput = "John"
             val nicknameInput = "Tomy"
             val emailInput = Email("email@gmail.com")
@@ -49,7 +49,14 @@ class UserTest : FreeSpec({
                     nickname = "nickname",
                     email = Email("email@gmail.com"),
                     phoneNumber = "+821012345678",
-                    birthday = LocalDate.now()
+                    birthday = LocalDate.now(),
+                    userRoles = mutableListOf(
+                        UserRole(
+                            role = Role(
+                                roleName = RoleName.MEMBER
+                            )
+                        )
+                    )
                 )
             }
         }
@@ -62,7 +69,14 @@ class UserTest : FreeSpec({
                     nickname = nicknameInput,
                     email = Email("email@gmail.com"),
                     phoneNumber = "+821012345678",
-                    birthday = LocalDate.now()
+                    birthday = LocalDate.now(),
+                    userRoles = mutableListOf(
+                        UserRole(
+                            role = Role(
+                                roleName = RoleName.MEMBER
+                            )
+                        )
+                    )
                 )
             }
         }
@@ -75,7 +89,28 @@ class UserTest : FreeSpec({
                     nickname = "nickname",
                     email = Email("email@gmail.com"),
                     phoneNumber = phoneNumberInput,
-                    birthday = LocalDate.now()
+                    birthday = LocalDate.now(),
+                    userRoles = mutableListOf(
+                        UserRole(
+                            role = Role(
+                                roleName = RoleName.MEMBER
+                            )
+                        )
+                    )
+                )
+            }
+        }
+
+        "유저 역할이 없으면 유저 역할이 없다는 예외가 발생해서 유저를 생성할 수 없다" - {
+            val userRolesInput = mutableListOf<UserRole>()
+            shouldThrow<Exception> {
+                User(
+                    name = "name",
+                    nickname = "nickname",
+                    email = Email("email@gmail.com"),
+                    phoneNumber = "+821012345678",
+                    birthday = LocalDate.now(),
+                    userRoles = userRolesInput
                 )
             }
         }
@@ -130,15 +165,16 @@ class UserTest : FreeSpec({
         }
     }
 
-    "유저는 인증 정보를 추가할 수 있다" - {
-        val authenticationInput = Authentication(
-            email = Email("test@gmail.com"),
-            password = "testPassword1324@",
-            provider = AuthProvider.EMAIL
-        )
+    "유저는 인증을 추가할 수 있다" - {
+        val authenticationInput: Authentication = mockk()
 
         defaultUser.addAuthentication(authenticationInput)
-
         defaultUser.authentications shouldContain authenticationInput
+    }
+
+    "유저는 역할을 추가할 수 있다" - {
+        val roleInput = Role(roleName = RoleName.MEMBER)
+        defaultUser.addRole(roleInput)
+        defaultUser.userRoles.map { it.role } shouldContain (roleInput)
     }
 })

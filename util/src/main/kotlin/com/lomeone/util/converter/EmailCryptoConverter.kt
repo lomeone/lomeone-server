@@ -7,9 +7,10 @@ import jakarta.persistence.Converter
 @Converter
 class EmailCryptoConverter : AttributeConverter<String,String> {
 
-    private val crypto = AESCrypto("1234567890abcdef")
+//    @Value("\${email.cryptoKey}")
+    private val cryptoKey: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456"
 
-    override fun convertToDatabaseColumn(attribute: String) = this.crypto.encrypt(attribute)
+    override fun convertToDatabaseColumn(attribute: String) = AESCrypto.encrypt(attribute, cryptoKey)
 
-    override fun convertToEntityAttribute(dbData: String) = this.crypto.decrypt(dbData)
+    override fun convertToEntityAttribute(dbData: String) = AESCrypto.decrypt(dbData, cryptoKey)
 }

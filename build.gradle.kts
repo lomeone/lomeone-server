@@ -4,18 +4,20 @@ import java.io.ByteArrayOutputStream
 val groupName: String by project
 
 val queryDslVersion: String by project
+val jwtVersion: String by project
 
 val kotestVersion: String by project
 val kotestSpringVersion: String by project
 val springMockkVersion: String by project
-val jacocoBranchCoverageRatio: String by project
-val jacocoLineCoverageRatio: String by project
 
 val springCloudOpenFeignVersion: String by project
 val springCloudHystrixVersion: String by project
 val springCloudRibbonVersion: String by project
 val springCloudEurekaClientVersion: String by project
 val springCloudAWSVersion: String by project
+
+val jacocoBranchCoverageRatio: String by project
+val jacocoLineCoverageRatio: String by project
 
 plugins {
 	id("org.springframework.boot")
@@ -71,6 +73,11 @@ subprojects {
 		// Spring
 		implementation("org.springframework.boot:spring-boot-starter-validation")
 		implementation("org.springframework.boot:spring-boot-starter-security")
+
+		// Jwt
+		implementation("io.jsonwebtoken:jjwt-api:$jwtVersion")
+		runtimeOnly("io.jsonwebtoken:jjwt-impl:$jwtVersion")
+		runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
 
 		// JPA
 		implementation("org.springframework.boot:spring-boot-starter-data-jpa")

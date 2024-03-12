@@ -8,4 +8,6 @@ interface AuthenticationRepository : JpaRepository<Authentication, Long> {
     fun findByUid(uid: String): Authentication?
 
     fun findByEmailAndProvider(email: String, provider: AuthProvider): Authentication?
+
+    fun findByEmailAndPassword(email: String, password: String): Authentication?
 }

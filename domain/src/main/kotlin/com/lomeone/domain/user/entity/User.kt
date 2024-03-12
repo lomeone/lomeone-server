@@ -30,7 +30,14 @@ class User(
     nickname: String,
     email: Email,
     phoneNumber: String,
-    birthday: LocalDate
+    birthday: LocalDate,
+    userRoles: MutableList<UserRole> = mutableListOf(
+        UserRole(
+            role = Role(
+                roleName = RoleName.MEMBER
+            )
+        )
+    )
 ) : AuditEntity() {
     @Column(unique = true)
     val userToken: String = UUID.randomUUID().toString()
@@ -55,10 +62,16 @@ class User(
     private val _authentications: MutableList<Authentication> = mutableListOf()
     val authentications: List<Authentication> get() = _authentications
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private val _userRoles: MutableList<UserRole> = userRoles
+    val userRoles: List<UserRole> get() = _userRoles
+
     init {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
         ensurePhoneNumberIsNotBlank(phoneNumber)
+        ensureUserRoleIsNotEmpty(userRoles)
     }
 
     private fun ensureNameIsNotBlank(name: String) {
@@ -71,6 +84,12 @@ class User(
 
     private fun ensurePhoneNumberIsNotBlank(phoneNumber: String) {
         phoneNumber.isBlank() && throw Exception("PhoneNumber is blank")
+    }
+
+    private fun ensureUserRoleIsNotEmpty(userRoles: MutableList<UserRole>) {
+        if (userRoles.isEmpty()) {
+            throw Exception("User role must be not empty")
+        }
     }
 
     fun updateUserInfo(name: String, nickname: String, birthday: LocalDate) {
@@ -92,5 +111,9 @@ class User(
 
     fun addAuthentication(authentication: Authentication) {
         this._authentications.add(authentication)
+    }
+
+    fun addRole(role: Role) {
+        _userRoles.add(UserRole(role = role))
     }
 }

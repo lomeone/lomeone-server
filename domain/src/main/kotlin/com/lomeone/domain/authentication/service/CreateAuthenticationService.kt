@@ -20,7 +20,7 @@ class CreateAuthenticationService(
     fun createAuthentication(command: CreateAuthenticationCommand): CreateAuthenticationResult {
         verifyDuplicate(command)
 
-        val account = authenticationRepository.save(
+        val authentication = authenticationRepository.save(
             Authentication(
                 uid = command.uid,
                 email = Email(command.email),
@@ -30,7 +30,7 @@ class CreateAuthenticationService(
             )
         )
 
-        return CreateAuthenticationResult(account.uid)
+        return CreateAuthenticationResult(authentication.uid)
     }
 
     private fun verifyDuplicate(command: CreateAuthenticationCommand) {

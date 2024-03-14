@@ -1,5 +1,6 @@
 package com.lomeone.domain.user.entity
 
+import com.lomeone.domain.common.entity.AuditEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -24,7 +25,7 @@ class UserRole(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roles_id")
     val role: Role
-)
+) : AuditEntity()
 
 @Entity
 @Table(name = "roles", indexes = [Index(name = "idx_roles_role_name_u1", columnList = "roleName", unique = true)])
@@ -36,7 +37,7 @@ class Role(
 
     @Enumerated(EnumType.STRING)
     val roleName: RoleName
-)
+) : AuditEntity()
 
 enum class RoleName {
     MEMBER,

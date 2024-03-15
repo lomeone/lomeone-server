@@ -15,11 +15,10 @@ class PrincipalDetailService(
     private val authenticationRepository: AuthenticationRepository
 ): UserDetailsService {
     @Transactional(readOnly = true)
-    override fun loadUserByUsername(username: String): UserDetails {
-        val authentication = authenticationRepository.findByEmailAndProvider(username, AuthProvider.EMAIL)
+    override fun loadUserByUsername(username: String): UserDetails =
+        authenticationRepository.findByEmailAndProvider(username, AuthProvider.EMAIL)
+            ?.let { PrincipalDetails(it) }
             ?: throw Exception("Authentication does not exist")
-        return PrincipalDetails(authentication)
-    }
 }
 
 data class PrincipalDetails(

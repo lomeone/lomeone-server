@@ -16,7 +16,7 @@ class PrincipalDetailService(
 ): UserDetailsService {
     @Transactional(readOnly = true)
     override fun loadUserByUsername(username: String): UserDetails =
-        authenticationRepository.findByEmailAndProvider(username, AuthProvider.EMAIL)
+        authenticationRepository.findByEmailAndProvider(email = username, provider = AuthProvider.EMAIL)
             ?.let { PrincipalDetails(it) }
             ?: throw Exception("Authentication does not exist")
 }

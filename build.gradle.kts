@@ -176,6 +176,8 @@ fun getGitHash(): String {
 }
 
 tasks.register<JacocoReport>("jacocoAllReport") {
+	dependsOn(":application:jacocoTestReport", ":domain:jacocoTestReport", ":util:jacocoTestReport")
+
 	val currentTask = this
 
 	val allSourceSrcDirs = mutableListOf<Set<File>>()

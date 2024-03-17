@@ -31,7 +31,6 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
         When("인증정보를 생성할 때") {
             val command = CreateAuthenticationCommand(
                 email = emailInput,
-                uid = uidInput,
                 password = passwordInput,
                 provider = providerInput,
                 user = mockk()
@@ -62,6 +61,8 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
             provider = providerInput,
             user = mockk()
         )
+        every { authenticationRepository.findByUid(uidInput) } returns null
+
         When("인증정보를 생성할 때") {
             val command = CreateAuthenticationCommand(
                 email = emailInput,
@@ -86,6 +87,8 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
             provider = providerInput,
             user = mockk()
         )
+        every { authenticationRepository.findByEmailAndProvider(emailInput, providerInput) } returns null
+
         When("인증정보를 생성할 때") {
             val command = CreateAuthenticationCommand(
                 email = emailInput,

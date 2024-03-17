@@ -37,7 +37,7 @@ class Authentication(
     @Convert(converter = EmailCryptoConverter::class)
     val email: Email,
 
-    password: String?,
+    password: String? = null,
 
     @Enumerated(EnumType.STRING)
     val provider: AuthProvider,

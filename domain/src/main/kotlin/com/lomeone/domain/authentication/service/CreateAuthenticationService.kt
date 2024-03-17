@@ -51,7 +51,7 @@ class CreateAuthenticationService(
 
 data class CreateAuthenticationCommand(
     val email: String,
-    val password: String?,
+    val password: String? = null,
     val provider: AuthProvider,
     val uid: String = UUID.randomUUID().toString(),
     val user: User

@@ -9,6 +9,7 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -28,7 +29,31 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
         every { authenticationRepository.findByUid(any()) } returns null
         every { bCryptPasswordEncoder.encode(any()) } returns "encodePassword1324@"
 
-        When("인증정보를 생성할 때") {
+        When("비밀번호가 없는 인증정보를 생성할 때") {
+            val command = CreateAuthenticationCommand(
+                email = emailInput,
+                provider = AuthProvider.GOOGLE,
+                user = mockk()
+            )
+
+            every { authenticationRepository.save(any()) } returns Authentication(
+                uid = uidInput,
+                email = Email(emailInput),
+                provider = AuthProvider.GOOGLE,
+                user = mockk()
+            )
+
+            val result = withContext(Dispatchers.IO) {
+                createAuthenticationService.createAuthentication(command)
+            }
+            Then("비밀번호 인코딩을 하지 않고 인증정보가 생성된다") {
+                verify(exactly = 0) { bCryptPasswordEncoder.encode(any()) }
+
+                result.uid shouldBe uidInput
+            }
+        }
+
+        When("비밀번호가 있는 인증정보를 생성할 때") {
             val command = CreateAuthenticationCommand(
                 email = emailInput,
                 password = passwordInput,
@@ -47,7 +72,9 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
             val result = withContext(Dispatchers.IO) {
                 createAuthenticationService.createAuthentication(command)
             }
-            Then("인증정보가 생성된다") {
+            Then("비밀번호 인코딩을 하고 인증정보가 생성된다") {
+                verify { bCryptPasswordEncoder.encode(any()) }
+
                 result.uid shouldBe uidInput
             }
         }

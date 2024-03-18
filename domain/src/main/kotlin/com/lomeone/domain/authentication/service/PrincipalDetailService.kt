@@ -30,7 +30,7 @@ data class PrincipalDetails(
 
     override fun getPassword(): String? = authentication.password
 
-    override fun getUsername(): String = authentication.email.value
+    override fun getUsername(): String = authentication.uid
 
     override fun isAccountNonExpired(): Boolean = true
 

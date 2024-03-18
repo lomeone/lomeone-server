@@ -19,6 +19,7 @@ class PrincipalDetailServiceTest : BehaviorSpec({
     val authenticationRepository: AuthenticationRepository = mockk()
     val principalDetailService = PrincipalDetailService(authenticationRepository)
 
+    val testUid = "testUid"
     val emailInput = "test@gmail.com"
     val mockUser: User = mockk()
 
@@ -32,6 +33,7 @@ class PrincipalDetailServiceTest : BehaviorSpec({
         )
         every { authenticationRepository.findByEmailAndProvider(email = any(), provider = AuthProvider.EMAIL)} returns
             Authentication(
+                uid = testUid,
                 email = Email(emailInput),
                 password = "testPassword1324@",
                 provider = AuthProvider.EMAIL,
@@ -44,7 +46,7 @@ class PrincipalDetailServiceTest : BehaviorSpec({
             Then("인증 정보를 가져온다") {
                 userDetails.authorities.map { it.authority } shouldContain "ROLE_MEMBER"
                 userDetails.password shouldBe "testPassword1324@"
-                userDetails.username shouldBe emailInput
+                userDetails.username shouldBe testUid
                 userDetails.isAccountNonExpired shouldBe true
                 userDetails.isAccountNonLocked shouldBe true
                 userDetails.isCredentialsNonExpired shouldBe true

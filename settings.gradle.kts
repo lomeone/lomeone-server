@@ -7,6 +7,7 @@ pluginManagement {
     val kotlinVersion: String by settings
     val coverallsVersion: String by settings
     val jibVersion: String by settings
+    val dgsCodegenVersion: String by settings
 
     plugins {
         id("org.springframework.boot") version springBootVersion
@@ -17,6 +18,7 @@ pluginManagement {
         kotlin("plugin.jpa") version kotlinVersion
         id("com.github.kt3k.coveralls") version coverallsVersion
         id("com.google.cloud.tools.jib") version jibVersion
+        id("com.netflix.dgs.codegen") version dgsCodegenVersion
     }
 }
 

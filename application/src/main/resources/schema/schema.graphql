@@ -1,0 +1,7 @@
+type Query {
+    hello(input: HelloInput): String
+}
+
+input HelloInput {
+    helloName: String!
+}

@@ -1,3 +1,5 @@
 spring:
   datasource:
-    url: jdbc-secretsmanager:postgresql://mms-db.chdq0o2eoge6.ap-northeast-2.rds.amazonaws.com:5432/mms_staging
+    url: jdbc:mysql://comstering.synology.me:3306/lomeone-staging
+    username: lomeone-staging
+    password: 2B&MM7^x3AUAf?Z

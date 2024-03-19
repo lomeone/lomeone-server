@@ -1,18 +1,19 @@
 spring:
   datasource:
-    url: jdbc-secretsmanager:postgresql://mms-db.chdq0o2eoge6.ap-northeast-2.rds.amazonaws.com:5432/mms_dev
-    username: prod/mms/postgres
+    url: jdbc:mysql://comstering.synology.me:3306/lomeone-dev
+    username: lomeone-dev
+    password: xwB388$#t^%A~$k
     hikari:
       maximum-pool-size: 4
-    driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
 
   servlet:
     multipart:
@@ -27,6 +28,9 @@ cloud:
       auto: false
     s3:
       bucket: mms-images-data
+
+jwt:
+  secret: ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890
 
 logging:
   level:

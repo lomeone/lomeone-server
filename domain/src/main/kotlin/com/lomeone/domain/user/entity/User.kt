@@ -41,6 +41,7 @@ class User(
 ) : AuditEntity() {
     @Column(unique = true)
     val userToken: String = UUID.randomUUID().toString()
+
     var name: String = name
         protected set
 

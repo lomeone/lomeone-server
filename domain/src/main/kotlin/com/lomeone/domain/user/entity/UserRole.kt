@@ -1,5 +1,6 @@
 package com.lomeone.domain.user.entity
 
+import com.lomeone.domain.common.entity.AuditEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -8,6 +9,7 @@ import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Index
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
@@ -23,10 +25,10 @@ class UserRole(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roles_id")
     val role: Role
-)
+) : AuditEntity()
 
 @Entity
-@Table(name = "roles")
+@Table(name = "roles", indexes = [Index(name = "idx_roles_role_name_u1", columnList = "roleName", unique = true)])
 class Role(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +37,7 @@ class Role(
 
     @Enumerated(EnumType.STRING)
     val roleName: RoleName
-)
+) : AuditEntity()
 
 enum class RoleName {
     MEMBER,

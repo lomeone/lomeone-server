@@ -3,6 +3,7 @@ package com.lomeone.domain.authentication.service
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import java.util.Date
@@ -12,6 +13,7 @@ const val REFRESH_EXPIRES_AT: Long = 1000 * 60 * 60 * 12    // 12 hour
 
 @Service
 class JwtTokenProvider(
+    @Value("\$jwt.secret")
     private val jwtSecret: String
 ) {
     private val key by lazy { Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret)) }

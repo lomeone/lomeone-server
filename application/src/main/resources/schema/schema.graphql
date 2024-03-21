@@ -5,3 +5,5 @@ type Query {
 input HelloInput {
     helloName: String!
 }
+
+scalar Date

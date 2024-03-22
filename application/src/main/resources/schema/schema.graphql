@@ -9,3 +9,5 @@ type Mutation {
 input HelloInput {
     helloName: String!
 }
+
+scalar Date

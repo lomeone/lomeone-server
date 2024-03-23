@@ -13,11 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest
     HelloDataFetcher::class
 ])
 class HelloDataFetcherTest(
-    private val dgsQueryExecutor: DgsQueryExecutor,
-    private val dgsMutationExecutor: DgsQueryExecutor
+    private val dgsExecutor: DgsQueryExecutor
 ) : FreeSpec({
     "DataFetcher Query test Example" - {
-        val result: String = dgsQueryExecutor.executeAndExtractJsonPath("""
+        val result: String = dgsExecutor.executeAndExtractJsonPath("""
                 query {
                     helloQuery(input: {
                         helloName: "name"
@@ -29,7 +28,7 @@ class HelloDataFetcherTest(
     }
 
     "DataFetcher Mutation test Example" - {
-        val result: String = dgsMutationExecutor.executeAndExtractJsonPath("""
+        val result: String = dgsExecutor.executeAndExtractJsonPath("""
             mutation {
                 helloMutation(input: {
                     helloName: "name"

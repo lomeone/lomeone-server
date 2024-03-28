@@ -14,7 +14,6 @@ val springCloudOpenFeignVersion: String by project
 val springCloudHystrixVersion: String by project
 val springCloudRibbonVersion: String by project
 val springCloudEurekaClientVersion: String by project
-val springCloudAWSVersion: String by project
 
 val jacocoBranchCoverageRatio: String by project
 val jacocoLineCoverageRatio: String by project
@@ -73,6 +72,7 @@ subprojects {
 		// Spring
 		implementation("org.springframework.boot:spring-boot-starter-validation")
 		implementation("org.springframework.boot:spring-boot-starter-security")
+		implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
 		// Jwt
 		implementation("io.jsonwebtoken:jjwt-api:$jwtVersion")

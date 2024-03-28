@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/lomeone
+    username: root
+    password: Class101!
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+oauth:
+  kakao:
+    redirect-uri: http://localhost:8080/api/v1/auth/kakao/callback

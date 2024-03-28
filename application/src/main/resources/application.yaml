@@ -36,6 +36,13 @@ cloud:
 jwt:
   secret: ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890
 
+oauth:
+  kakao:
+    client-id: e1bf61fd2a87f7e0a074c9252e9c5c71
+    url:
+      auth: https://kauth.kakao.com
+      api: https://kapi.kakao.com
+
 logging:
   level:
     root: DEBUG

@@ -9,6 +9,7 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -23,10 +24,14 @@ class JwtAuthenticationFilter(
             val password: String
     )
 
+    private val log = LoggerFactory.getLogger(this.javaClass)
+
     // call when call '/login'
     override fun attemptAuthentication(request: HttpServletRequest, response: HttpServletResponse): Authentication {
         val objectMapper = ObjectMapper().registerKotlinModule()
         val loginRequest = objectMapper.readValue(request.inputStream, LoginRequest::class.java)
+
+        log.debug("email: {}, password: {}", loginRequest.email, loginRequest.password)
 
         val authenticationToken = UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.password)
         return authenticationManager.authenticate(authenticationToken)
@@ -41,6 +46,8 @@ class JwtAuthenticationFilter(
         val tokenInfo = jwtTokenProvider.issueToken(authResult)
 
         response.addHeader("Authorization", tokenInfo.accessToken)
+
+        log.info("accessToken: {}, refreshToken: {}", tokenInfo.accessToken, tokenInfo.refreshToken)
 
         val accessTokenCookie = Cookie("accessToken", tokenInfo.accessToken)
         accessTokenCookie.path = "/"

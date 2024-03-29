@@ -22,7 +22,7 @@ class UserRole(
     @Column(name = "user_roles_id")
     val id: Long = 0L,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "roles_id")
     val role: Role
 ) : AuditEntity()

@@ -42,7 +42,7 @@ class Authentication(
     @Enumerated(EnumType.STRING)
     val provider: AuthProvider,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "users_id")
     val user: User
 ) : AuditEntity() {

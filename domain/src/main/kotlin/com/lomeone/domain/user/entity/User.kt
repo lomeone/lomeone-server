@@ -18,7 +18,6 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
-
 @Entity
 @Table(name = "users", indexes = [
     Index(name = "idx_users_user_token_u1", columnList = "userToken", unique = true),
@@ -62,12 +61,12 @@ class User(
     var birthday: LocalDate = birthday
         protected set
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinColumn(name = "users_id")
     private val _authentications: MutableList<Authentication> = mutableListOf()
     val authentications: List<Authentication> get() = _authentications
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id")
     private val _userRoles: MutableList<UserRole> = userRoles
     val userRoles: List<UserRole> get() = _userRoles

@@ -20,7 +20,11 @@ import jakarta.persistence.Table
 
 
 @Entity
-@Table(name = "users", indexes = [Index(name = "idx_users_user_token_u1", columnList = "userToken", unique = true)])
+@Table(name = "users", indexes = [
+    Index(name = "idx_users_user_token_u1", columnList = "userToken", unique = true),
+    Index(name = "idx_users_email_u2", columnList = "email", unique = true),
+    Index(name = "idx_users_phone_number_u3", columnList = "phoneNumber", unique = true)
+])
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,6 +3,7 @@ spring:
     url: jdbc:mysql://comstering.synology.me:3306/lomeone-dev
     username: lomeone-dev
     password: xwB388$#t^%A~$k
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:

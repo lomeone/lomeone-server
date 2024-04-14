@@ -34,7 +34,7 @@ cloud:
       bucket: mms-images-data
 
 jwt:
-  secret: ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890
+  secret: asldkjvcxoiASDFoaisdnvmcnjkoco123eca13asdfasdf654
 
 logging:
   level:

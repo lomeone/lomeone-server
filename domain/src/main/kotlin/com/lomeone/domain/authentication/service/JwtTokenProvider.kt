@@ -13,7 +13,7 @@ const val REFRESH_EXPIRES_AT: Long = 1000 * 60 * 60 * 12    // 12 hour
 
 @Service
 class JwtTokenProvider(
-    @Value("\$jwt.secret")
+    @Value("\${jwt.secret}")
     private val jwtSecret: String
 ) {
     private val key by lazy { Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret)) }

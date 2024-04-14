@@ -1,7 +1,13 @@
 type Query {
-    hello(input: HelloInput): String
+    helloQuery(input: HelloInput!): String!
+}
+
+type Mutation {
+    helloMutation(input: HelloInput!): String!
 }
 
 input HelloInput {
     helloName: String!
 }
+
+scalar Date

@@ -26,34 +26,6 @@ class AuthenticationTest : FreeSpec({
             authentication.provider shouldBe providerInput
         }
 
-        "이메일 방식이고 비밀번호가 null이 아니지만 공백이면 비밀번호가 공백이라는 예외가 발생한다" - {
-            val providerInput = AuthProvider.EMAIL
-            val passwordInput = " "
-
-            shouldThrow<Exception> {
-                Authentication(
-                    email = emailInput,
-                    password = passwordInput,
-                    provider = providerInput,
-                    user = mockk()
-                )
-            }
-        }
-
-        "이메일 방식이고 비밀번호가 null이 아니지만 형식에 맞지 않으면 비밀번호가 형식에 맞지 않는다는 예외가 발생한다" - {
-            val providerInput = AuthProvider.EMAIL
-            val passwordInput = "testPassword"
-
-            shouldThrow<Exception> {
-                Authentication(
-                    email = emailInput,
-                    password = passwordInput,
-                    provider = providerInput,
-                    user = mockk()
-                )
-            }
-        }
-
         "이메일 방식인데 비밀번호가 null이면 이메일 방식은 패스워드가 필요하다는 예외가 발생한다" - {
             val providerInput = AuthProvider.EMAIL
             val passwordInput = null
@@ -122,15 +94,7 @@ class AuthenticationTest : FreeSpec({
             user = mockk()
         )
 
-        "비밀번호 형식에 맞지 않으면 비밀번호가 형식에 맞지 않는다는 예외가 발생한다" - {
-            val passwordInput = "testPassword"
-
-            shouldThrow<Exception> {
-                emailAuthentication.changePassword(passwordInput)
-            }
-        }
-
-        "비밀번호 형식에 맞으면 비밀번호가 변경된다" - {
+        "비밀번호가 변경된다" - {
             val passwordInput = "testPassword1324!"
 
             emailAuthentication.changePassword(passwordInput)

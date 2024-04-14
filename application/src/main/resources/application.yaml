@@ -1,16 +1,20 @@
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   datasource:
-    url: jdbc:mysql://comstering.synology.me:3306/lomeone-dev
-    username: lomeone-dev
-    password: xwB388$#t^%A~$k
+    url: jdbc:h2:mem:test
+    username: lomeone-db
+    password: mY3i7fj@3agwct2
     hikari:
       maximum-pool-size: 4
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.h2.Driver
 
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -30,7 +34,7 @@ cloud:
       bucket: mms-images-data
 
 jwt:
-  secret: ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890
+  secret: asldkjvcxoiASDFoaisdnvmcnjkoco123eca13asdfasdf654
 
 logging:
   level:

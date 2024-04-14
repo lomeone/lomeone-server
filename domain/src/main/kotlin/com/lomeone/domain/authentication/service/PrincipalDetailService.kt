@@ -14,10 +14,13 @@ import org.springframework.transaction.annotation.Transactional
 class PrincipalDetailService(
     private val authenticationRepository: AuthenticationRepository
 ): UserDetailsService {
-    @Transactional(readOnly = true)
+    @Transactional
     override fun loadUserByUsername(username: String): UserDetails =
         authenticationRepository.findByEmailAndProvider(email = username, provider = AuthProvider.EMAIL)
-            ?.let { PrincipalDetails(it) }
+            ?.let {authentication ->
+                authentication.signIn()
+                PrincipalDetails(authentication)
+            }
             ?: throw Exception("Authentication does not exist")
 }
 

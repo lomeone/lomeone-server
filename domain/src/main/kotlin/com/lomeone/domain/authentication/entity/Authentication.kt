@@ -42,7 +42,7 @@ class Authentication(
     @Enumerated(EnumType.STRING)
     val provider: AuthProvider,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "users_id")
     val user: User
 ) : AuditEntity() {
@@ -62,10 +62,6 @@ class Authentication(
     private fun checkPasswordByProvider(password: String?) {
         checkPasswordIsNotNullIfEmailProvider(password)
         checkPasswordIsNullByOtherProvider(password)
-
-        if (password != null) {
-            ensurePasswordValidity(password)
-        }
     }
 
     private fun checkPasswordIsNotNullIfEmailProvider(password: String?) {
@@ -76,27 +72,12 @@ class Authentication(
         this.provider != AuthProvider.EMAIL && password != null && throw IllegalArgumentException("password must be null")
     }
 
-    private fun ensurePasswordValidity(password: String) {
-        ensurePasswordIsNotBlank(password)
-        checkPasswordFormatValid(password)
-    }
-
-    private fun ensurePasswordIsNotBlank(password: String) {
-        password.isBlank() && throw IllegalArgumentException("password must not be blank")
-    }
-
-    private fun checkPasswordFormatValid(password: String) {
-        val regex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\$@\$!%*?&])[A-Za-z\\d\$@!%*?&]{10,}")
-        !regex.matches(password) && throw IllegalArgumentException("password must be at least 10 characters, including at least one uppercase letter, one lowercase letter, one number and one special character")
-    }
-
     fun signIn() {
         this.signedInAt = LocalDateTime.now()
     }
 
     fun changePassword(password: String) {
         ensureEmailProvider()
-        ensurePasswordValidity(password)
         this.password = password
         this.passwordUpdatedAt = LocalDateTime.now()
     }

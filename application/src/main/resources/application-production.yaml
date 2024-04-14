@@ -1,6 +1,14 @@
 spring:
   datasource:
     url: jdbc-secretsmanager:postgresql://mms-db.chdq0o2eoge6.ap-northeast-2.rds.amazonaws.com:5432/mms_production
+    hikari:
+      maximum-pool-size: 16
+    driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
 logging:
   level:
     root: INFO

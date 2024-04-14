@@ -1,10 +1,8 @@
 package com.lomeone.application.config
 
-import com.lomeone.application.fiilter.JwtAuthenticationFilter
 import com.lomeone.domain.authentication.service.JwtTokenProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -13,7 +11,6 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val authenticationManger: AuthenticationManager,
     private val jwtTokenProvider: JwtTokenProvider
 ) {
     @Bean
@@ -22,7 +19,6 @@ class SecurityConfig(
             .csrf { it.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .formLogin { it.disable() }
-            .addFilter(JwtAuthenticationFilter(authenticationManger, jwtTokenProvider))
             .authorizeHttpRequests {
                 it.anyRequest().permitAll()
             }

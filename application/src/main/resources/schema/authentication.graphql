@@ -1,5 +1,6 @@
 extend type Mutation {
     signUpByEmail(input: SignUpByEmailInput!): SignUpByEmailResult
+    signInByEmail(input: SignInByEmailInput!): AuthenticateResult
 }
 
 input SignUpByEmailInput {
@@ -13,4 +14,15 @@ input SignUpByEmailInput {
 
 type SignUpByEmailResult {
     uid: String!
+}
+
+input SignInByEmailInput {
+    email: String!
+    password: String!
+}
+
+type AuthenticateResult {
+    accessToken: String!
+    refreshToken: String!
+    expiresIn: Int!
 }

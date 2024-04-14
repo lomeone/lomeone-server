@@ -14,7 +14,7 @@ val springCloudOpenFeignVersion: String by project
 val springCloudHystrixVersion: String by project
 val springCloudRibbonVersion: String by project
 val springCloudEurekaClientVersion: String by project
-val springCloudAWSVersion: String by project
+val jacocoVersion: String by project
 
 val jacocoBranchCoverageRatio: String by project
 val jacocoLineCoverageRatio: String by project
@@ -47,7 +47,7 @@ allprojects {
 	}
 
 	jacoco {
-		toolVersion = "0.8.8"
+		toolVersion = jacocoVersion
 	}
 
 	repositories {

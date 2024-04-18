@@ -73,6 +73,7 @@ subprojects {
 		// Spring
 		implementation("org.springframework.boot:spring-boot-starter-validation")
 		implementation("org.springframework.boot:spring-boot-starter-security")
+		implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
 		// Jwt
 		implementation("io.jsonwebtoken:jjwt-api:$jwtVersion")

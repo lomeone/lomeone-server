@@ -88,12 +88,12 @@ class Authentication(
 }
 
 enum class AuthProvider(val value: String) {
-    EMAIL("EMAIL"),
-    GOOGLE("GOOGLE"),
-    FACEBOOK("FACEBOOK"),
-    APPLE("APPLE"),
-    GITHUB("GITHUB"),
-    KAKAO("KAKAO"),
-    NAVER("NAVER"),
-    LINE("LINE")
+    EMAIL("email"),
+    GOOGLE("google"),
+    FACEBOOK("facebook"),
+    APPLE("apple"),
+    GITHUB("github"),
+    KAKAO("kakao"),
+    NAVER("naver"),
+    LINE("line")
 }

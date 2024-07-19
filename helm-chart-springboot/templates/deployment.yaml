@@ -35,9 +35,9 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           env:
-            - name: SPRING_BOOT_PROFILES
+            - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.container.activeProfile }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http

@@ -42,7 +42,7 @@ service:
   containerPort: 8080
 
 ingress:
-  enable: true
+  enabled: true
   internal: true
   annotations:
      kubernetes.io/ingress.class: nginx

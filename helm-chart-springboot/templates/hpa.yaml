@@ -2,6 +2,7 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
+  namespace: {{ .Values.namespace }}
   name: {{ include "springboot-server.fullname" . }}
   labels:
     {{- include "springboot-server.labels" . | nindent 4 }}

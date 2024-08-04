@@ -1,4 +1,4 @@
-package com.lomeone.application.graphql.authentication
+package com.lomeone.application.graphql.api.authentication
 
 import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.service.AuthenticateByEmail

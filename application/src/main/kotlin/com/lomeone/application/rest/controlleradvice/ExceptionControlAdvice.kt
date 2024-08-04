@@ -1,14 +1,15 @@
-package com.lomeone.util.exception
+package com.lomeone.application.rest.controlleradvice
 
+import com.lomeone.util.exception.CustomException
+import com.lomeone.util.exception.ExceptionCategory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import java.time.ZonedDateTime
-import java.time.ZonedDateTime.now
 
 @RestControllerAdvice
-class ExceptionAdvice {
+class ExceptionControlAdvice {
     @ExceptionHandler(CustomException::class)
     fun handler(e: CustomException): ResponseEntity<ExceptionResponse> {
         val response = ExceptionResponse(
@@ -30,7 +31,7 @@ class ExceptionAdvice {
 }
 
 data class ExceptionResponse(
-    val timestamp: ZonedDateTime = now(),
+    val timestamp: ZonedDateTime = ZonedDateTime.now(),
     val status: Int,
     val errorCode: String,
     val message: String? = null

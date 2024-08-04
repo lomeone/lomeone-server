@@ -12,5 +12,4 @@ enum class ExceptionCategory {
     UNAUTHORIZED,
     FORBIDDEN,
     NOT_FOUND,
-    UNPROCESSABLE
 }

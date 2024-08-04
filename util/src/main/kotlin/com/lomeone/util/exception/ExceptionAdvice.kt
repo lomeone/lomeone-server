@@ -26,7 +26,6 @@ class ExceptionAdvice {
             ExceptionCategory.UNAUTHORIZED -> HttpStatus.UNAUTHORIZED
             ExceptionCategory.FORBIDDEN -> HttpStatus.FORBIDDEN
             ExceptionCategory.NOT_FOUND -> HttpStatus.NOT_FOUND
-            ExceptionCategory.UNPROCESSABLE -> HttpStatus.UNPROCESSABLE_ENTITY
         }
 }
 

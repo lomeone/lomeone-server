@@ -65,7 +65,7 @@ fun getGitCurrentBranch(): String {
         commandLine = listOf("git", "branch", "--show-current")
         standardOutput = stdout
     }
-    return stdout.toString().trim()
+    return stdout.toString().trim().replace("/","-")
 }
 
 tasks.getByName<Test>("test") {

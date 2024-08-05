@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.ByteArrayOutputStream
 
@@ -62,8 +63,8 @@ configurations {
 }
 
 subprojects {
-	java.sourceCompatibility = JavaVersion.VERSION_17
-	java.targetCompatibility = JavaVersion.VERSION_17
+	java.sourceCompatibility = JavaVersion.VERSION_21
+	java.targetCompatibility = JavaVersion.VERSION_21
 
 	dependencies {
 		// Kotlin
@@ -162,7 +163,7 @@ subprojects {
 	tasks.withType<KotlinCompile> {
 		kotlinOptions {
 			freeCompilerArgs = listOf("-Xjsr305=strict")
-			jvmTarget = "17"
+			jvmTarget = JavaVersion.VERSION_21.toString()
 		}
 	}
 }

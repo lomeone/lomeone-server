@@ -62,7 +62,7 @@ jib {
 fun getGitCurrentBranch(): String {
     val stdout = ByteArrayOutputStream()
     exec {
-        commandLine = listOf("git", "rev-parse", "--abbrev-ref", "HEAD")
+        commandLine = listOf("git", "branch", "--show-current")
         standardOutput = stdout
     }
     return stdout.toString().trim()

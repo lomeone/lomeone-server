@@ -79,7 +79,7 @@ jobs:
 
       - name: JIB Build
         run: |
-          ./gradlew application:jib
+          ./gradlew application:jib --stacktrace
 
   deploy:
     name: Deploy preview

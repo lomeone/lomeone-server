@@ -55,7 +55,7 @@ jib {
     }
     to {
         image = "$imageRegistry/$serviceName"
-        tags = setOf(getGitCurrentBranch())
+        tags = setOf(getGitCurrentBranch(), getGitHash())
     }
 }
 
@@ -66,6 +66,15 @@ fun getGitCurrentBranch(): String {
         standardOutput = stdout
     }
     return stdout.toString().trim().replace("/","-")
+}
+
+fun getGitHash(): String {
+    val stdout = ByteArrayOutputStream()
+    exec {
+        commandLine = listOf("git", "rev-parse", "--short", "HEAD")
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
 }
 
 tasks.getByName<Test>("test") {

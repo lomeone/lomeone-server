@@ -79,6 +79,9 @@ jobs:
 
       - name: JIB Build
         run: |
+          git branch --show-current
+          git rev-parse --short HEAD
+          git rev-parse --addrev-ref HEAD
           ./gradlew application:jib --stacktrace
 
   deploy:

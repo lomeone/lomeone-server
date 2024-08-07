@@ -66,6 +66,10 @@ fun getImageTags(): Set<String> {
         tags.plus(branch)
     }
     tags.plus(getGitHash())
+
+    println(branch)
+    println(getGitHash())
+
     println(tags.toString())
     return tags
 }

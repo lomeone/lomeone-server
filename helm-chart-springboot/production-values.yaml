@@ -1,6 +1,5 @@
 container:
   activeProfile: "production"
-  replicas: 1
 
 image:
   tag: main
@@ -18,13 +17,13 @@ ingress:
   annotations: {}
 
 resources:
-  limits:
-    cpu: 1.0
-    memory: 1024Mi
-
   requests:
     cpu: 0.1
     memory: 256Mi
+
+  limits:
+    cpu: 2.0
+    memory: 2048Mi
 
 autoscaling:
   enabled: true

@@ -91,6 +91,10 @@ jobs:
       - name: Checkout my code
         uses: actions/checkout@v4
 
+      - name: Check Work Flow Sha
+        run: |
+          echo "Check commit sha : $GITHUB_SHA"
+
 #      - name: Configure AWS Credential
 #        uses: aws-actions/configure-aws-credentials@v4
 #        with:

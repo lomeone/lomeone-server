@@ -6,6 +6,8 @@ version = rootProject.version
 val dgsVersion: String by project
 val springdocOpenapiVersion: String by project
 val prometheusVersion: String by project
+val micrometerTracingVersion: String by project
+val opentelemetryVersion: String by project
 
 val imageRegistry: String by project
 val serviceName: String by project
@@ -31,9 +33,12 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:$springdocOpenapiVersion")
     implementation("org.springdoc:springdoc-openapi-kotlin:$springdocOpenapiVersion")
 
-    // Monitoring
+    // Observability
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("io.micrometer:micrometer-registry-prometheus:${prometheusVersion}")
+    implementation("io.micrometer:micrometer-tracing:${micrometerTracingVersion}")
+    implementation("io.micrometer:micrometer-tracing-bridge-brave:${micrometerTracingVersion}")
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp:${opentelemetryVersion}")
 }
 
 tasks {

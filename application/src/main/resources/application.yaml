@@ -46,7 +46,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "metrics"
+        include: "health,metrics,prometheus"
 
 cloud:
   aws:

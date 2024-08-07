@@ -42,6 +42,7 @@ tasks {
 
 jib {
     from {
+        image = "amazoncorretto:21"
         platforms {
             platform {
                 architecture = "amd64"
@@ -62,15 +63,12 @@ jib {
 fun getImageTags(): Set<String> {
     val tags = mutableSetOf<String>()
     val branch = getGitCurrentBranch()
+
     if (branch.isNotBlank()) {
         tags.add(branch)
     }
     tags.add(getGitHash())
 
-    println(branch)
-    println(getGitHash())
-
-    println(tags.toString())
     return tags
 }
 

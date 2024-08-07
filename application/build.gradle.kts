@@ -42,6 +42,7 @@ tasks {
 
 jib {
     from {
+        image = "amazoncorretto:21"
         platforms {
             platform {
                 architecture = "amd64"
@@ -55,14 +56,35 @@ jib {
     }
     to {
         image = "$imageRegistry/$serviceName"
-        tags = setOf(getGitCurrentBranch())
+        tags = getImageTags()
     }
+}
+
+fun getImageTags(): Set<String> {
+    val tags = mutableSetOf<String>()
+    val branch = getGitCurrentBranch()
+
+    if (branch.isNotBlank()) {
+        tags.add(branch)
+    }
+    tags.add(getGitHash())
+
+    return tags
 }
 
 fun getGitCurrentBranch(): String {
     val stdout = ByteArrayOutputStream()
     exec {
         commandLine = listOf("git", "rev-parse", "--abbrev-ref", "HEAD")
+        standardOutput = stdout
+    }
+    return stdout.toString().trim().replace("/","-")
+}
+
+fun getGitHash(): String {
+    val stdout = ByteArrayOutputStream()
+    exec {
+        commandLine = listOf("git", "rev-parse", "--short", "HEAD")
         standardOutput = stdout
     }
     return stdout.toString().trim()

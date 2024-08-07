@@ -55,8 +55,18 @@ jib {
     }
     to {
         image = "$imageRegistry/$serviceName"
-        tags = setOf(getGitCurrentBranch(), getGitHash())
+        tags = getImageTags()
     }
+}
+
+fun getImageTags(): Set<String> {
+    val tags = setOf<String>()
+    val branch = getGitCurrentBranch()
+    if (branch.isNotBlank()) {
+        tags.plus(branch)
+    }
+    tags.plus(getGitHash())
+    return tags
 }
 
 fun getGitCurrentBranch(): String {

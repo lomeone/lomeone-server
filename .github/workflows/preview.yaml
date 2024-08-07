@@ -93,7 +93,7 @@ jobs:
 
       - name: Check Work Flow Sha
         run: |
-          COMMIT_SHA = $(git rev-parse --short HEAD)
+          COMMIT_SHA=$(git rev-parse --short HEAD)
           echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
 
       - name: Check COMMIT_SHA

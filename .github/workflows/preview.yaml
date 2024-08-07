@@ -93,7 +93,8 @@ jobs:
 
       - name: Check Work Flow Sha
         run: |
-          echo "Check commit sha : $GITHUB_SHA"
+          COMMIT_SHA = $(git rev-parse --short HEAD)
+          echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
 
 #      - name: Configure AWS Credential
 #        uses: aws-actions/configure-aws-credentials@v4

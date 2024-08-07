@@ -102,7 +102,8 @@ jobs:
 #        with:
 #          aws-region: ${{ secrets.AWS_REGION }}
 #          cluster-name: ${{ secrets.EKS_CLUSTER_NAME }}
-#          config-files: helm-chart-springboot/dev-values.yaml
+#          config-files: helm-chart-springboot/values.yaml,helm-chart-springboot/dev-values.yaml
 #          chart-path: helm-chart-springboot/
 #          namespace: ${{ secrets.EKS_NAMESPACE }}
+#          values: image.tag=
 #          name: preview-lomeone-server

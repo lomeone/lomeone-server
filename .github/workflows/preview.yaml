@@ -100,19 +100,31 @@ jobs:
         run: |
           echo "The short commit SHA is ${{ env.COMMIT_SHA }}"
 
-#      - name: Configure AWS Credential
-#        uses: aws-actions/configure-aws-credentials@v4
-#        with:
-#          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-#          aws-region: ${{ secrets.AWS_REGION }}
-#
-#      - name: Deploy to preview
-#        uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
-#        with:
-#          aws-region: ${{ secrets.AWS_REGION }}
-#          cluster-name: ${{ secrets.EKS_CLUSTER_NAME }}
-#          config-files: helm-chart-springboot/values.yaml,helm-chart-springboot/dev-values.yaml
-#          chart-path: helm-chart-springboot/
-#          namespace: ${{ secrets.EKS_NAMESPACE }}
-#          values: image.tag=
-#          name: preview-lomeone-server
+      - name: Configure AWS Credential
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to develop
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          cluster-name: ${{ secrets.EKS_CLUSTER_NAME }}
+          config-files: helm-chart-springboot/values.yaml,helm-chart-springboot/dev-values.yaml
+          chart-path: helm-chart-springboot/
+          namespace: ${{ secrets.EKS_NAMESPACE }}
+          name: dev-lomeone-server
+
+      - name: Deploy to develop in PR
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: bitovi/github-actions-deploy-eks-helm@v1.2.10
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          cluster-name: ${{ secrets.EKS_CLUSTER_NAME }}
+          config-files: helm-chart-springboot/values.yaml,helm-chart-springboot/dev-values.yaml
+          chart-path: helm-chart-springboot/
+          namespace: ${{ secrets.EKS_NAMESPACE }}
+          values: image.tag=${{ env.COMMIT_SHA }},ingress.hosts.hots=${{ env.COMMIT_SHA }}-dev-server.lomeone.com
+          name: ${{ env.COMMIT_SHA }}-dev-lomeone-server

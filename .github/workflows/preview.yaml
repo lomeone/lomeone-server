@@ -91,15 +91,19 @@ jobs:
       - name: Checkout my code
         uses: actions/checkout@v4
 
-#      - name: Check Work Flow Sha
-#        run: |
-#          COMMIT_SHA=$(git rev-parse --short HEAD)
-#          echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
-#
-#      - name: Check COMMIT_SHA
-#        run: |
-#          echo "The short commit SHA is ${{ env.COMMIT_SHA }}"
-#
+      - name: Check Work Flow Sha
+        run: |
+          COMMIT_SHA=$(git rev-parse --short HEAD)
+          echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
+          echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+
+      - name: Check COMMIT_SHA
+        run: |
+          echo "The short commit SHA is ${{ env.COMMIT_SHA }}"
+          echo "The branch is ${{ env.branch }}"
+          echo "base branch ${{ github.head_ref }}"
+          echo "target branch ${{ github.base_ref }}"
+
 #      - name: Configure AWS Credential
 #        uses: aws-actions/configure-aws-credentials@v4
 #        with:

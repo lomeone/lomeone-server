@@ -104,6 +104,10 @@ jobs:
           echo "base branch ${{ github.head_ref }}"
           echo "target branch ${{ github.base_ref }}"
 
+      - name: Check event_name
+        run: |
+          echo "This event is $GITHUB_EVENT_NAME"
+
 #      - name: Configure AWS Credential
 #        uses: aws-actions/configure-aws-credentials@v4
 #        with:

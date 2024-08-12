@@ -96,18 +96,13 @@ jobs:
           COMMIT_SHA=$(git rev-parse --short HEAD)
           echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
           echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
-          echo "modified_branch=$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//-/g')" >> $GITHUB_ENV
-          echo "modified_branch_test=$(echo "bugfix/test-body" | sed 's/\//-/g')" >> $GITHUB_ENV
-
+          echo "tag_branch=$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//-/g')" >> $GITHUB_ENV
 
       - name: Check COMMIT_SHA
         run: |
           echo "The short commit SHA is ${{ env.COMMIT_SHA }}"
           echo "The branch is ${{ env.branch }}"
-          echo "Modified branch name: ${{ env.modified_branch }}"
-          echo "Modified branch test name: ${{ env.modified_branch_test }}"
-          echo "base branch ${{ github.head_ref }}"
-          echo "target branch ${{ github.base_ref }}"
+          echo "The tag_branch is ${{ env.tag_branch }}"
 
       - name: Check event_name
         run: |

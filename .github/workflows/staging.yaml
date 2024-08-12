@@ -101,7 +101,7 @@ jobs:
 #        with:
 #          aws-region: ${{ secrets.AWS_REGION }}
 #          cluster-name: ${{ secrets.EKS_CLUSTER_NAME }}
-#          config-files: helm-chart-springboot/staging-values.yaml
+#          config-files: helm-chart-springboot/values.yaml,helm-chart-springboot/staging-values.yaml
 #          chart-path: helm-chart-springboot/
 #          namespace: ${{ secrets.EKS_NAMESPACE }}
 #          name: staging-lomeone-server

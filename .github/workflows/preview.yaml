@@ -96,7 +96,7 @@ jobs:
           COMMIT_SHA=$(git rev-parse --short HEAD)
           echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_ENV
           echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
-          echo "modified_branch=$(echo ${{ env.branch }} | sed 's/\//-/g')" >> $GITHUB_ENV
+          echo "modified_branch=$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//-/g')" >> $GITHUB_ENV
           echo "modified_branch_test=$(echo "bugfix/test-body" | sed 's/\//-/g')" >> $GITHUB_ENV
 
 

@@ -91,21 +91,11 @@ jobs:
       - name: Checkout my code
         uses: actions/checkout@v4
 
-      - name: Add branch env value
+      - name: Add env value
         run: |
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
           echo "tag_branch=$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//-/g')" >> $GITHUB_ENV
-
-      - name: Check COMMIT_SHA
-        run: |
-          echo "The short commit SHA is ${{ env.COMMIT_SHA }}"
-          echo "The branch is ${{ env.branch }}"
-          echo "The tag_branch is ${{ env.tag_branch }}"
-
-      - name: Check event_name
-        run: |
-          echo "This event is $GITHUB_EVENT_NAME"
 
 #      - name: Configure AWS Credential
 #        uses: aws-actions/configure-aws-credentials@v4

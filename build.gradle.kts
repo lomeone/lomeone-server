@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.ByteArrayOutputStream
 
@@ -160,9 +161,9 @@ subprojects {
 	}
 
 	tasks.withType<KotlinCompile> {
-		kotlinOptions {
-			freeCompilerArgs = listOf("-Xjsr305=strict")
-			jvmTarget = JavaVersion.VERSION_21.toString()
+		compilerOptions {
+			freeCompilerArgs.add("-Xjsr305=strict")
+			jvmTarget = JvmTarget.JVM_21
 		}
 	}
 }

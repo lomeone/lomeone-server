@@ -48,6 +48,15 @@ management:
       exposure:
         include: "health,metrics,prometheus"
 
+  tracing:
+    enabled: true
+
+micrometer:
+  tracing:
+    bridge:
+      brave:
+        enabled: true
+
 cloud:
   aws:
     region:

@@ -2,6 +2,7 @@ package com.lomeone.domain.authentication.service
 
 import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.entity.Authentication
+import com.lomeone.domain.authentication.exception.AuthenticationNotFoundException
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -21,12 +22,12 @@ class PrincipalDetailService(
                 authentication.signIn()
                 PrincipalDetails(authentication)
             }
-            ?: throw Exception("Authentication does not exist")
+            ?: throw AuthenticationNotFoundException(mapOf("id" to username))
 }
 
 data class PrincipalDetails(
     private val authentication: Authentication
-): UserDetails {
+) : UserDetails {
 
     override fun getAuthorities(): List<GrantedAuthority> =
         authentication.user.userRoles.map { SimpleGrantedAuthority("ROLE_${it.role.roleName}") }

@@ -2,6 +2,7 @@ package com.lomeone.domain.authentication.service
 
 import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.entity.Authentication
+import com.lomeone.domain.authentication.exception.AuthenticationNotFoundException
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.Role
@@ -60,7 +61,7 @@ class PrincipalDetailServiceTest : BehaviorSpec({
 
         When("loadUser를 할 때") {
             Then("인증 정보가 없다는 예외가 발생해서 인증정보를 가져올 수 없다") {
-                shouldThrow<Exception> {
+                shouldThrow<AuthenticationNotFoundException> {
                     principalDetailService.loadUserByUsername(emailInput)
                 }
             }

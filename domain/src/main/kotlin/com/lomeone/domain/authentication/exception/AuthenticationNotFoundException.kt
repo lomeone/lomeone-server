@@ -6,8 +6,11 @@ import com.lomeone.util.exception.ExceptionCategory
 const val errorCode = "authentication/not-found"
 const val exceptionMessage = "Authentication not found"
 
-class AuthenticationNotFoundException : CustomException(
+class AuthenticationNotFoundException(
+    detail: Map<String, Any>
+) : CustomException(
     errorCode = errorCode,
     message = exceptionMessage,
-    exceptionCategory = ExceptionCategory.NOT_FOUND
+    exceptionCategory = ExceptionCategory.NOT_FOUND,
+    detail = detail
 )

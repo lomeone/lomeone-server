@@ -5,6 +5,7 @@ import com.lomeone.domain.authentication.service.CreateAuthenticationResult
 import com.lomeone.domain.authentication.service.CreateAuthenticationService
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.exception.UserEmailAlreadyExistsException
+import com.lomeone.domain.user.exception.UserPhoneNumberAlreadyExistsException
 import com.lomeone.domain.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
@@ -105,7 +106,7 @@ class CreateUserServiceTest : BehaviorSpec({
             )
 
             Then("유저가 이미 존재한다는 예외가 발생해서 유저를 생성할 수 없다") {
-                shouldThrow<Exception> {
+                shouldThrow<UserPhoneNumberAlreadyExistsException> {
                     createUserService.createUser(command)
                 }
             }

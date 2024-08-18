@@ -2,6 +2,7 @@ package com.lomeone.domain.user.service
 
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
+import com.lomeone.domain.user.exception.UserNotFoundException
 import com.lomeone.domain.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
@@ -44,7 +45,7 @@ class GetUserByUserTokenServiceTest : BehaviorSpec({
         every { userRepository.findByUserToken(userTokenInput) } returns null
         When("유저를 검색할 때") {
             Then("유저를 찾을 수 없다는 예외가 발생해서 유저를 검색할 수 없다") {
-                shouldThrow<Exception> {
+                shouldThrow<UserNotFoundException> {
                     getUserByUserTokenService.getUserByUserToken(GetUserByUserTokenQuery(userTokenInput))
                 }
             }

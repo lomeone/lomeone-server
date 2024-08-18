@@ -1,5 +1,6 @@
 package com.lomeone.domain.common.entity
 
+import com.lomeone.domain.common.exception.InvalidEmailAddressException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
@@ -16,7 +17,7 @@ class EmailTest : FreeSpec({
         "이메일이 공백이면 이메일이 공백이라는 예외가 발생한다" - {
             val inputValue = ""
 
-            shouldThrow<Exception> {
+            shouldThrow<InvalidEmailAddressException> {
                 Email(inputValue)
             }
         }
@@ -24,7 +25,7 @@ class EmailTest : FreeSpec({
         "이메일이 형식에 맞지 않으면 이메일이 형식에 맞지 않는다는 예외가 발생한다" - {
             val inputValue = "email"
 
-            shouldThrow<Exception> {
+            shouldThrow<InvalidEmailAddressException> {
                 Email(inputValue)
             }
         }

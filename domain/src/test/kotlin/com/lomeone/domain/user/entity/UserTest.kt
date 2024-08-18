@@ -2,6 +2,10 @@ package com.lomeone.domain.user.entity
 
 import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.common.entity.Email
+import com.lomeone.domain.user.exception.UserNameInvalidException
+import com.lomeone.domain.user.exception.UserNicknameInvalidException
+import com.lomeone.domain.user.exception.UserPhoneNumberInvalidException
+import com.lomeone.domain.user.exception.UserRoleEmptyException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldContain
@@ -43,7 +47,7 @@ class UserTest : FreeSpec({
 
         "이름이 공백이면 이름이 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
             val nameInput = ""
-            shouldThrow<Exception> {
+            shouldThrow<UserNameInvalidException> {
                 User(
                     name = nameInput,
                     nickname = "nickname",
@@ -63,7 +67,7 @@ class UserTest : FreeSpec({
 
         "닉네임이 공백이면 닉네임이 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
             val nicknameInput = ""
-            shouldThrow<Exception> {
+            shouldThrow<UserNicknameInvalidException> {
                 User(
                     name = "name",
                     nickname = nicknameInput,
@@ -83,7 +87,7 @@ class UserTest : FreeSpec({
 
         "핸드폰 번호가 공백이면 핸드폰 번호가 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
             val phoneNumberInput = ""
-            shouldThrow<Exception> {
+            shouldThrow<UserPhoneNumberInvalidException> {
                 User(
                     name = "name",
                     nickname = "nickname",
@@ -103,7 +107,7 @@ class UserTest : FreeSpec({
 
         "유저 역할이 없으면 유저 역할이 없다는 예외가 발생해서 유저를 생성할 수 없다" - {
             val userRolesInput = mutableListOf<UserRole>()
-            shouldThrow<Exception> {
+            shouldThrow<UserRoleEmptyException> {
                 User(
                     name = "name",
                     nickname = "nickname",
@@ -131,14 +135,14 @@ class UserTest : FreeSpec({
 
         "이름이 공백이면 이름이 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val nameInput = ""
-            shouldThrow<Exception> {
+            shouldThrow<UserNameInvalidException> {
                 defaultUser.updateUserInfo(nameInput, "nickname", LocalDate.now())
             }
         }
 
         "닉네임이 공백이면 닉네임이 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val nicknameInput = ""
-            shouldThrow<Exception> {
+            shouldThrow<UserNicknameInvalidException> {
                 defaultUser.updateUserInfo("name", nicknameInput, LocalDate.now())
             }
         }
@@ -159,7 +163,7 @@ class UserTest : FreeSpec({
 
         "휴대폰 번호가 공백이면 휴대폰 번호가 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val phoneNumberInput = ""
-            shouldThrow<Exception> {
+            shouldThrow<UserPhoneNumberInvalidException> {
                 defaultUser.updatePhoneNumber(phoneNumberInput)
             }
         }

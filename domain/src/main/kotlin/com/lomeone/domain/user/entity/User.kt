@@ -4,6 +4,10 @@ import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.util.converter.EmailCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
+import com.lomeone.domain.user.exception.UserNameInvalidException
+import com.lomeone.domain.user.exception.UserNicknameInvalidException
+import com.lomeone.domain.user.exception.UserPhoneNumberInvalidException
+import com.lomeone.domain.user.exception.UserRoleEmptyException
 import java.time.LocalDate
 import java.util.UUID
 import jakarta.persistence.Column
@@ -79,21 +83,19 @@ class User(
     }
 
     private fun ensureNameIsNotBlank(name: String) {
-        name.isBlank() && throw Exception("Name is blank")
+        name.isBlank() && throw UserNameInvalidException(message = "User name is blank", detail = mapOf("name" to name))
     }
 
     private fun ensureNicknameIsNotBlank(nickname: String) {
-        nickname.isBlank() && throw Exception("Nickname is blank")
+        nickname.isBlank() && throw UserNicknameInvalidException(message = "User nickname is blank", detail = mapOf("nickname" to nickname))
     }
 
     private fun ensurePhoneNumberIsNotBlank(phoneNumber: String) {
-        phoneNumber.isBlank() && throw Exception("PhoneNumber is blank")
+        phoneNumber.isBlank() && throw UserPhoneNumberInvalidException(message = "User phone number is blank", detail = mapOf("phone_number" to phoneNumber))
     }
 
     private fun ensureUserRoleIsNotEmpty(userRoles: MutableList<UserRole>) {
-        if (userRoles.isEmpty()) {
-            throw Exception("User role must be not empty")
-        }
+        userRoles.isEmpty() && throw UserRoleEmptyException()
     }
 
     fun updateUserInfo(name: String, nickname: String, birthday: LocalDate) {

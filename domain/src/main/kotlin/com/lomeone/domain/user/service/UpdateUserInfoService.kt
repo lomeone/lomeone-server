@@ -1,5 +1,6 @@
 package com.lomeone.domain.user.service
 
+import com.lomeone.domain.user.exception.UserNotFoundException
 import com.lomeone.domain.user.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -26,7 +27,7 @@ class UpdateUserInfoService(
     }
 
     private fun getUser(userToken: String) = userRepository.findByUserToken(userToken)
-        ?: throw Exception("User not found")
+        ?: throw UserNotFoundException(mapOf("userToken" to userToken))
 }
 
 data class UpdateUserInfoServiceCommand(

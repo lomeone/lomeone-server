@@ -2,6 +2,8 @@ package com.lomeone.domain.authentication.service
 
 import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.entity.Authentication
+import com.lomeone.domain.authentication.exception.AuthenticationNotFoundException
+import com.lomeone.domain.authentication.exception.OAuth2ProviderNotSupportedException
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.user.service.CreateUserCommand
 import com.lomeone.domain.user.service.CreateUserResult
@@ -45,13 +47,13 @@ class OAuth2UserService(
 
         val result = createUser(userInfo, uid)
 
-        return authenticationRepository.findByUid(uid) ?: throw Exception()
+        return authenticationRepository.findByUid(uid) ?: throw AuthenticationNotFoundException(mapOf("uid" to uid))
     }
 
     private fun getUserInfo(registrationId: String, attributes: MutableMap<String, Any>): OAuth2UserInfo =
         when(registrationId) {
             AuthProvider.KAKAO.value -> KakaoUserInfo(attributes)
-            else -> throw Exception("Not yet supported oauth2 provider")
+            else -> throw OAuth2ProviderNotSupportedException(mapOf("oauth2" to registrationId))
         }
 
     private fun createUser(userInfo: OAuth2UserInfo, uid: String): CreateUserResult {

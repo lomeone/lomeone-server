@@ -15,7 +15,8 @@ class ExceptionControlAdvice {
         val response = ExceptionResponse(
             status = convertErrorCategoryToHttpStatusCode(e.exceptionCategory).value(),
             errorCode = e.errorCode,
-            message = e.message
+            message = e.message,
+            detail = e.detail
         )
 
         return ResponseEntity.status(convertErrorCategoryToHttpStatusCode(e.exceptionCategory)).body(response)
@@ -34,5 +35,6 @@ data class ExceptionResponse(
     val timestamp: ZonedDateTime = ZonedDateTime.now(),
     val status: Int,
     val errorCode: String,
-    val message: String? = null
+    val message: String? = null,
+    val detail: Map<String, Any> = mapOf()
 )

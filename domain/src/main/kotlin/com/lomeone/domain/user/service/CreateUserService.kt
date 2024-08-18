@@ -5,6 +5,8 @@ import com.lomeone.domain.authentication.service.CreateAuthenticationCommand
 import com.lomeone.domain.authentication.service.CreateAuthenticationService
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
+import com.lomeone.domain.user.exception.UserEmailAlreadyExistsException
+import com.lomeone.domain.user.exception.UserPhoneNumberAlreadyExistsException
 import com.lomeone.domain.user.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -52,9 +54,10 @@ class CreateUserService(
     }
 
     private fun verifyDuplicate(userInfo: CreateUserCommand.UserInfo) {
-        userRepository.findByEmail(userInfo.email) != null && throw Exception("User with same email already exists")
+        userRepository.findByEmail(userInfo.email) != null
+                && throw UserEmailAlreadyExistsException(mapOf("email" to userInfo.email))
         userRepository.findByPhoneNumber(userInfo.phoneNumber) != null
-            && throw Exception("User with same phone number already exists")
+                && throw UserPhoneNumberAlreadyExistsException(mapOf("phoneNumber" to userInfo.phoneNumber))
     }
 }
 

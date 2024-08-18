@@ -2,6 +2,7 @@ package com.lomeone.domain.user.service
 
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
+import com.lomeone.domain.user.exception.UserNotFoundException
 import com.lomeone.domain.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
@@ -52,7 +53,7 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
                 birthday = LocalDate.of(2000, 1, 1),
             )
             Then("유저를 찾을 수 없다는 예외가 발생해서 유저 정보를 업데이트할 수 없다") {
-                shouldThrow<Exception> {
+                shouldThrow<UserNotFoundException> {
                     withContext(Dispatchers.IO) {
                         updateUserInfoService.execute(command)
                     }

@@ -57,7 +57,7 @@ class CreateUserService(
         userRepository.findByEmail(userInfo.email) != null
                 && throw UserEmailAlreadyExistsException(mapOf("email" to userInfo.email))
         userRepository.findByPhoneNumber(userInfo.phoneNumber) != null
-                && throw UserPhoneNumberAlreadyExistsException(mapOf("phoneNumber" to userInfo.phoneNumber))
+                && throw UserPhoneNumberAlreadyExistsException(mapOf("phone_number" to userInfo.phoneNumber))
     }
 }
 

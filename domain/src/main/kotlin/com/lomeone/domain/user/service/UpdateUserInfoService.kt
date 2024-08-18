@@ -27,7 +27,7 @@ class UpdateUserInfoService(
     }
 
     private fun getUser(userToken: String) = userRepository.findByUserToken(userToken)
-        ?: throw UserNotFoundException(mapOf("userToken" to userToken))
+        ?: throw UserNotFoundException(mapOf("user_token" to userToken))
 }
 
 data class UpdateUserInfoServiceCommand(

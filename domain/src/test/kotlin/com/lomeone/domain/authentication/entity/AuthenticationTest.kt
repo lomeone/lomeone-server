@@ -1,5 +1,7 @@
 package com.lomeone.domain.authentication.entity
 
+import com.lomeone.domain.authentication.exception.AuthenticationProviderIsNotEmailException
+import com.lomeone.domain.authentication.exception.AuthenticationPasswordInvalidException
 import com.lomeone.domain.common.entity.Email
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
@@ -30,7 +32,7 @@ class AuthenticationTest : FreeSpec({
             val providerInput = AuthProvider.EMAIL
             val passwordInput = null
 
-            shouldThrow<Exception> {
+            shouldThrow<AuthenticationPasswordInvalidException> {
                 Authentication(
                     email = emailInput,
                     password = passwordInput,
@@ -60,7 +62,7 @@ class AuthenticationTest : FreeSpec({
             val providerInput = AuthProvider.GOOGLE
             val passwordInput = "testPassword1324@"
 
-            shouldThrow<Exception> {
+            shouldThrow<AuthenticationPasswordInvalidException> {
                 Authentication(
                     email = emailInput,
                     password = passwordInput,
@@ -111,7 +113,7 @@ class AuthenticationTest : FreeSpec({
 
             val passwordInput = "testPassword1324!"
 
-            shouldThrow<Exception> {
+            shouldThrow<AuthenticationProviderIsNotEmailException> {
                 googleAuthentication.changePassword(passwordInput)
             }
         }

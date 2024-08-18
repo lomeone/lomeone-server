@@ -1,5 +1,7 @@
 package com.lomeone.domain.authentication.entity
 
+import com.lomeone.domain.authentication.exception.AuthenticationProviderIsNotEmailException
+import com.lomeone.domain.authentication.exception.AuthenticationPasswordInvalidException
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
@@ -11,7 +13,6 @@ import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
-import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -65,11 +66,19 @@ class Authentication(
     }
 
     private fun checkPasswordIsNotNullIfEmailProvider(password: String?) {
-        this.provider == AuthProvider.EMAIL && password == null && throw IllegalArgumentException("password must not be null")
+        this.provider == AuthProvider.EMAIL && password == null
+                && throw AuthenticationPasswordInvalidException(
+                    message = "Password must be not null if provider is email",
+                    detail = mapOf("provider" to this.provider)
+                )
     }
 
     private fun checkPasswordIsNullByOtherProvider(password: String?) {
-        this.provider != AuthProvider.EMAIL && password != null && throw IllegalArgumentException("password must be null")
+        this.provider != AuthProvider.EMAIL && password != null
+                && throw AuthenticationPasswordInvalidException(
+                    message = "Password must be null if provider is not email",
+                    detail = mapOf("provider" to this.provider, "password" to password)
+                )
     }
 
     fun signIn() {
@@ -83,7 +92,8 @@ class Authentication(
     }
 
     private fun ensureEmailProvider() {
-        this.provider != AuthProvider.EMAIL && throw IllegalArgumentException("provider must be EMAIL")
+        this.provider != AuthProvider.EMAIL
+                && throw AuthenticationProviderIsNotEmailException(mapOf("provider" to this.provider))
     }
 }
 

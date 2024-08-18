@@ -12,6 +12,6 @@ class AuthenticationAlreadyExistsException(
 ) {
     companion object {
         const val ERROR_CODE = "authentication/already-exists"
-        const val MESSAGE = ""
+        const val MESSAGE = "Authentication already exists"
     }
 }

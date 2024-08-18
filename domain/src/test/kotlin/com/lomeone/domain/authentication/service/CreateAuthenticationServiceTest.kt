@@ -2,6 +2,7 @@ package com.lomeone.domain.authentication.service
 
 import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.entity.Authentication
+import com.lomeone.domain.authentication.exception.AuthenticationAlreadyExistsException
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
 import io.kotest.assertions.throwables.shouldThrow
@@ -99,7 +100,7 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
                 user = mockk()
             )
             Then("중복된 인증정보가 있다는 예외가 발생해서 인증정보 생성에 실패한다") {
-                shouldThrow<Exception> {
+                shouldThrow<AuthenticationAlreadyExistsException> {
                     createAuthenticationService.createAuthentication(command)
                 }
             }
@@ -125,7 +126,7 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
                 user = mockk()
             )
             Then("중복된 인증정보가 있다는 예외가 발생해서 인증정보 생성에 실패한다") {
-                shouldThrow<Exception> {
+                shouldThrow<AuthenticationAlreadyExistsException> {
                     createAuthenticationService.createAuthentication(command)
                 }
             }

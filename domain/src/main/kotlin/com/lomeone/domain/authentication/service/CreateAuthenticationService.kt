@@ -2,6 +2,7 @@ package com.lomeone.domain.authentication.service
 
 import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.authentication.entity.AuthProvider
+import com.lomeone.domain.authentication.exception.AuthenticationAlreadyExistsException
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
@@ -34,12 +35,10 @@ class CreateAuthenticationService(
     }
 
     private fun verifyDuplicate(command: CreateAuthenticationCommand) {
-        val emailAuthentication = authenticationRepository.findByEmailAndProvider(email = command.email, provider = command.provider)
-        val uidAuthentication = authenticationRepository.findByUid(command.uid)
-
-        if (emailAuthentication != null || uidAuthentication != null) {
-            throw Exception()
-        }
+        authenticationRepository.findByEmailAndProvider(email = command.email, provider = command.provider) != null
+                && throw AuthenticationAlreadyExistsException(detail = mapOf("email" to command.email, "provider" to command.provider))
+        authenticationRepository.findByUid(command.uid) != null
+                && throw AuthenticationAlreadyExistsException(mapOf("uid" to command.uid))
     }
 
     private fun encodePassword(password: String?): String? {

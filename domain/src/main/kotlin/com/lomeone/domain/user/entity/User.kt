@@ -13,6 +13,8 @@ import java.util.UUID
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -64,6 +66,9 @@ class User(
 
     var birthday: LocalDate = birthday
         protected set
+
+    @Enumerated(EnumType.STRING)
+    var status: UserStatus = UserStatus.ACTIVE
 
     @OneToMany
     @JoinColumn(name = "users_id")
@@ -122,4 +127,12 @@ class User(
     fun addRole(role: Role) {
         _userRoles.add(UserRole(role = role))
     }
+}
+
+enum class UserStatus {
+    ACTIVE,
+    INACTIVE,
+    SUSPENDED,
+    DELETION_REQUESTED,
+    DELETED
 }

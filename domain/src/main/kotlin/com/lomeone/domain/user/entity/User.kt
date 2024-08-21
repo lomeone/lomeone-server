@@ -130,9 +130,9 @@ class User(
 }
 
 enum class UserStatus {
-    ACTIVE,
-    INACTIVE,
-    SUSPENDED,
-    DELETION_REQUESTED,
-    DELETED
+    ACTIVE,                 // 활성 유저
+    INACTIVE,               // 비활성 유저(휴면 유저, 미인증 유저)
+    SUSPENDED,              // 사용 불가 유저(규정 미준수 및 블랙리스트 유저)
+    DELETION_REQUESTED,     // 삭제 요청 유저
+    DELETED                 // 삭제 완료 유저
 }

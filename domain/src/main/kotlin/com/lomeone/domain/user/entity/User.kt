@@ -69,16 +69,17 @@ class User(
 
     @Enumerated(EnumType.STRING)
     var status: UserStatus = UserStatus.ACTIVE
+        protected set
 
     @OneToMany
     @JoinColumn(name = "users_id")
     private val _authentications: MutableList<Authentication> = mutableListOf()
-    val authentications: List<Authentication> get() = _authentications
+    val authentications: List<Authentication> get() = this._authentications
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id")
     private val _userRoles: MutableList<UserRole> = userRoles
-    val userRoles: List<UserRole> get() = _userRoles
+    val userRoles: List<UserRole> get() = this._userRoles
 
     init {
         ensureNameIsNotBlank(name)
@@ -125,7 +126,7 @@ class User(
     }
 
     fun addRole(role: Role) {
-        _userRoles.add(UserRole(role = role))
+        this._userRoles.add(UserRole(role = role))
     }
 }
 

@@ -4,10 +4,7 @@ import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.util.converter.EmailCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
-import com.lomeone.domain.user.exception.UserNameInvalidException
-import com.lomeone.domain.user.exception.UserNicknameInvalidException
-import com.lomeone.domain.user.exception.UserPhoneNumberInvalidException
-import com.lomeone.domain.user.exception.UserRoleEmptyException
+import com.lomeone.domain.user.exception.*
 import java.time.LocalDate
 import java.util.UUID
 import jakarta.persistence.Column
@@ -127,6 +124,13 @@ class User(
 
     fun addRole(role: Role) {
         this._userRoles.add(UserRole(role = role))
+    }
+
+    fun deleteRequest() {
+        if (this.status != UserStatus.ACTIVE) {
+            throw UserIsNotActiveException(mapOf("status" to this.status))
+        }
+        this.status = UserStatus.DELETION_REQUESTED
     }
 }
 

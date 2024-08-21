@@ -2,7 +2,11 @@ package com.lomeone.domain.user.entity
 
 import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.common.entity.Email
-import com.lomeone.domain.user.exception.*
+import com.lomeone.domain.user.exception.UserIsNotActiveException
+import com.lomeone.domain.user.exception.UserNameInvalidException
+import com.lomeone.domain.user.exception.UserNicknameInvalidException
+import com.lomeone.domain.user.exception.UserPhoneNumberInvalidException
+import com.lomeone.domain.user.exception.UserRoleEmptyException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldContain

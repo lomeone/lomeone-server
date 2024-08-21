@@ -4,7 +4,11 @@ import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.util.converter.EmailCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
-import com.lomeone.domain.user.exception.*
+import com.lomeone.domain.user.exception.UserIsNotActiveException
+import com.lomeone.domain.user.exception.UserNameInvalidException
+import com.lomeone.domain.user.exception.UserNicknameInvalidException
+import com.lomeone.domain.user.exception.UserPhoneNumberInvalidException
+import com.lomeone.domain.user.exception.UserRoleEmptyException
 import java.time.LocalDate
 import java.util.UUID
 import jakarta.persistence.Column

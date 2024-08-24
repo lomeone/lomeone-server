@@ -5,8 +5,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "deletion_request_users", indexes = [
-    Index(name = "idx_deletion_request_users_user_token_u1", columnList = "userToken", unique = true),
-    Index(name = "idx_deletion_request_users_user_token_created_at_m1", columnList = "userToken, createdAt")
+    Index(name = "idx_deletion_request_user_token_status_created_at", columnList = "userToken, status, createdAt")
 ])
 class DeletionRequest(
     @Id

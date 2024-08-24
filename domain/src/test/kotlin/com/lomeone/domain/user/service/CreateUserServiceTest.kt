@@ -25,7 +25,6 @@ class CreateUserServiceTest : BehaviorSpec({
         val mockUser: User = mockk()
         every { mockUser.userToken } returns "user-token"
         every { userRepository.save(any()) } returns mockUser
-
         every { createAuthenticationService.createAuthentication(any()) } returns CreateAuthenticationResult("uid1234")
     }
 

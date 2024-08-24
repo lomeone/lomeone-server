@@ -4,6 +4,7 @@ import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.util.converter.EmailCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
+import com.lomeone.domain.user.exception.UserIsNotActiveException
 import com.lomeone.domain.user.exception.UserNameInvalidException
 import com.lomeone.domain.user.exception.UserNicknameInvalidException
 import com.lomeone.domain.user.exception.UserPhoneNumberInvalidException
@@ -13,6 +14,8 @@ import java.util.UUID
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -65,15 +68,19 @@ class User(
     var birthday: LocalDate = birthday
         protected set
 
+    @Enumerated(EnumType.STRING)
+    var status: UserStatus = UserStatus.ACTIVE
+        protected set
+
     @OneToMany
     @JoinColumn(name = "users_id")
     private val _authentications: MutableList<Authentication> = mutableListOf()
-    val authentications: List<Authentication> get() = _authentications
+    val authentications: List<Authentication> get() = this._authentications
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id")
     private val _userRoles: MutableList<UserRole> = userRoles
-    val userRoles: List<UserRole> get() = _userRoles
+    val userRoles: List<UserRole> get() = this._userRoles
 
     init {
         ensureNameIsNotBlank(name)
@@ -120,6 +127,21 @@ class User(
     }
 
     fun addRole(role: Role) {
-        _userRoles.add(UserRole(role = role))
+        this._userRoles.add(UserRole(role = role))
     }
+
+    fun deleteRequest() {
+        if (this.status != UserStatus.ACTIVE) {
+            throw UserIsNotActiveException(mapOf("status" to this.status))
+        }
+        this.status = UserStatus.DELETION_REQUESTED
+    }
+}
+
+enum class UserStatus {
+    ACTIVE,                 // 활성 유저
+    INACTIVE,               // 비활성 유저(휴면 유저, 미인증 유저)
+    SUSPENDED,              // 사용 불가 유저(규정 미준수 및 블랙리스트 유저)
+    DELETION_REQUESTED,     // 삭제 요청 유저
+    DELETED                 // 삭제 완료 유저
 }

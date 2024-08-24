@@ -6,6 +6,7 @@ import com.lomeone.domain.user.exception.DeletionRequestAlreadyExistsException
 import com.lomeone.domain.user.exception.UserNotFoundException
 import com.lomeone.domain.user.repository.DeletionRequestRepository
 import com.lomeone.domain.user.repository.UserRepository
+import jakarta.validation.constraints.NotBlank
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -50,7 +51,7 @@ class DeletionRequestUserService(
 }
 
 data class DeletionRequestUserCommand(
-    val userToken: String,
+    @field:NotBlank val userToken: String,
     val reason: String
 )
 

@@ -2,6 +2,7 @@ package com.lomeone.domain.user.service
 
 import com.lomeone.domain.user.exception.UserNotFoundException
 import com.lomeone.domain.user.repository.UserRepository
+import jakarta.validation.constraints.NotBlank
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -31,9 +32,9 @@ class UpdateUserInfoService(
 }
 
 data class UpdateUserInfoCommand(
-    val userToken: String,
-    val name: String,
-    val nickname: String,
+    @field:NotBlank val userToken: String,
+    @field:NotBlank val name: String,
+    @field:NotBlank val nickname: String,
     val birthday: LocalDate
 )
 

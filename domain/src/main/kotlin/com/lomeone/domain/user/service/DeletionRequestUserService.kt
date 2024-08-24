@@ -3,6 +3,7 @@ package com.lomeone.domain.user.service
 import com.lomeone.domain.user.entity.DeletionRequest
 import com.lomeone.domain.user.entity.DeletionStatus
 import com.lomeone.domain.user.exception.DeletionRequestAlreadyExistsException
+import com.lomeone.domain.user.exception.UserNotFoundException
 import com.lomeone.domain.user.repository.DeletionRequestRepository
 import com.lomeone.domain.user.repository.UserRepository
 import org.springframework.stereotype.Service
@@ -45,7 +46,7 @@ class DeletionRequestUserService(
 
     private fun getUser(userToken: String) =
         userRepository.findByUserToken(userToken)
-        ?: throw Exception("User not found")
+        ?: throw UserNotFoundException(mapOf("user_token" to userToken))
 }
 
 data class DeletionRequestUserServiceCommand(

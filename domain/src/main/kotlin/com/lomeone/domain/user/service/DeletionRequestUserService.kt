@@ -16,7 +16,7 @@ class DeletionRequestUserService(
     private val deletionRequestRepository: DeletionRequestRepository
 ) {
     @Transactional
-    fun deletionRequestUser(command: DeletionRequestUserServiceCommand): DeletionRequestUserServiceResult {
+    fun deletionRequestUser(command: DeletionRequestUserCommand): DeletionRequestUserResult {
         val (userToken, reason) = command
 
         verifyDuplicate(userToken)
@@ -27,7 +27,7 @@ class DeletionRequestUserService(
 
         val deletionRequest = deletionRequestRepository.save(DeletionRequest(userToken = userToken, reason = reason))
 
-        return DeletionRequestUserServiceResult(
+        return DeletionRequestUserResult(
             userToken = deletionRequest.userToken,
             deletionCompletedAt = deletionRequest.createdAt.toLocalDate()
         )
@@ -49,12 +49,12 @@ class DeletionRequestUserService(
         ?: throw UserNotFoundException(mapOf("user_token" to userToken))
 }
 
-data class DeletionRequestUserServiceCommand(
+data class DeletionRequestUserCommand(
     val userToken: String,
     val reason: String
 )
 
-data class DeletionRequestUserServiceResult(
+data class DeletionRequestUserResult(
     val userToken: String,
     val deletionCompletedAt: LocalDate
 )

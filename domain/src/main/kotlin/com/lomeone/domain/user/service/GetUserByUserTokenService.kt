@@ -3,6 +3,7 @@ package com.lomeone.domain.user.service
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.exception.UserNotFoundException
 import com.lomeone.domain.user.repository.UserRepository
+import jakarta.validation.constraints.NotBlank
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,6 +21,6 @@ class GetUserByUserTokenService(
         userRepository.findByUserToken(userToken) ?: throw UserNotFoundException(mapOf("user_token" to userToken))
 }
 
-data class GetUserByUserTokenQuery(val userToken: String)
+data class GetUserByUserTokenQuery(@field:NotBlank val userToken: String)
 
 data class GetUserByUserTokenResult(val user: User)

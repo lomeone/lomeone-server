@@ -12,8 +12,6 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class CreateUserServiceTest : BehaviorSpec({
@@ -25,7 +23,6 @@ class CreateUserServiceTest : BehaviorSpec({
         val mockUser: User = mockk()
         every { mockUser.userToken } returns "user-token"
         every { userRepository.save(any()) } returns mockUser
-
         every { createAuthenticationService.createAuthentication(any()) } returns CreateAuthenticationResult("uid1234")
     }
 
@@ -48,9 +45,7 @@ class CreateUserServiceTest : BehaviorSpec({
                 )
             )
 
-            val result = withContext(Dispatchers.IO) {
-                createUserService.createUser(command)
-            }
+            val result = createUserService.createUser(command)
 
             Then("유저가 생성된다") {
                 result.userToken shouldBe "user-token"

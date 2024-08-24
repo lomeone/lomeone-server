@@ -11,8 +11,6 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 class CreateAuthenticationServiceTest : BehaviorSpec({
@@ -44,9 +42,8 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
                 user = mockk()
             )
 
-            val result = withContext(Dispatchers.IO) {
-                createAuthenticationService.createAuthentication(command)
-            }
+            val result = createAuthenticationService.createAuthentication(command)
+
             Then("비밀번호 인코딩을 하지 않고 인증정보가 생성된다") {
                 verify(exactly = 0) { bCryptPasswordEncoder.encode(any()) }
 
@@ -70,9 +67,8 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
                 user = mockk()
             )
 
-            val result = withContext(Dispatchers.IO) {
-                createAuthenticationService.createAuthentication(command)
-            }
+            val result = createAuthenticationService.createAuthentication(command)
+
             Then("비밀번호 인코딩을 하고 인증정보가 생성된다") {
                 verify { bCryptPasswordEncoder.encode(any()) }
 
@@ -99,6 +95,7 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
                 provider = providerInput,
                 user = mockk()
             )
+
             Then("중복된 인증정보가 있다는 예외가 발생해서 인증정보 생성에 실패한다") {
                 shouldThrow<AuthenticationAlreadyExistsException> {
                     createAuthenticationService.createAuthentication(command)
@@ -125,6 +122,7 @@ class CreateAuthenticationServiceTest : BehaviorSpec({
                 provider = providerInput,
                 user = mockk()
             )
+
             Then("중복된 인증정보가 있다는 예외가 발생해서 인증정보 생성에 실패한다") {
                 shouldThrow<AuthenticationAlreadyExistsException> {
                     createAuthenticationService.createAuthentication(command)

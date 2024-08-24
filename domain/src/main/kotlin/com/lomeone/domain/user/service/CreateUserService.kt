@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 import java.util.UUID
 
 @Service
@@ -62,21 +61,21 @@ class CreateUserService(
 }
 
 data class CreateUserCommand(
-    @field:NotNull val userInfo: UserInfo,
-    @field:NotNull val authenticationInfo: AuthenticationInfo
+    val userInfo: UserInfo,
+    val authenticationInfo: AuthenticationInfo
 ) {
     data class UserInfo(
         @field:NotBlank val name: String,
         @field:NotBlank val nickname: String,
         @field:NotBlank val email: String,
         @field:NotBlank val phoneNumber: String,
-        @field:NotNull val birthday: LocalDate,
+        val birthday: LocalDate,
     )
 
     data class AuthenticationInfo(
         @field:NotBlank val email: String,
         val password: String? = null,
-        @field:NotNull val provider: AuthProvider,
+        val provider: AuthProvider,
         @field:NotBlank val uid: String = UUID.randomUUID().toString()
     )
 }

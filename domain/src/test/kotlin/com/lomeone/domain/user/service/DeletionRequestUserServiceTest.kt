@@ -41,7 +41,7 @@ class DeletionRequestUserServiceTest : BehaviorSpec({
         )
 
         When("삭제 요청할 때") {
-            val command = DeletionRequestUserServiceCommand(
+            val command = DeletionRequestUserCommand(
                 userToken = "user1234",
                 reason = "탈퇴 요청"
             )
@@ -59,7 +59,7 @@ class DeletionRequestUserServiceTest : BehaviorSpec({
         every { deletionRequestRepository.findByUserTokenAndStatus(any(), DeletionStatus.REQUEST) } returns mockk()
 
         When("삭제 요청할 때") {
-            val command = DeletionRequestUserServiceCommand(
+            val command = DeletionRequestUserCommand(
                 userToken = "user1234",
                 reason = "탈퇴 요청"
             )
@@ -77,7 +77,7 @@ class DeletionRequestUserServiceTest : BehaviorSpec({
         every { userRepository.findByUserToken(any()) } returns null
 
         When("삭제 요청할 때") {
-            val command = DeletionRequestUserServiceCommand(
+            val command = DeletionRequestUserCommand(
                 userToken = "user1234",
                 reason = "탈퇴 요청"
             )

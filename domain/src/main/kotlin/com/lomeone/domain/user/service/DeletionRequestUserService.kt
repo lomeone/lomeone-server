@@ -15,7 +15,7 @@ class DeletionRequestUserService(
     private val deletionRequestRepository: DeletionRequestRepository
 ) {
     @Transactional
-    fun deleteUser(command: DeletionRequestUserServiceCommand): DeletionRequestUserServiceResult {
+    fun deletionRequestUser(command: DeletionRequestUserServiceCommand): DeletionRequestUserServiceResult {
         val (userToken, reason) = command
 
         verifyDuplicate(userToken)

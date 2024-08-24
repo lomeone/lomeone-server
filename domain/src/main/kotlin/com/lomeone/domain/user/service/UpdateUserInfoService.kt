@@ -11,14 +11,14 @@ class UpdateUserInfoService(
     private val userRepository: UserRepository
 ) {
     @Transactional
-    fun execute(command: UpdateUserInfoServiceCommand): UpdateUserInfoServiceResult {
+    fun updateUserInfo(command: UpdateUserInfoCommand): UpdateUserInfoResult {
         val (userToken, name, nickname, birthday) = command
 
         val user = getUser(userToken)
 
         user.updateUserInfo(name, nickname, birthday)
 
-        return UpdateUserInfoServiceResult(
+        return UpdateUserInfoResult(
             userToken = user.userToken,
             name = user.name,
             nickname = user.nickname,
@@ -30,14 +30,14 @@ class UpdateUserInfoService(
         ?: throw UserNotFoundException(mapOf("user_token" to userToken))
 }
 
-data class UpdateUserInfoServiceCommand(
+data class UpdateUserInfoCommand(
     val userToken: String,
     val name: String,
     val nickname: String,
     val birthday: LocalDate
 )
 
-data class UpdateUserInfoServiceResult(
+data class UpdateUserInfoResult(
     val userToken: String,
     val name: String,
     val nickname: String,

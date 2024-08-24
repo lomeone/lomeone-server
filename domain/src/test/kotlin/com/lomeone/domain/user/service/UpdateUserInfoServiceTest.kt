@@ -9,8 +9,6 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class UpdateUserInfoServiceTest : BehaviorSpec({
@@ -27,14 +25,14 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
         )
 
         When("유저 정보를 업데이트할 때") {
-            val command = UpdateUserInfoServiceCommand(
+            val command = UpdateUserInfoCommand(
                 userToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
                 birthday = LocalDate.of(2000, 1, 1)
             )
 
-            val result = updateUserInfoService.execute(command)
+            val result = updateUserInfoService.updateUserInfo(command)
 
             Then("유저 정보가 업데이트된다") {
                 result.name shouldBe command.name
@@ -48,7 +46,7 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
         every { userRepository.findByUserToken(any()) } returns null
 
         When("유저 정보를 업데이트할 때") {
-            val command = UpdateUserInfoServiceCommand(
+            val command = UpdateUserInfoCommand(
                 userToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
@@ -57,7 +55,7 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
 
             Then("유저를 찾을 수 없다는 예외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<UserNotFoundException> {
-                    updateUserInfoService.execute(command)
+                    updateUserInfoService.updateUserInfo(command)
                 }
             }
         }

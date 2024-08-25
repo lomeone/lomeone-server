@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 
-class UserPasswordAuthenticationSuccessHandler(
+class EmailPasswordAuthenticationSuccessHandler(
     private val jwtTokenProvider: JwtTokenProvider
 ) : AuthenticationSuccessHandler {
 

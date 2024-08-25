@@ -1,4 +1,4 @@
-package com.lomeone.application.config
+package com.lomeone.application.seucirty.config
 
 import com.lomeone.domain.authentication.service.OAuth2UserService
 import org.springframework.context.annotation.Bean

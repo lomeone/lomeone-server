@@ -1,8 +1,11 @@
-package com.lomeone.application.config
+package com.lomeone.application.seucirty.config
 
+import com.lomeone.application.seucirty.filter.EmailPasswordAuthenticationFilter
+import com.lomeone.domain.authentication.service.JwtTokenProvider
 import com.lomeone.domain.authentication.service.OAuth2UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -14,7 +17,11 @@ class SecurityConfig(
     private val oAuth2UserService: OAuth2UserService
 ) {
     @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
+    fun filterChain(
+        http: HttpSecurity,
+        authenticationConfiguration: AuthenticationConfiguration,
+        jwtTokenProvider: JwtTokenProvider
+    ): SecurityFilterChain {
         http.httpBasic { it.disable() }
             .csrf { it.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
@@ -22,6 +29,10 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it.anyRequest().permitAll()
             }
+            .addFilter(EmailPasswordAuthenticationFilter(
+                authenticationManager = authenticationConfiguration.authenticationManager,
+                jwtTokenProvider = jwtTokenProvider
+            ))
             .oauth2Login {
                 it.userInfoEndpoint {
                     it.userService(oAuth2UserService)

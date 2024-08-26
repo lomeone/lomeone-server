@@ -182,7 +182,7 @@ class UserTest : FreeSpec({
         defaultUser.userRoles.map { it.role } shouldContain (roleInput)
     }
 
-    "유저가 삭제 요청할 수 있다" - {
+    "유저는 삭제 요청할 수 있다" - {
         val deleteUser = User(
             name = "name",
             nickname = "nickname",
@@ -193,5 +193,10 @@ class UserTest : FreeSpec({
 
         deleteUser.deleteRequest()
         deleteUser.status shouldBe UserStatus.DELETION_REQUESTED
+
+        "삭제 요청한 유저는 복구 요청을 할 수 있다" - {
+            deleteUser.restore()
+            defaultUser.status shouldBe UserStatus.ACTIVE
+        }
     }
 })

@@ -17,10 +17,14 @@ class DeletionRequest(
 ) : AuditEntity() {
     var status: DeletionStatus = DeletionStatus.REQUEST
         protected set
+
+    fun restore() {
+        this.status = DeletionStatus.RESTORE
+    }
 }
 
 enum class DeletionStatus {
     REQUEST,    // 삭제 요청
-    CANCELED,   // 삭제 요청 취소
+    RESTORE,    // 복구
     DELETED     // 삭제 완료
 }

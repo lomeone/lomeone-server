@@ -136,6 +136,10 @@ class User(
         }
         this.status = UserStatus.DELETION_REQUESTED
     }
+
+    fun restore() {
+        this.status = UserStatus.ACTIVE
+    }
 }
 
 enum class UserStatus {

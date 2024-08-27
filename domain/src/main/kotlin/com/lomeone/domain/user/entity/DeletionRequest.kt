@@ -1,7 +1,13 @@
 package com.lomeone.domain.user.entity
 
 import com.lomeone.domain.common.entity.AuditEntity
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Index
+import jakarta.persistence.Table
 
 @Entity
 @Table(name = "deletion_request_users", indexes = [
@@ -17,10 +23,14 @@ class DeletionRequest(
 ) : AuditEntity() {
     var status: DeletionStatus = DeletionStatus.REQUEST
         protected set
+
+    fun restore() {
+        this.status = DeletionStatus.RESTORE
+    }
 }
 
 enum class DeletionStatus {
     REQUEST,    // 삭제 요청
-    CANCELED,   // 삭제 요청 취소
+    RESTORE,    // 복구
     DELETED     // 삭제 완료
 }

@@ -4,7 +4,6 @@ import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.util.converter.EmailCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
-import com.lomeone.domain.user.exception.UserIsNotActiveException
 import com.lomeone.domain.user.exception.UserNameInvalidException
 import com.lomeone.domain.user.exception.UserNicknameInvalidException
 import com.lomeone.domain.user.exception.UserPhoneNumberInvalidException
@@ -131,10 +130,11 @@ class User(
     }
 
     fun deleteRequest() {
-        if (this.status != UserStatus.ACTIVE) {
-            throw UserIsNotActiveException(mapOf("status" to this.status))
-        }
         this.status = UserStatus.DELETION_REQUESTED
+    }
+
+    fun restore() {
+        this.status = UserStatus.ACTIVE
     }
 }
 

@@ -2,7 +2,6 @@ package com.lomeone.domain.user.entity
 
 import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.common.entity.Email
-import com.lomeone.domain.user.exception.UserIsNotActiveException
 import com.lomeone.domain.user.exception.UserNameInvalidException
 import com.lomeone.domain.user.exception.UserNicknameInvalidException
 import com.lomeone.domain.user.exception.UserPhoneNumberInvalidException
@@ -183,34 +182,21 @@ class UserTest : FreeSpec({
         defaultUser.userRoles.map { it.role } shouldContain (roleInput)
     }
 
-    "유저가 삭제 요청할 때" - {
-        "유저가 ACTIVE 상태이면 삭제 요청할 수 있다" - {
-            val deleteUser = User(
-                name = "name",
-                nickname = "nickname",
-                email = Email("test@gmail.com"),
-                phoneNumber = "+821012345678",
-                birthday = LocalDate.now()
-            )
+    "유저는 삭제 요청할 수 있다" - {
+        val deleteUser = User(
+            name = "name",
+            nickname = "nickname",
+            email = Email("test@gmail.com"),
+            phoneNumber = "+821012345678",
+            birthday = LocalDate.now()
+        )
 
-            deleteUser.deleteRequest()
-            deleteUser.status shouldBe UserStatus.DELETION_REQUESTED
-        }
+        deleteUser.deleteRequest()
+        deleteUser.status shouldBe UserStatus.DELETION_REQUESTED
 
-        "유저가 ACTIVE 상태가 아니면 유저가 ACTIVE가 아니라는 예외가 발생해서 삭제 요청을 할 수 없다" - {
-            val deleteUser = User(
-                name = "name",
-                nickname = "nickname",
-                email = Email("test@gmail.com"),
-                phoneNumber = "+821012345678",
-                birthday = LocalDate.now()
-            )
-
-            deleteUser.deleteRequest()
-
-            shouldThrow<UserIsNotActiveException> {
-                deleteUser.deleteRequest()
-            }
+        "삭제 요청한 유저는 복구 요청을 할 수 있다" - {
+            deleteUser.restore()
+            defaultUser.status shouldBe UserStatus.ACTIVE
         }
     }
 })

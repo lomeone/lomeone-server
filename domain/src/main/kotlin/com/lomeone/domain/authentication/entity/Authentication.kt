@@ -6,7 +6,7 @@ import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
 import com.lomeone.util.converter.EmailCryptoConverter
-import com.lomeone.util.string.RandomStringUtil.createRandomString
+import com.lomeone.util.string.RandomStringUtil.generateRandomString
 import java.time.LocalDateTime
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
@@ -33,7 +33,7 @@ class Authentication(
     val id: Long = 0L,
 
     @Column(unique = true)
-    val uid: String = createRandomString((('0'..'9') + ('a'..'z') + ('A'..'Z')).toSet(), 8),
+    val uid: String = generateRandomString((('0'..'9') + ('a'..'z') + ('A'..'Z')).toSet(), 8),
 
     @Convert(converter = EmailCryptoConverter::class)
     val email: Email,

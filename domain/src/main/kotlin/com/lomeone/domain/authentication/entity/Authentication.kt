@@ -6,7 +6,7 @@ import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
 import com.lomeone.util.converter.EmailCryptoConverter
-import com.lomeone.util.string.RandomString.createRandomString
+import com.lomeone.util.string.RandomStringUtil.createRandomString
 import java.time.LocalDateTime
 import jakarta.persistence.Column
 import jakarta.persistence.Convert

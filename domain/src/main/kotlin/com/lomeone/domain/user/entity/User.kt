@@ -8,7 +8,7 @@ import com.lomeone.domain.user.exception.UserNameInvalidException
 import com.lomeone.domain.user.exception.UserNicknameInvalidException
 import com.lomeone.domain.user.exception.UserPhoneNumberInvalidException
 import com.lomeone.domain.user.exception.UserRoleEmptyException
-import com.lomeone.util.string.RandomString.createRandomString
+import com.lomeone.util.string.RandomStringUtil.createRandomString
 import java.time.LocalDate
 import jakarta.persistence.Column
 import jakarta.persistence.Convert

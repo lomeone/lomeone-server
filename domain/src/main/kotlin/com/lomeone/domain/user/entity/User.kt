@@ -8,6 +8,7 @@ import com.lomeone.domain.user.exception.UserNameInvalidException
 import com.lomeone.domain.user.exception.UserNicknameInvalidException
 import com.lomeone.domain.user.exception.UserPhoneNumberInvalidException
 import com.lomeone.domain.user.exception.UserRoleEmptyException
+import com.lomeone.util.string.RandomString.makeRandomString
 import java.time.LocalDate
 import java.util.UUID
 import jakarta.persistence.Column
@@ -49,7 +50,7 @@ class User(
     )
 ) : AuditEntity() {
     @Column(unique = true)
-    val userToken: String = UUID.randomUUID().toString()
+    val userToken: String = makeRandomString((('0'..'9') + ('a'..'z') + ('A'..'Z')).toSet(), 8)
 
     var name: String = name
         protected set

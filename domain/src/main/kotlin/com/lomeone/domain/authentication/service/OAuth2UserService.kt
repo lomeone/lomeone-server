@@ -8,6 +8,8 @@ import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.user.service.CreateUserCommand
 import com.lomeone.domain.user.service.CreateUserResult
 import com.lomeone.domain.user.service.CreateUserService
+import com.lomeone.domain.user.service.GetUserByUserTokenQuery
+import com.lomeone.domain.user.service.GetUserByUserTokenService
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
@@ -21,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional
 class OAuth2UserService(
     private val authenticationRepository: AuthenticationRepository,
     private val createUserService: CreateUserService,
+    private val getUserByUserTokenService: GetUserByUserTokenService,
+    private val createAuthenticationService: CreateAuthenticationService
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     @Transactional
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
@@ -45,7 +49,21 @@ class OAuth2UserService(
     private fun createNewAuthentication(registrationId: String, uid: String, attributes: MutableMap<String, Any>): Authentication {
         val userInfo = getUserInfo(registrationId, attributes)
 
-        val result = createUser(userInfo, uid)
+        val userToken = attributes.get("user_token")
+
+        if (userToken != null) {
+            val user = getUserByUserTokenService.getUserByUserToken(GetUserByUserTokenQuery(userToken as String))
+            createAuthenticationService.createAuthentication(
+                CreateAuthenticationCommand(
+                    email = userInfo.getEmail(),
+                    provider = userInfo.getProvider(),
+                    uid = uid,
+                    user = user.user
+                )
+            )
+        } else {
+            createUser(userInfo, uid)
+        }
 
         return authenticationRepository.findByUid(uid) ?: throw AuthenticationNotFoundException(mapOf("uid" to uid))
     }

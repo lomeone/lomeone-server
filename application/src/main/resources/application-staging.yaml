@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://comstering.synology.me:3306/lomeone-staging
+    url: jdbc:h2:mem:staging
     username: lomeone-staging
     password: 2B&MM7^x3AUAf?Z
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:

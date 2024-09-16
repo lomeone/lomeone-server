@@ -47,28 +47,28 @@ class OAuth2UserService(
     }
 
     private fun createNewAuthentication(registrationId: String, uid: String, attributes: MutableMap<String, Any>): Authentication {
-        val userInfo = getUserInfo(registrationId, attributes)
+        val oAuthUserInfo = getOAuthUserInfo(registrationId, attributes)
 
-        val userToken = attributes.get("user_token")
+        val userToken = attributes["user_token"]
 
         if (userToken != null) {
             val user = getUserByUserTokenService.getUserByUserToken(GetUserByUserTokenQuery(userToken as String))
             createAuthenticationService.createAuthentication(
                 CreateAuthenticationCommand(
-                    email = userInfo.getEmail(),
-                    provider = userInfo.getProvider(),
+                    email = oAuthUserInfo.getEmail(),
+                    provider = oAuthUserInfo.getProvider(),
                     uid = uid,
                     user = user.user
                 )
             )
         } else {
-            createUser(userInfo, uid)
+            createUser(oAuthUserInfo, uid)
         }
 
         return authenticationRepository.findByUid(uid) ?: throw AuthenticationNotFoundException(mapOf("uid" to uid))
     }
 
-    private fun getUserInfo(registrationId: String, attributes: MutableMap<String, Any>): OAuth2UserInfo =
+    private fun getOAuthUserInfo(registrationId: String, attributes: MutableMap<String, Any>): OAuth2UserInfo =
         when(registrationId) {
             AuthProvider.KAKAO.value -> KakaoUserInfo(attributes)
             else -> throw OAuth2ProviderNotSupportedException(mapOf("oauth2" to registrationId))

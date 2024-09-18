@@ -4,6 +4,7 @@ import com.lomeone.application.seucirty.filter.EmailPasswordAuthenticationFilter
 import com.lomeone.application.seucirty.handler.OAuthAuthenticationSuccessHandler
 import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.exception.OAuth2ProviderNotSupportedException
+import com.lomeone.domain.authentication.service.AuthRegisterProvider
 import com.lomeone.domain.authentication.service.JwtTokenProvider
 import com.lomeone.domain.authentication.service.OAuth2UserService
 import org.springframework.context.annotation.Bean
@@ -17,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val oAuth2UserService: OAuth2UserService<Any?, Any?>,
+    private val oAuth2UserService: OAuth2UserService,
     private val oAuthAuthenticationSuccessHandler: OAuthAuthenticationSuccessHandler
 ) {
     @Bean
@@ -66,15 +67,4 @@ class SecurityConfig(
 
         return http.build()
     }
-}
-
-enum class AuthRegisterProvider(val value: String) {
-    EMAIL("email-register"),
-    GOOGLE("google-register"),
-    FACEBOOK("facebook-register"),
-    APPLE("apple-register"),
-    GITHUB("github-register"),
-    KAKAO("kakao-register"),
-    NAVER("naver-register"),
-    LINE("line-register")
 }

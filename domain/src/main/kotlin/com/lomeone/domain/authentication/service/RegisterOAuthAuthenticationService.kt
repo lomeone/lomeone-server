@@ -21,7 +21,6 @@ class RegisterOAuthAuthenticationService(
 }
 
 enum class AuthRegisterProvider(val value: String) {
-    EMAIL("email-register"),
     GOOGLE("google-register"),
     FACEBOOK("facebook-register"),
     APPLE("apple-register"),

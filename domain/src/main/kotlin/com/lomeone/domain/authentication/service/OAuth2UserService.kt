@@ -24,7 +24,7 @@ class OAuth2UserService(
     private val authenticationRepository: AuthenticationRepository,
     private val createUserService: CreateUserService,
     private val getUserByUserTokenService: GetUserByUserTokenService,
-    private val createAuthenticationService: CreateAuthenticationService
+    private val registerAuthenticationService: RegisterAuthenticationService
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     @Transactional
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
@@ -53,8 +53,8 @@ class OAuth2UserService(
 
         if (userToken != null) {
             val user = getUserByUserTokenService.getUserByUserToken(GetUserByUserTokenQuery(userToken as String))
-            createAuthenticationService.createAuthentication(
-                CreateAuthenticationCommand(
+            registerAuthenticationService.registerAuthentication(
+                RegisterAuthenticationCommand(
                     email = oAuthUserInfo.getEmail(),
                     provider = oAuthUserInfo.getProvider(),
                     uid = uid,

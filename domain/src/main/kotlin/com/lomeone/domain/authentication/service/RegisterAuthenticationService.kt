@@ -7,18 +7,18 @@ import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
 import com.lomeone.util.security.authentication.PasswordUtils.checkPasswordValidity
+import com.lomeone.util.string.RandomStringUtil.generateRandomString
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 @Service
-class CreateAuthenticationService(
+class RegisterAuthenticationService(
     private val authenticationRepository: AuthenticationRepository,
     private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
     @Transactional
-    fun createAuthentication(command: CreateAuthenticationCommand): CreateAuthenticationResult {
+    fun registerAuthentication(command: RegisterAuthenticationCommand): RegisterAuthenticationResult {
         verifyDuplicate(command)
 
         val authentication = authenticationRepository.save(
@@ -31,10 +31,10 @@ class CreateAuthenticationService(
             )
         )
 
-        return CreateAuthenticationResult(authentication.uid)
+        return RegisterAuthenticationResult(authentication.uid)
     }
 
-    private fun verifyDuplicate(command: CreateAuthenticationCommand) {
+    private fun verifyDuplicate(command: RegisterAuthenticationCommand) {
         authenticationRepository.findByEmailAndProvider(email = command.email, provider = command.provider) != null
                 && throw AuthenticationAlreadyExistsException(detail = mapOf("email" to command.email, "provider" to command.provider))
         authenticationRepository.findByUid(command.uid) != null
@@ -48,14 +48,14 @@ class CreateAuthenticationService(
     }
 }
 
-data class CreateAuthenticationCommand(
+data class RegisterAuthenticationCommand(
     val email: String,
     val password: String? = null,
     val provider: AuthProvider,
-    val uid: String = UUID.randomUUID().toString(),
+    val uid: String = generateRandomString((('0'..'9') + ('a'..'z') + ('A'..'Z')).toSet(), 8),
     val user: User
 )
 
-data class CreateAuthenticationResult(
+data class RegisterAuthenticationResult(
     val uid: String
 )

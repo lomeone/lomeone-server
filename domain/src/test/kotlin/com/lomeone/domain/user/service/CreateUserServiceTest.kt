@@ -1,8 +1,8 @@
 package com.lomeone.domain.user.service
 
 import com.lomeone.domain.authentication.entity.AuthProvider
-import com.lomeone.domain.authentication.service.CreateAuthenticationResult
-import com.lomeone.domain.authentication.service.CreateAuthenticationService
+import com.lomeone.domain.authentication.service.RegisterAuthenticationResult
+import com.lomeone.domain.authentication.service.RegisterAuthenticationService
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.exception.UserEmailAlreadyExistsException
 import com.lomeone.domain.user.exception.UserPhoneNumberAlreadyExistsException
@@ -16,14 +16,14 @@ import java.time.LocalDate
 
 class CreateUserServiceTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
-    val createAuthenticationService: CreateAuthenticationService = mockk()
-    val createUserService = CreateUserService(userRepository, createAuthenticationService)
+    val registerAuthenticationService: RegisterAuthenticationService = mockk()
+    val createUserService = CreateUserService(userRepository, registerAuthenticationService)
 
     beforeTest {
         val mockUser: User = mockk()
         every { mockUser.userToken } returns "user-token"
         every { userRepository.save(any()) } returns mockUser
-        every { createAuthenticationService.createAuthentication(any()) } returns CreateAuthenticationResult("uid1234")
+        every { registerAuthenticationService.registerAuthentication(any()) } returns RegisterAuthenticationResult("uid1234")
     }
 
     Given("동일한 유저 이메일과 핸드폰 번호를 가지고 있는 유저가 없으면") {

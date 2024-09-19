@@ -1,8 +1,8 @@
 package com.lomeone.domain.user.service
 
 import com.lomeone.domain.authentication.entity.AuthProvider
-import com.lomeone.domain.authentication.service.CreateAuthenticationCommand
-import com.lomeone.domain.authentication.service.CreateAuthenticationService
+import com.lomeone.domain.authentication.service.RegisterAuthenticationCommand
+import com.lomeone.domain.authentication.service.RegisterAuthenticationService
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.exception.UserEmailAlreadyExistsException
@@ -17,7 +17,7 @@ import java.util.UUID
 @Service
 class CreateUserService(
     private val userRepository: UserRepository,
-    private val createAuthenticationService: CreateAuthenticationService
+    private val registerAuthenticationService: RegisterAuthenticationService
 ) {
     @Transactional
     fun createUser(command: CreateUserCommand): CreateUserResult {
@@ -36,7 +36,7 @@ class CreateUserService(
             )
         )
 
-        val authenticationCommand = CreateAuthenticationCommand(
+        val authenticationCommand = RegisterAuthenticationCommand(
             email = authenticationInfo.email,
             password = authenticationInfo.password,
             provider = authenticationInfo.provider,
@@ -44,7 +44,7 @@ class CreateUserService(
             user = user
         )
 
-        val createAuthResult = createAuthenticationService.createAuthentication(authenticationCommand)
+        val createAuthResult = registerAuthenticationService.registerAuthentication(authenticationCommand)
 
         return CreateUserResult(
             userToken = user.userToken,

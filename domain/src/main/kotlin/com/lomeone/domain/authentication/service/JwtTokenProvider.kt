@@ -41,6 +41,9 @@ class JwtTokenProvider(
             expiresIn = ACCESS_EXPIRES_AT.toInt()
         )
     }
+
+    fun getSubject(token: String): String =
+        Jwts.parser().verifyWith(key).build().parseSignedClaims(token).payload.subject
 }
 
 data class TokenInfo(

@@ -8,6 +8,8 @@ import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.user.service.CreateUserCommand
 import com.lomeone.domain.user.service.CreateUserResult
 import com.lomeone.domain.user.service.CreateUserService
+import com.lomeone.domain.user.service.GetUserByUserTokenQuery
+import com.lomeone.domain.user.service.GetUserByUserTokenService
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
@@ -21,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional
 class OAuth2UserService(
     private val authenticationRepository: AuthenticationRepository,
     private val createUserService: CreateUserService,
+    private val getUserByUserTokenService: GetUserByUserTokenService,
+    private val registerAuthenticationService: RegisterAuthenticationService
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     @Transactional
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
@@ -43,14 +47,28 @@ class OAuth2UserService(
     }
 
     private fun createNewAuthentication(registrationId: String, uid: String, attributes: MutableMap<String, Any>): Authentication {
-        val userInfo = getUserInfo(registrationId, attributes)
+        val oAuthUserInfo = getOAuthUserInfo(registrationId, attributes)
 
-        val result = createUser(userInfo, uid)
+        val userToken = attributes["user_token"]
+
+        if (userToken != null) {
+            val user = getUserByUserTokenService.getUserByUserToken(GetUserByUserTokenQuery(userToken as String))
+            registerAuthenticationService.registerAuthentication(
+                RegisterAuthenticationCommand(
+                    email = oAuthUserInfo.getEmail(),
+                    provider = oAuthUserInfo.getProvider(),
+                    uid = uid,
+                    user = user.user
+                )
+            )
+        } else {
+            createUser(oAuthUserInfo, uid)
+        }
 
         return authenticationRepository.findByUid(uid) ?: throw AuthenticationNotFoundException(mapOf("uid" to uid))
     }
 
-    private fun getUserInfo(registrationId: String, attributes: MutableMap<String, Any>): OAuth2UserInfo =
+    private fun getOAuthUserInfo(registrationId: String, attributes: MutableMap<String, Any>): OAuth2UserInfo =
         when(registrationId) {
             AuthProvider.KAKAO.value -> KakaoUserInfo(attributes)
             else -> throw OAuth2ProviderNotSupportedException(mapOf("oauth2" to registrationId))

@@ -13,7 +13,8 @@ import jakarta.persistence.MappedSuperclass
 abstract class AuditEntity {
     @CreatedDate
     @Column(updatable = false)
-    val createdAt: LocalDateTime = LocalDateTime.now()
+    var createdAt: LocalDateTime = LocalDateTime.now()
+        protected set
 
     @LastModifiedDate
     var updatedAt: LocalDateTime = LocalDateTime.now()

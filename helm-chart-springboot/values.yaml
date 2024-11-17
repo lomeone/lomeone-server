@@ -3,6 +3,7 @@ namespace: lomeone
 container:
   healthCheck: /actuator/health
   initialDelaySecond: 30
+  replicas: 1
 
 image:
   repository: comstering

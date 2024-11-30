@@ -23,14 +23,16 @@ dependencies {
 
     // Web
     implementation("org.springframework.boot:spring-boot-starter-web") {
-        exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
+        exclude(module = "spring-boot-starter-tomcat")
     }
-    implementation("org.springframework.boot:spring-boot-starter-undertow")
+    implementation("org.springframework.boot:spring-boot-starter-undertow") {
+        exclude(module = "undertow-websockets-jsr")
+    }
 
     // DGS
     implementation(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:$dgsVersion"))
     implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter") {
-        exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
+        exclude(module = "spring-boot-starter-tomcat")
     }
     implementation("com.netflix.graphql.dgs:graphql-dgs-extended-scalars:$dgsVersion")
 

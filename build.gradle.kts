@@ -30,6 +30,7 @@ plugins {
 	jacoco
 	id("com.github.kt3k.coveralls")
 	id("com.google.cloud.tools.jib")
+	id("org.sonarqube")
 }
 
 allprojects {
@@ -45,6 +46,7 @@ allprojects {
 		plugin("io.spring.dependency-management")
 		plugin("jacoco")
 		plugin("com.google.cloud.tools.jib")
+		plugin("org.sonarqube")
 	}
 
 	jacoco {

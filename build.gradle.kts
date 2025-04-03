@@ -28,8 +28,9 @@ plugins {
 	kotlin("kapt")
 	kotlin("plugin.jpa")
 	jacoco
-	id("com.github.kt3k.coveralls")
 	id("com.google.cloud.tools.jib")
+	id("org.jetbrains.kotlinx.kover")
+	id("com.github.kt3k.coveralls")
 	id("org.sonarqube")
 }
 
@@ -46,6 +47,7 @@ allprojects {
 		plugin("io.spring.dependency-management")
 		plugin("jacoco")
 		plugin("com.google.cloud.tools.jib")
+		plugin("org.jetbrains.kotlinx.kover")
 		plugin("org.sonarqube")
 	}
 
@@ -179,6 +181,12 @@ subprojects {
 			jvmTarget = JvmTarget.JVM_21
 		}
 	}
+}
+
+dependencies {
+	kover(project(":application"))
+	kover(project(":domain"))
+	kover(project(":infrastructure"))
 }
 
 fun getGitHash(): String {

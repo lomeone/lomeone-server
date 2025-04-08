@@ -10,7 +10,3 @@ allOpen {
 dependencies {
     implementation(project(":util"))
 }
-
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
-}

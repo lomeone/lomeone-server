@@ -105,7 +105,3 @@ fun getGitHash(): String {
     }
     return stdout.toString().trim()
 }
-
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
-}

@@ -56,6 +56,27 @@ allprojects {
 		useJUnitPlatform()
 		finalizedBy(tasks.koverVerify, tasks.koverHtmlReport, tasks.koverXmlReport)
 	}
+
+	kover {
+		reports {
+			filters {
+				excludes {
+					classes("*.LomeoneApplication*")
+					for (pattern in 'A' .. 'Z') {
+						classes("*.Q${pattern}*")
+					}
+					packages("com.lomeone.generated.*")
+				}
+			}
+			total {
+				verify {
+					rule {
+						minBound(0)
+					}
+				}
+			}
+		}
+	}
 }
 
 configurations {

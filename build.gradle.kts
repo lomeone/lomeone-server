@@ -15,7 +15,6 @@ val springCloudOpenFeignVersion: String by project
 val springCloudHystrixVersion: String by project
 val springCloudRibbonVersion: String by project
 val springCloudEurekaClientVersion: String by project
-val jacocoVersion: String by project
 
 val jacocoBranchCoverageRatio: String by project
 val jacocoLineCoverageRatio: String by project
@@ -27,9 +26,9 @@ plugins {
 	kotlin("plugin.spring")
 	kotlin("kapt")
 	kotlin("plugin.jpa")
-	jacoco
-	id("com.github.kt3k.coveralls")
 	id("com.google.cloud.tools.jib")
+	id("org.jetbrains.kotlinx.kover")
+	id("com.github.kt3k.coveralls")
 	id("org.sonarqube")
 }
 
@@ -44,17 +43,39 @@ allprojects {
 		plugin("kotlin-kapt")
 		plugin("org.springframework.boot")
 		plugin("io.spring.dependency-management")
-		plugin("jacoco")
 		plugin("com.google.cloud.tools.jib")
+		plugin("org.jetbrains.kotlinx.kover")
 		plugin("org.sonarqube")
-	}
-
-	jacoco {
-		toolVersion = jacocoVersion
 	}
 
 	repositories {
 		mavenCentral()
+	}
+
+	tasks.test {
+		useJUnitPlatform()
+		finalizedBy(tasks.koverVerify, tasks.koverHtmlReport, tasks.koverXmlReport)
+	}
+
+	kover {
+		reports {
+			filters {
+				excludes {
+					classes("*.LomeoneApplication*")
+					for (pattern in 'A' .. 'Z') {
+						classes("*.Q${pattern}*")
+					}
+					packages("com.lomeone.generated.*")
+				}
+			}
+			total {
+				verify {
+					rule {
+						minBound(0)
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -116,69 +137,18 @@ subprojects {
 		testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
 	}
 
-	tasks.withType<Test> {
-		useJUnitPlatform()
-		finalizedBy(tasks.withType<JacocoReport>())
-	}
-
-	tasks.withType<JacocoReport> {
-		dependsOn(tasks.withType<Test>())
-
-		reports {
-			html.required.set(true)
-			xml.required.set(true)
-			csv.required.set(false)
-		}
-
-		afterEvaluate {
-			classDirectories.setFrom(files(classDirectories.files.map {
-				fileTree(it).apply {
-					exclude("**/LomeoneApplication**")
-					for (pattern in 'A' .. 'Z') {
-						exclude("**/Q${pattern}**")
-					}
-				}
-			}))
-		}
-
-		finalizedBy(tasks.withType<JacocoCoverageVerification>())
-	}
-
-	tasks.withType<JacocoCoverageVerification> {
-		dependsOn(tasks.withType<JacocoReport>())
-		val excludeJacocoClassNamePatterns = mutableListOf<String>().apply {
-			for (pattern in 'A'..'Z') {
-				add("*.Q${pattern}*")
-			}
-		}
-
-		violationRules {
-			rule {
-				element = "CLASS"
-
-				limit {
-					counter = "BRANCH"
-					value = "COVEREDRATIO"
-					minimum = jacocoBranchCoverageRatio.toBigDecimal()
-				}
-
-				limit {
-					counter = "LINE"
-					value = "COVEREDRATIO"
-					minimum = jacocoLineCoverageRatio.toBigDecimal()
-				}
-
-				excludes = listOf<String>("**.LomeoneApplication**", "**.AuditEntity**") + excludeJacocoClassNamePatterns
-			}
-		}
-	}
-
 	tasks.withType<KotlinCompile> {
 		compilerOptions {
 			freeCompilerArgs.add("-Xjsr305=strict")
 			jvmTarget = JvmTarget.JVM_21
 		}
 	}
+}
+
+dependencies {
+	kover(project(":application"))
+	kover(project(":domain"))
+	kover(project(":infrastructure"))
 }
 
 fun getGitHash(): String {
@@ -190,56 +160,8 @@ fun getGitHash(): String {
 	return stdout.toString().trim()
 }
 
-tasks.register<JacocoReport>("jacocoAllReport") {
-	dependsOn(":application:jacocoTestReport", ":domain:jacocoTestReport", ":util:jacocoTestReport")
-
-	val currentTask = this
-
-	val allSourceSrcDirs = mutableListOf<Set<File>>()
-	val outputDirectories = mutableListOf<SourceSetOutput>()
-
-	subprojects {
-		val subproject = this
-		subproject.plugins.withType<JacocoPlugin>().configureEach {
-			subproject.tasks.matching { it.extensions.findByType<JacocoTaskExtension>() != null }.forEach {
-				currentTask.dependsOn(it)
-			}
-		}
-
-		allSourceSrcDirs.add(subproject.sourceSets.main.get().allSource.srcDirs)
-		outputDirectories.add(subproject.sourceSets.main.get().output)
-
-		afterEvaluate {
-			classDirectories.setFrom(files(classDirectories.files.map {
-				fileTree(it).apply {
-					exclude("**/LomeoneApplication**")
-					exclude("**/AuditEntity**")
-					for (pattern in 'A' .. 'Z') {
-						exclude("**/Q${pattern}**")
-					}
-				}
-			}))
-		}
-	}
-
-	additionalSourceDirs.setFrom(allSourceSrcDirs)
-	sourceDirectories.setFrom(allSourceSrcDirs)
-	classDirectories.setFrom(outputDirectories)
-	executionData.setFrom(fileTree(projectDir).include("**/jacoco/*.exec"))
-
-	reports {
-		xml.required.set(true)
-		html.required.set(true)
-		csv.required.set(false)
-	}
-}
-
 coveralls {
-	jacocoReportPath = "${projectDir}/build/reports/jacoco/jacocoAllReport/jacocoAllReport.xml"
+	jacocoReportPath = "${projectDir}/build/reports/kover/report.xml"
 	sourceDirs = subprojects.map { it.sourceSets.main.get().allSource.srcDirs.toList() }
 		.toList().flatten().map { relativePath(it) }
-}
-
-tasks.withType<org.kt3k.gradle.plugin.coveralls.CoverallsTask> {
-	dependsOn(tasks["jacocoAllReport"])
 }

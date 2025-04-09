@@ -8,100 +8,40 @@ on:
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
+  packages: read    # This is required for installing dependencies
 
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout my code
-        uses: actions/checkout@v4
-
-      - name: Configure AWS Credential
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Set up jdk
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'corretto'
-          java-version: '21'
-
-      - name: Run test & Make coverage report
-        run: |
-          ./gradlew clean
-          ./gradlew test
-          ./gradlew jacocoAllReport
-
-      - name: Run coverage measurement (use codecov)
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./build/reports/jacoco/jacocoAllReport/jacocoAllReport.xml
-          fail_ci_if_error: true
-
-      - name: Set up coveralls repo token in environment
-        run: echo "COVERALLS_REPO_TOKEN=${{ secrets.COVERALLS_REPO_TOKEN }}" >> $GITHUB_ENV
-
-      - name: Run coverage measurement (use coveralls)
-        run: ./gradlew coveralls
-
   build:
     name: JIB Build
-    runs-on: ubuntu-latest
-    needs: test
+    uses: lomeone/github-action/.github/workflows/gradle-module-jib.yaml@main
+    with:
+      module-name: application
+    secrets: inherit
 
+  deploy:
+    environment: production
+    name: Deploy production
+    needs: [build]
+    runs-on: lomeone-arc-runner-set
     steps:
-      - name: Checkout my code
-        uses: actions/checkout@v4
-
       - name: Configure AWS Credential
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AWS_GITHUB_ACTION_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Sign in DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Set up jdk
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'corretto'
-          java-version: '21'
-
-      - name: JIB Build
+      - name: Install aws cli
         run: |
-          ./gradlew application:jib
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
 
-  deploy:
-    name: Deploy production
-    runs-on: ubuntu-latest
-    needs: build
-    environment: production
-
-    steps:
-      - name: Checkout my code
-        uses: actions/checkout@v4
-
-#      - name: Configure AWS Credential
-#        uses: aws-actions/configure-aws-credentials@v4
-#        with:
-#          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-#          aws-region: ${{ secrets.AWS_REGION }}
-#
-#      - name: Deploy to staging
-#        uses: bitovi/github-actions-deploy -eks-helm@v1.2.10
-#        with:
-#          aws-region: ${{ secrets.AWS_REGION }}
-#          cluster-name: ${{ secrets.EKS_CLUSTER_NAME }}
-#          config-files: helm-chart-springboot/values.yaml,helm-chart-springboot/production-values.yaml
-#          chart-path: helm-chart-springboot/
-#          namespace: ${{ secrets.EKS_NAMESPACE }}
-#          name: lomeone-server
+      - name: Image pull in ecr cache
+        run: |
+          docker pull 396428372646.dkr.ecr.ap-northeast-2.amazonaws.com/docker-hub/comstering/fn-reservation-service:${GITHUB_SHA::7}
+          export MANIFEST=$(aws ecr batch-get-image --repository-name docker-hub/comstering/fn-reservation-service --image-ids imageTag=${GITHUB_SHA::7} --query 'images[].imageManifest' --output text)
+          aws ecr put-image --repository-name docker-hub/comstering/fn-reservation-service --image-tag main --image-manifest $MANIFEST

@@ -1,19 +1,23 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.ByteArrayOutputStream
 
 val groupName: String by project
 
 val queryDslVersion: String by project
+val jwtVersion: String by project
 
 val kotestVersion: String by project
+val kotestSpringVersion: String by project
 val springMockkVersion: String by project
-val jacocoBranchCoverageRatio: String by project
-val jacocoLineCoverageRatio: String by project
 
 val springCloudOpenFeignVersion: String by project
 val springCloudHystrixVersion: String by project
 val springCloudRibbonVersion: String by project
 val springCloudEurekaClientVersion: String by project
+
+val jacocoBranchCoverageRatio: String by project
+val jacocoLineCoverageRatio: String by project
 
 plugins {
 	id("org.springframework.boot")
@@ -22,9 +26,10 @@ plugins {
 	kotlin("plugin.spring")
 	kotlin("kapt")
 	kotlin("plugin.jpa")
-	jacoco
-	id("com.github.kt3k.coveralls")
 	id("com.google.cloud.tools.jib")
+	id("org.jetbrains.kotlinx.kover")
+	id("com.github.kt3k.coveralls")
+	id("org.sonarqube")
 }
 
 allprojects {
@@ -38,16 +43,39 @@ allprojects {
 		plugin("kotlin-kapt")
 		plugin("org.springframework.boot")
 		plugin("io.spring.dependency-management")
-		plugin("jacoco")
 		plugin("com.google.cloud.tools.jib")
-	}
-
-	jacoco {
-		toolVersion = "0.8.8"
+		plugin("org.jetbrains.kotlinx.kover")
+		plugin("org.sonarqube")
 	}
 
 	repositories {
 		mavenCentral()
+	}
+
+	tasks.test {
+		useJUnitPlatform()
+		finalizedBy(tasks.koverVerify, tasks.koverHtmlReport, tasks.koverXmlReport)
+	}
+
+	kover {
+		reports {
+			filters {
+				excludes {
+					classes("*.LomeoneApplication*")
+					for (pattern in 'A' .. 'Z') {
+						classes("*.Q${pattern}*")
+					}
+					packages("com.lomeone.generated.*")
+				}
+			}
+			total {
+				verify {
+					rule {
+						minBound(0)
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -58,7 +86,19 @@ configurations {
 }
 
 subprojects {
-	java.sourceCompatibility = JavaVersion.VERSION_11
+	java {
+		sourceCompatibility = JavaVersion.VERSION_21
+		targetCompatibility = JavaVersion.VERSION_21
+
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(21)
+		}
+	}
+
+	kotlin {
+		jvmToolchain(21)
+	}
+
 
 	dependencies {
 		// Kotlin
@@ -66,97 +106,49 @@ subprojects {
 		implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
 		// Spring
-		implementation("org.springframework.boot:spring-boot-starter-actuator")
 		implementation("org.springframework.boot:spring-boot-starter-validation")
-		implementation("org.springframework.boot:spring-boot-starter-web")
+		implementation("org.springframework.boot:spring-boot-starter-security")
+		implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+
+		// Jwt
+		implementation("io.jsonwebtoken:jjwt-api:$jwtVersion")
+		runtimeOnly("io.jsonwebtoken:jjwt-impl:$jwtVersion")
+		runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
 
 		// JPA
 		implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-		implementation("com.querydsl:querydsl-jpa")
-		kapt("com.querydsl:querydsl-apt:$queryDslVersion:jpa")
+		implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
+		kapt("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
+		kapt("jakarta.persistence:jakarta.persistence-api")
+		kapt("jakarta.annotation:jakarta.annotation-api")
 
 		// Spring Cloud
 		implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$springCloudOpenFeignVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix:$springCloudHystrixVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:$springCloudRibbonVersion")
 
-		compileOnly("org.projectlombok:lombok")
-		runtimeOnly("com.h2database:h2")
-		runtimeOnly("org.postgresql:postgresql")
 		developmentOnly("org.springframework.boot:spring-boot-devtools")
-		annotationProcessor("org.projectlombok:lombok")
 		testImplementation("org.springframework.boot:spring-boot-starter-test")
 		testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
 
 		// kotest
 		testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
 		testImplementation("io.kotest:kotest-property:$kotestVersion")
-		testImplementation("io.kotest:kotest-extensions-spring:$kotestVersion")
-	}
-
-	tasks.withType<Test> {
-		useJUnitPlatform()
-		finalizedBy(tasks.withType<JacocoReport>())
-	}
-
-	tasks.withType<JacocoReport> {
-		dependsOn(tasks.withType<Test>())
-
-		reports {
-			html.required.set(true)
-			xml.required.set(true)
-			csv.required.set(false)
-		}
-
-		afterEvaluate {
-			classDirectories.setFrom(files(classDirectories.files.map {
-				fileTree(it).apply {
-					exclude("**/MmsApplication**")
-					for (pattern in 'A' .. 'Z') {
-						exclude("**/${pattern}**")
-					}
-				}
-			}))
-		}
-
-		finalizedBy(tasks.withType<JacocoCoverageVerification>())
-	}
-
-	tasks.withType<JacocoCoverageVerification> {
-		dependsOn(tasks.withType<JacocoReport>())
-		val excludeJacocoClassNamePatterns = mutableListOf<String>().apply {
-			for (pattern in 'A'..'Z') {
-				add("*.Q${pattern}*")
-			}
-		}
-
-		violationRules {
-			rule {
-				element = "CLASS"
-
-				limit {
-					counter = "BRANCH"
-					value = "COVEREDRATIO"
-					minimum = jacocoBranchCoverageRatio.toBigDecimal()
-				}
-
-				limit {
-					counter = "LINE"
-					value = "COVEREDRATIO"
-					minimum = jacocoLineCoverageRatio.toBigDecimal()
-				}
-
-				excludes = listOf<String>("**.MmsApplication**") + excludeJacocoClassNamePatterns
-			}
-		}
+		testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
 	}
 
 	tasks.withType<KotlinCompile> {
-		kotlinOptions {
-			freeCompilerArgs = listOf("-Xjsr305=strict")
-			jvmTarget = "11"
+		compilerOptions {
+			freeCompilerArgs.add("-Xjsr305=strict")
+			jvmTarget = JvmTarget.JVM_21
 		}
 	}
+}
+
+dependencies {
+	kover(project(":application"))
+	kover(project(":domain"))
+	kover(project(":infrastructure"))
 }
 
 fun getGitHash(): String {
@@ -168,53 +160,8 @@ fun getGitHash(): String {
 	return stdout.toString().trim()
 }
 
-tasks.register<JacocoReport>("jacocoAllReport") {
-	val currentTask = this
-
-	val allSourceSrcDirs = mutableListOf<Set<File>>()
-	val outputDirectories = mutableListOf<SourceSetOutput>()
-
-	subprojects {
-		val subproject = this
-		subproject.plugins.withType<JacocoPlugin>().configureEach {
-			subproject.tasks.matching { it.extensions.findByType<JacocoTaskExtension>() != null }.forEach {
-				currentTask.dependsOn(it)
-			}
-		}
-
-		allSourceSrcDirs.add(subproject.sourceSets.main.get().allSource.srcDirs)
-		outputDirectories.add(subproject.sourceSets.main.get().output)
-
-		afterEvaluate {
-			classDirectories.setFrom(files(classDirectories.files.map {
-				fileTree(it).apply {
-					exclude("**/MmsApplication**")
-					for (pattern in 'A' .. 'Z') {
-						exclude("**/${pattern}**")
-					}
-				}
-			}))
-		}
-	}
-
-	additionalSourceDirs.setFrom(allSourceSrcDirs)
-	sourceDirectories.setFrom(allSourceSrcDirs)
-	classDirectories.setFrom(outputDirectories)
-	executionData.setFrom(fileTree(projectDir).include("**/jacoco/*.exec"))
-
-	reports {
-		xml.required.set(true)
-		html.required.set(true)
-		csv.required.set(false)
-	}
-}
-
 coveralls {
-	jacocoReportPath = "${projectDir}/build/reports/jacoco/jacocoAllReport/jacocoAllReport.xml"
+	jacocoReportPath = "${projectDir}/build/reports/kover/report.xml"
 	sourceDirs = subprojects.map { it.sourceSets.main.get().allSource.srcDirs.toList() }
 		.toList().flatten().map { relativePath(it) }
-}
-
-tasks.withType<org.kt3k.gradle.plugin.coveralls.CoverallsTask> {
-	dependsOn(tasks["jacocoAllReport"])
 }

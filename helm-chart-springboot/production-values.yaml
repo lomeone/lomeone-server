@@ -1,29 +1,28 @@
 container:
   activeProfile: "production"
-  replicas: 1
 
 image:
   tag: main
 
 service:
   internal: true
-  containerPort: 8080
   annotations: {}
 
 ingress:
-  enable: true
-  internal: true
-  domain: springboot.comstering.com
+  hosts:
+    - host: server.lomeone.com
+      paths:
+          - path: /
+            pathType: ImplementationSpecific
   annotations: {}
 
 resources:
-  limits:
-    cpu: 0.5
-    memory: 256Mi
-
   requests:
     cpu: 0.1
-    memory: 128Mi
+    memory: 1Gi
+
+  limits:
+    memory: 1Gi
 
 autoscaling:
   enabled: true

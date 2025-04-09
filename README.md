@@ -1,65 +1,10 @@
-# Spring multi module project template
+# LOMEONE-Server
+
+[![Coverage Status](https://coveralls.io/repos/github/comstering/lomeone-server/badge.svg?branch=develop)](https://coveralls.io/github/comstering/lomeone-server?branch=develop)
+[![codecov](https://codecov.io/gh/comstering/lomeone-server/branch/develop/graph/badge.svg?token=8YCWcT8JMq)](https://codecov.io/gh/comstering/lomeone-server)
+[![Preview Deploy](https://github.com/comstering/lomeone-server/actions/workflows/preview.yaml/badge.svg)](https://github.com/comstering/lomeone-server/actions/workflows/preview.yaml)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/comstering/mms-server/blob/develop/LICENSE)
 
 ## Description
 
-This template is spring boot project template.
-
-## Git branch strategy
-
-This template use git flow strategy.
-
-[more about](.github/workflows)
-
-## Project structure
-
-- infrastructure
-- domain
-- service
-- application
-- util(Optional)
-
-### Infrastructure
-
-About infra.
-
-- Connect Database
-- Request third-party api
-- Communication another service
-- Cache
-- Message queue
-
-### Domain
-
-About entities.
-
-- Data entities
-- Entity domain logic
-- Domain Repository
-
-### Service
-
-About business.
-
-- Use domain interface
-    - implementation code will dependency Injection(i.e. JPA Repository)
-- Make interface to use service class
-    - implement in infrastructure(i.e.  use third party data)
-
-### Application
-
-About api.
-
-- RestController
-- Graphql
-- (+ more UI View)
-
-### Util(Optional)
-
-About utils.
-
-I don’t make this. Because it is very big module. I think it is project not module.
-
-Maybe I will create util project or use another util project.
-
-- Exception
-- (+ utils)
+Lomeone service server.

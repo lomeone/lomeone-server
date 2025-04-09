@@ -1,0 +1,30 @@
+container:
+  activeProfile: "dev"
+
+image:
+  tag: develop
+
+service:
+  internal: true
+  annotations: {}
+
+ingress:
+  hosts:
+    - host: dev-server.lomeone.com
+      paths:
+          - path: /
+            pathType: ImplementationSpecific
+  annotations: {}
+
+resources:
+  requests:
+    cpu: 0.1
+    memory: 512Mi
+
+  limits:
+    memory: 512Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 1

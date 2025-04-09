@@ -1,0 +1,57 @@
+name: Preview Deploy
+
+on:
+  push:
+    branches: [ develop, bugfix/** ]
+  pull_request:
+    branches: [ develop ]
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+  packages: read    # This is required for installing dependencies
+
+jobs:
+  test:
+    name: Test develop
+    uses: lomeone/github-action/.github/workflows/gradle-test.yaml@main
+    secrets: inherit
+
+  build:
+    name: JIB Build
+    needs: [test]
+    uses: lomeone/github-action/.github/workflows/gradle-module-jib.yaml@main
+    with:
+      module-name: application
+    secrets: inherit
+
+  deploy:
+    environment: dev
+    name: Deploy develop
+    needs: [build]
+    runs-on: lomeone-arc-runner-set
+    steps:
+      - name: Configure AWS Credential
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_GITHUB_ACTION_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Install aws cli
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Image pull in ecr cache
+        run: docker pull 396428372646.dkr.ecr.ap-northeast-2.amazonaws.com/docker-hub/comstering/lomeone-server:${GITHUB_SHA::7}
+
+      - name: Move develop image tag (Push)
+        if: github.event_name == 'push'
+        run: |
+          export MANIFEST=$(aws ecr batch-get-image --repository-name docker-hub/comstering/lomeone-server --image-ids imageTag=${GITHUB_SHA::7} --query 'images[].imageManifest' --output text)
+          aws ecr put-image --repository-name docker-hub/comstering/lomeone-server --image-tag develop --image-manifest $MANIFEST

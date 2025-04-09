@@ -1,0 +1,6 @@
+lomeone-server v0.0.1 Release Notes
+===================================
+
+* New Feature
+1. Initinal lomeone-server project
+2. Used Spring Boot

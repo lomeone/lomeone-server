@@ -1,18 +1,84 @@
 spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   datasource:
-    url: jdbc:postgresql://mms-db.chdq0o2eoge6.ap-northeast-2.rds.amazonaws.com:5432/mms_production
-    username: comstering_mms
-    password: qZ4XGqV9AeFAZDm
+    url: jdbc:h2:mem:test
+    username: lomeone-db
+    password: mY3i7fj@3agwct2
     hikari:
       maximum-pool-size: 4
+    driver-class-name: org.h2.Driver
 
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    open-in-view: false
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: e1bf61fd2a87f7e0a074c9252e9c5c71
+            client-secret: MreHuXOeOcYY35c86xZqZEycatB7qLl9
+            client-name: kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+server:
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,metrics,prometheus"
+
+  tracing:
+    enabled: true
+
+micrometer:
+  tracing:
+    bridge:
+      brave:
+        enabled: true
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    s3:
+      bucket: mms-images-data
+
+jwt:
+  secret: asldkjvcxoiASDFoaisdnvmcnjkoco123eca13asdfasdf654
+
+oauth:
+  kakao:
+    client-id: e1bf61fd2a87f7e0a074c9252e9c5c71
+    url:
+      auth: https://kauth.kakao.com
+      api: https://kapi.kakao.com
 
 logging:
   level:

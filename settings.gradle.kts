@@ -5,8 +5,11 @@ pluginManagement {
     val springBootVersion: String by settings
     val springDependencyManagement: String by settings
     val kotlinVersion: String by settings
-    val coverallsVersion: String by settings
     val jibVersion: String by settings
+    val dgsCodegenVersion: String by settings
+    val koverVersion: String by settings
+    val coverallsVersion: String by settings
+    val sonarqubeVersion: String by settings
 
     plugins {
         id("org.springframework.boot") version springBootVersion
@@ -15,12 +18,15 @@ pluginManagement {
         kotlin("plugin.spring") version kotlinVersion
         kotlin("kapt") version kotlinVersion
         kotlin("plugin.jpa") version kotlinVersion
-        id("com.github.kt3k.coveralls") version coverallsVersion
         id("com.google.cloud.tools.jib") version jibVersion
+        id("com.netflix.dgs.codegen") version dgsCodegenVersion
+        id("org.jetbrains.kotlinx.kover") version koverVersion
+        id("com.github.kt3k.coveralls") version coverallsVersion
+        id("org.sonarqube") version sonarqubeVersion
     }
 }
 
 include("infrastructure")
 include("domain")
-include("service")
 include("application")
+include("util")

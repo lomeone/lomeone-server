@@ -5,89 +5,43 @@ on:
     branches: [ main ]
     tags: [ v* ]
 
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+  packages: read    # This is required for installing dependencies
+
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout my code
-        uses: actions/checkout@v3
-
-      - name: Set up jdk
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-
-      - name: Run test & Make coverage report
-        run: |
-          ./gradlew clean
-          ./gradlew test
-          ./gradlew jacocoAllReport
-
-      - name: Run coverage measurement (use codecov)
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./build/reports/jacoco/jacocoAllReport/jacocoAllReport.xml
-          fail_ci_if_error: true
-
-      - name: Set up coveralls repo token in environment
-        run: echo "COVERALLS_REPO_TOKEN=${{ secrets.COVERALLS_REPO_TOKEN }}" >> $GITHUB_ENV
-
-      - name: Run coverage measurement (use coveralls)
-        run: |
-          ./gradlew clean
-          ./gradlew coveralls
-
   build:
     name: JIB Build
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: Checkout my code
-        uses: actions/checkout@v3
-
-      - name: Sign in DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Set up jdk
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-
-      - name: JIB Build
-        run: |
-          ./gradlew application:jib
+    uses: lomeone/github-action/.github/workflows/gradle-module-jib.yaml@main
+    with:
+      module-name: application
+    secrets: inherit
 
   deploy:
-    # Todo: I write deploy script after
-    name: Deploy production
-    runs-on: ubuntu-latest
-    needs: build
     environment: production
-
+    name: Deploy production
+    needs: [build]
+    runs-on: lomeone-arc-runner-set
     steps:
-      - name: Checkout my code
-        uses: actions/checkout@v3
+      - name: Configure AWS Credential
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_GITHUB_ACTION_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: check pwd
-        run: pwd
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-#      - name: Deploy to production
-#        uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
-#        with:
-#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          aws-region: ap-northeast-2
-#          cluster-name: ${{ secrets.EKS_CLUSTER_NAME }}
-#          config-files: helm-chart-springboot/values.yaml
-#          chart-path: helm-chart-springboot/
-#          namespace: ${{ secrets.EKS_NAMESPACE }}
-#          name: springboot-server
+      - name: Install aws cli
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Image pull in ecr cache
+        run: |
+          docker pull 396428372646.dkr.ecr.ap-northeast-2.amazonaws.com/docker-hub/comstering/lomeone-server:${GITHUB_SHA::7}
+          export MANIFEST=$(aws ecr batch-get-image --repository-name docker-hub/comstering/lomeone-server --image-ids imageTag=${GITHUB_SHA::7} --query 'images[].imageManifest' --output text)
+          aws ecr put-image --repository-name docker-hub/comstering/lomeone-server --image-tag main --image-manifest $MANIFEST

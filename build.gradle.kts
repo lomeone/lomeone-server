@@ -14,10 +14,6 @@ val springMockkVersion: String by project
 val springCloudOpenFeignVersion: String by project
 val springCloudHystrixVersion: String by project
 val springCloudRibbonVersion: String by project
-val springCloudEurekaClientVersion: String by project
-
-val jacocoBranchCoverageRatio: String by project
-val jacocoLineCoverageRatio: String by project
 
 plugins {
 	id("org.springframework.boot")
@@ -164,4 +160,23 @@ coveralls {
 	jacocoReportPath = "${projectDir}/build/reports/kover/report.xml"
 	sourceDirs = subprojects.map { it.sourceSets.main.get().allSource.srcDirs.toList() }
 		.toList().flatten().map { relativePath(it) }
+}
+
+sonar {
+	properties {
+		property("sonar.projectKey", "lomeone_lomeone-server")
+		property("sonar.organization", "lomeone")
+		property("sonar.host.url", "https://sonarcloud.io")
+		property("sonar.jacoco.reportPaths", "${projectDir}/build/reports/kover/report.xml")
+
+	}
+}
+
+tasks.sonar {
+	dependsOn(
+		tasks.test,
+		tasks.koverVerify,
+		tasks.koverHtmlReport,
+		tasks.koverXmlReport
+	)
 }

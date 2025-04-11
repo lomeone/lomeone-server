@@ -14,34 +14,8 @@ permissions:
 jobs:
   test:
     name: Test develop
-    uses: lomeone/github-action/.github/workflows/gradle-test.yaml@main
+    uses: lomeone/github-action/.github/workflows/gradle-kotlin-test.yaml@main
     secrets: inherit
-
-  test2:
-    name: Test sonar
-    runs-on: lomeone-arc-runner-set
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Configure AWS Credential
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_GITHUB_ACTION_ROLE_ARN }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Set up jdk
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'corretto'
-          java-version: '21'
-
-      - name: Run test & sonar
-        run: |
-          ./gradlew test
-          ./gradlew sonar
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   build:
     name: JIB Build

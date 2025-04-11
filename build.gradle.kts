@@ -171,12 +171,3 @@ sonar {
 
 	}
 }
-
-tasks.sonar {
-	dependsOn(
-		tasks.test,
-		tasks.koverVerify,
-		tasks.koverHtmlReport,
-		tasks.koverXmlReport
-	)
-}

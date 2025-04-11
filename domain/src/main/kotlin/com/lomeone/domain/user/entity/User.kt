@@ -100,7 +100,7 @@ class User(
         phoneNumber.isBlank() && throw UserPhoneNumberInvalidException(message = "User phone number is blank", detail = mapOf("phone_number" to phoneNumber))
     }
 
-    private fun ensureUserRoleIsNotEmpty(userRoles: MutableList<UserRole>) {
+    private fun ensureUserRoleIsNotEmpty(userRoles: List<UserRole>) {
         userRoles.isEmpty() && throw UserRoleEmptyException()
     }
 

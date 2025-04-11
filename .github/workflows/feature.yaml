@@ -12,5 +12,5 @@ permissions:
 jobs:
   test:
     name: Test feature
-    uses: lomeone/github-action/.github/workflows/gradle-kotlin-test.yaml@main
+    uses: lomeone/github-action/.github/workflows/gradle-kotlin-test.yaml@hotfix/v0.0.10
     secrets: inherit

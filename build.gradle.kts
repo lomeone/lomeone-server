@@ -167,7 +167,6 @@ sonar {
 		property("sonar.projectKey", "lomeone_lomeone-server")
 		property("sonar.organization", "lomeone")
 		property("sonar.host.url", "https://sonarcloud.io")
-		property("sonar.jacoco.reportPaths", "${projectDir}/build/reports/kover/report.xml")
-
+		property("sonar.coverage.jacoco.xmlReportPaths", "${projectDir}/build/reports/kover/report.xml")
 	}
 }

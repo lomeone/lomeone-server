@@ -11,8 +11,8 @@ permissions:
 
 jobs:
   test:
-    name: Test stagingg
-    uses: lomeone/github-action/.github/workflows/gradle-test.yaml@main
+    name: Test staging
+    uses: lomeone/github-action/.github/workflows/gradle-kotlin-test.yaml@main
     secrets: inherit
 
   build:

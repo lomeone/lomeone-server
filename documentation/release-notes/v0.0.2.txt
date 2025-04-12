@@ -1,0 +1,5 @@
+lomeone-server v0.0.2 Release Notes
+===================================
+
+* New Feature
+1. Add sonar analysis

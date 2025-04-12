@@ -11,8 +11,14 @@ permissions:
   packages: read    # This is required for installing dependencies
 
 jobs:
+  test:
+    name: Test production
+    uses: lomeone/github-action/.github/workflows/gradle-kotlin-test.yaml@main
+    secrets: inherit
+
   build:
     name: JIB Build
+    needs: [test]
     uses: lomeone/github-action/.github/workflows/gradle-module-jib.yaml@main
     with:
       module-name: application

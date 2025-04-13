@@ -1,8 +1,10 @@
 package com.lomeone.domain.authentication.entity
 
+import com.lomeone.domain.authentication.exception.AuthenticationAlreadyAssociatedException
 import com.lomeone.domain.authentication.exception.AuthenticationProviderIsNotEmailException
 import com.lomeone.domain.authentication.exception.AuthenticationPasswordInvalidException
 import com.lomeone.domain.common.entity.Email
+import com.lomeone.domain.user.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.comparables.shouldBeLessThan
@@ -20,7 +22,7 @@ class AuthenticationTest : FreeSpec({
                 email = emailInput,
                 password = passwordInput,
                 provider = providerInput,
-                user = mockk()
+                realm = mockk()
             )
 
             authentication.email shouldBe emailInput
@@ -37,7 +39,7 @@ class AuthenticationTest : FreeSpec({
                     email = emailInput,
                     password = passwordInput,
                     provider = providerInput,
-                    user = mockk()
+                    realm = mockk()
                 )
             }
         }
@@ -50,7 +52,7 @@ class AuthenticationTest : FreeSpec({
                 email = emailInput,
                 password = passwordInput,
                 provider = providerInput,
-                user = mockk()
+                realm = mockk()
             )
 
             authentication.email shouldBe emailInput
@@ -67,8 +69,40 @@ class AuthenticationTest : FreeSpec({
                     email = emailInput,
                     password = passwordInput,
                     provider = providerInput,
-                    user = mockk()
+                    realm = mockk()
                 )
+            }
+        }
+    }
+
+    "유저와 연결할 때" -  {
+        "유저와 연결되면 유저가 연결된다" - {
+            val authentication = Authentication(
+                email = Email("email@gmail.com"),
+                password = "testPassword1324@",
+                provider = AuthProvider.EMAIL,
+                realm = mockk()
+            )
+
+            val user = mockk<User>()
+            authentication.associateUser(user)
+
+            authentication.user shouldBe user
+        }
+
+        "이미 유저와 연결되어 있으면 유저가 연결되었다는 예외가 발생한다" - {
+            val authentication = Authentication(
+                email = Email("email@gmail.com"),
+                password = "testPassword1324@",
+                provider = AuthProvider.EMAIL,
+                realm = mockk()
+            )
+
+            val user = mockk<User>()
+            authentication.associateUser(user)
+
+            shouldThrow<AuthenticationAlreadyAssociatedException> {
+                authentication.associateUser(user)
             }
         }
     }
@@ -78,7 +112,7 @@ class AuthenticationTest : FreeSpec({
             email = Email("email@gmail.com"),
             password = "testPassword1324@",
             provider = AuthProvider.EMAIL,
-            user = mockk()
+            realm = mockk()
         )
 
         val signedInAtBefore = authentication.signedInAt
@@ -93,7 +127,7 @@ class AuthenticationTest : FreeSpec({
             email = Email("email@gmail.com"),
             password = "testPassword1324@",
             provider = AuthProvider.EMAIL,
-            user = mockk()
+            realm = mockk()
         )
 
         "비밀번호가 변경된다" - {
@@ -108,7 +142,7 @@ class AuthenticationTest : FreeSpec({
                 email = Email("email@gmail.com"),
                 password = null,
                 provider = AuthProvider.GOOGLE,
-                user = mockk()
+                realm = mockk()
             )
 
             val passwordInput = "testPassword1324!"

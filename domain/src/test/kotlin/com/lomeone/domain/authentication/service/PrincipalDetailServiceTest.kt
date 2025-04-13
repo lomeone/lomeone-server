@@ -5,6 +5,7 @@ import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.authentication.exception.AuthenticationNotFoundException
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
+import com.lomeone.domain.realm.entity.Realm
 import com.lomeone.domain.user.entity.Role
 import com.lomeone.domain.user.entity.RoleName
 import com.lomeone.domain.user.entity.User
@@ -23,6 +24,7 @@ class PrincipalDetailServiceTest : BehaviorSpec({
     val testUid = "testUid"
     val emailInput = "test@gmail.com"
     val mockUser: User = mockk()
+    val mockRealm: Realm = mockk()
 
     Given("이메일 인증정보가 있으면") {
         every { mockUser.userRoles } returns listOf(
@@ -32,14 +34,18 @@ class PrincipalDetailServiceTest : BehaviorSpec({
                 )
             )
         )
+
+        val authentication = Authentication(
+            uid = testUid,
+            email = Email(emailInput),
+            password = "testPassword1324@",
+            provider = AuthProvider.EMAIL,
+            realm = mockRealm
+        )
+        authentication.associateUser(mockUser)
+
         every { authenticationRepository.findByEmailAndProvider(email = any(), provider = AuthProvider.EMAIL)} returns
-            Authentication(
-                uid = testUid,
-                email = Email(emailInput),
-                password = "testPassword1324@",
-                provider = AuthProvider.EMAIL,
-                user = mockUser
-            )
+            authentication
 
         When("loadUser를 할 때") {
             val userDetails = principalDetailService.loadUserByUsername(emailInput)

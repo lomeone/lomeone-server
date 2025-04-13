@@ -5,7 +5,8 @@ import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.exception.AuthenticationAlreadyExistsException
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
-import com.lomeone.domain.user.entity.User
+import com.lomeone.domain.realm.entity.Realm
+import com.lomeone.domain.realm.repository.RealmRepository
 import com.lomeone.util.security.authentication.PasswordUtils.checkPasswordValidity
 import com.lomeone.util.string.RandomStringUtil.generateRandomString
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -15,30 +16,40 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class RegisterAuthenticationService(
     private val authenticationRepository: AuthenticationRepository,
+    private val realmRepository: RealmRepository,
     private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
     @Transactional
     fun registerAuthentication(command: RegisterAuthenticationCommand): RegisterAuthenticationResult {
-        verifyDuplicate(command)
+        val (email, password, provider, uid, realmCode) = command
+
+        val realm = getRealm(realmCode)
+
+        verifyDuplicate(email, provider, uid, realm)
 
         val authentication = authenticationRepository.save(
             Authentication(
-                uid = command.uid,
-                email = Email(command.email),
-                password = encodePassword(command.password),
-                provider = command.provider,
-                user = command.user
+                uid = uid,
+                email = Email(email),
+                password = encodePassword(password),
+                provider = provider,
+                realm = realm
             )
         )
 
         return RegisterAuthenticationResult(authentication.uid)
     }
 
-    private fun verifyDuplicate(command: RegisterAuthenticationCommand) {
-        authenticationRepository.findByEmailAndProvider(email = command.email, provider = command.provider) != null
-                && throw AuthenticationAlreadyExistsException(detail = mapOf("email" to command.email, "provider" to command.provider))
-        authenticationRepository.findByUid(command.uid) != null
-                && throw AuthenticationAlreadyExistsException(mapOf("uid" to command.uid))
+    private fun getRealm(realmCode: String): Realm {
+        return realmRepository.findByCode(realmCode)
+            ?: throw IllegalArgumentException("Realm not found with code: $realmCode")
+    }
+
+    private fun verifyDuplicate(email: String, provider: AuthProvider, uid: String, realm: Realm) {
+        authenticationRepository.findByEmailAndProviderAndRealm(email, provider, realm) != null
+                && throw AuthenticationAlreadyExistsException(detail = mapOf("email" to email, "provider" to provider, "realm" to realm.code))
+        authenticationRepository.findByUid(uid) != null
+                && throw AuthenticationAlreadyExistsException(mapOf("uid" to uid))
     }
 
     private fun encodePassword(password: String?): String? {
@@ -53,7 +64,7 @@ data class RegisterAuthenticationCommand(
     val password: String? = null,
     val provider: AuthProvider,
     val uid: String = generateRandomString((('0'..'9') + ('a'..'z') + ('A'..'Z')).toSet(), 8),
-    val user: User
+    val realmCode: String
 )
 
 data class RegisterAuthenticationResult(

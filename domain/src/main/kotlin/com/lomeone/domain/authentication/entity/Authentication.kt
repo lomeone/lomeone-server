@@ -29,7 +29,7 @@ import jakarta.persistence.Table
 class Authentication(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "authentications_id")
+    @Column(name = "authentication_id")
     val id: Long = 0L,
 
     @Column(unique = true)

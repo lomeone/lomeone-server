@@ -21,10 +21,10 @@ class Realm(
 
     name: String,
 
-    code: String = "${name}-${generateRandomString((('0'..'9') + ('a'..'z') + ('A'..'Z')).toSet(), 8)}",
+    code: String? = null,
 ) : AuditEntity() {
     @Column(unique = true)
-    var code: String = code
+    var code: String = code ?: "$name-${generateAffix()}"
         protected set
 
     @Column(unique = true)
@@ -34,6 +34,21 @@ class Realm(
     @Enumerated(EnumType.STRING)
     var status: RealmStatus = RealmStatus.PENDING
         protected set
+
+    private fun generateAffix() =  generateRandomString((('0'..'9') + ('a'..'z') + ('A'..'Z')).toSet(), 8)
+
+    fun updateName(name: String) {
+        this.name = name
+    }
+
+    fun updateStatus(status: RealmStatus) {
+        this.status = status
+    }
+
+    fun delete() {
+        this.code = "__deleted-${generateAffix()}-$code"
+        this.status = RealmStatus.DELETED
+    }
 }
 
 enum class RealmStatus {

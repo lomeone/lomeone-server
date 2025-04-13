@@ -30,7 +30,9 @@ data class PrincipalDetails(
 ) : UserDetails {
 
     override fun getAuthorities(): List<GrantedAuthority> =
-        authentication.user.userRoles.map { SimpleGrantedAuthority("ROLE_${it.role.roleName}") }
+        authentication.user?.let {
+            it.userRoles.map { SimpleGrantedAuthority("ROLE_${it.role.roleName}") }
+        } ?: emptyList()
 
     override fun getPassword(): String? = authentication.password
 

@@ -49,21 +49,18 @@ class OAuth2UserService(
     private fun createNewAuthentication(registrationId: String, uid: String, attributes: MutableMap<String, Any>): Authentication {
         val oAuthUserInfo = getOAuthUserInfo(registrationId, attributes)
 
-        val userToken = attributes["user_token"]
+        val realmCode = attributes["realm_code"]
 
-        if (userToken != null) {
-            val user = getUserByUserTokenService.getUserByUserToken(GetUserByUserTokenQuery(userToken as String))
-            registerAuthenticationService.registerAuthentication(
-                RegisterAuthenticationCommand(
-                    email = oAuthUserInfo.getEmail(),
-                    provider = oAuthUserInfo.getProvider(),
-                    uid = uid,
-                    user = user.user
-                )
+        realmCode == null && throw IllegalArgumentException("Realm code is required for authentication")
+
+        registerAuthenticationService.registerAuthentication(
+            RegisterAuthenticationCommand(
+                email = oAuthUserInfo.getEmail(),
+                provider = oAuthUserInfo.getProvider(),
+                uid = uid,
+                realmCode = realmCode as String
             )
-        } else {
-            createUser(oAuthUserInfo, uid)
-        }
+        )
 
         return authenticationRepository.findByUid(uid) ?: throw AuthenticationNotFoundException(mapOf("uid" to uid))
     }
@@ -104,5 +101,7 @@ data class OAuthUser(
     override fun getAttributes(): MutableMap<String, Any> = attributes
 
     override fun getAuthorities(): List<GrantedAuthority> =
-        authentication.user.userRoles.map { SimpleGrantedAuthority("ROLE_${it.role.roleName}") }
+        authentication.user?.let {
+            it.userRoles.map { SimpleGrantedAuthority("ROLE_${it.role.roleName}") }
+        } ?: emptyList()
 }

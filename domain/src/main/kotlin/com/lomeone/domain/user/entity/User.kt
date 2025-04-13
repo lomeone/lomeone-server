@@ -33,7 +33,7 @@ import jakarta.persistence.Table
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "users_id")
+    @Column(name = "user_id")
     val id: Long = 0L,
     name: String,
     nickname: String,

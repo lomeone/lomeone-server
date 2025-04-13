@@ -1,9 +1,11 @@
 package com.lomeone.domain.authentication.entity
 
+import com.lomeone.domain.authentication.exception.AuthenticationAlreadyAssociatedException
 import com.lomeone.domain.authentication.exception.AuthenticationProviderIsNotEmailException
 import com.lomeone.domain.authentication.exception.AuthenticationPasswordInvalidException
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
+import com.lomeone.domain.realm.entity.Realm
 import com.lomeone.domain.user.entity.User
 import com.lomeone.util.converter.EmailCryptoConverter
 import com.lomeone.util.string.RandomStringUtil.generateRandomString
@@ -44,8 +46,8 @@ class Authentication(
     val provider: AuthProvider,
 
     @ManyToOne
-    @JoinColumn(name = "users_id")
-    val user: User
+    @JoinColumn(name = "realm_id")
+    val realm: Realm,
 ) : AuditEntity() {
     var password: String? = password
         protected set
@@ -54,6 +56,11 @@ class Authentication(
         protected set
 
     var passwordUpdatedAt: LocalDateTime = LocalDateTime.now()
+        protected set
+
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    var user: User? = null
         protected set
 
     init {
@@ -79,6 +86,15 @@ class Authentication(
                     message = "Password must be null if provider is not email",
                     detail = mapOf("provider" to this.provider, "password" to password)
                 )
+    }
+
+    fun associateUser(user: User) {
+        ensureUserNotAssociated()
+        this.user = user
+    }
+
+    private fun ensureUserNotAssociated() {
+        this.user != null && throw AuthenticationAlreadyAssociatedException(detail = mapOf())
     }
 
     fun signIn() {

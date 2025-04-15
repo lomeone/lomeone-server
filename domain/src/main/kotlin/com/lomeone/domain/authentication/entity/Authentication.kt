@@ -59,7 +59,7 @@ class Authentication(
         protected set
 
     @ManyToOne
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     var user: User? = null
         protected set
 

@@ -1,6 +1,5 @@
 package com.lomeone.domain.user.entity
 
-import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.util.converter.EmailCryptoConverter
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
@@ -71,13 +70,8 @@ class User(
     var status: UserStatus = UserStatus.ACTIVE
         protected set
 
-    @OneToMany
-    @JoinColumn(name = "users_id")
-    private val _authentications: MutableList<Authentication> = mutableListOf()
-    val authentications: List<Authentication> get() = this._authentications
-
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private val _userRoles: MutableList<UserRole> = userRoles
     val userRoles: List<UserRole> get() = this._userRoles
 
@@ -119,10 +113,6 @@ class User(
     fun updatePhoneNumber(phoneNumber: String) {
         ensurePhoneNumberIsNotBlank(phoneNumber)
         this.phoneNumber = phoneNumber
-    }
-
-    fun addAuthentication(authentication: Authentication) {
-        this._authentications.add(authentication)
     }
 
     fun addRole(role: Role) {

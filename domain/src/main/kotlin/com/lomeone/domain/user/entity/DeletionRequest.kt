@@ -16,7 +16,7 @@ import jakarta.persistence.Table
 class DeletionRequest(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "deletion_request_users_id")
+    @Column(name = "deletion_request_user_id")
     val id: Long = 0L,
     val userToken: String,
     val reason: String

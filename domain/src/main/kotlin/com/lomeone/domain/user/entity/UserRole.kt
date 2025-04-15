@@ -18,11 +18,11 @@ import jakarta.persistence.Table
 class UserRole(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_roles_id")
+    @Column(name = "user_role_id")
     val id: Long = 0L,
 
     @ManyToOne
-    @JoinColumn(name = "roles_id")
+    @JoinColumn(name = "role_id")
     val role: Role
 ) : AuditEntity()
 
@@ -31,7 +31,7 @@ class UserRole(
 class Role(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "roles_id")
+    @Column(name = "role_id")
     val id: Long = 0L,
 
     @Enumerated(EnumType.STRING)

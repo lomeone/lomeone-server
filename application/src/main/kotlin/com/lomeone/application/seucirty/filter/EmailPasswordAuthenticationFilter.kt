@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.lomeone.application.seucirty.handler.EmailPasswordAuthenticationSuccessHandler
 import com.lomeone.domain.authentication.service.JwtTokenProvider
-import com.lomeone.domain.authentication.service.RealmUsernamePasswordAuthenticationToken
+import com.lomeone.application.seucirty.provider.RealmUsernamePasswordAuthenticationToken
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory

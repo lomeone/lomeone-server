@@ -1,5 +1,6 @@
-package com.lomeone.domain.authentication.service
+package com.lomeone.application.seucirty.provider
 
+import com.lomeone.domain.authentication.service.RealmUserDetailsLoader
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.BadCredentialsException
@@ -9,9 +10,9 @@ import org.springframework.security.core.SpringSecurityMessageSource
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
-@Service
+@Component
 class RealmAuthenticationProvider(
     private val loadUserByRealmAndUsername: RealmUserDetailsLoader,
     private val passwordEncoder: PasswordEncoder

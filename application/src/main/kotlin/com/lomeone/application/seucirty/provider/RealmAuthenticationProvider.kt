@@ -1,6 +1,6 @@
 package com.lomeone.application.seucirty.provider
 
-import com.lomeone.domain.authentication.service.RealmUserDetailsLoader
+import com.lomeone.domain.authentication.config.RealmUserDetailsLoader
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.BadCredentialsException

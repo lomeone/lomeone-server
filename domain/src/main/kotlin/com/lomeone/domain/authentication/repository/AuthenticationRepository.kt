@@ -13,4 +13,6 @@ interface AuthenticationRepository : JpaRepository<Authentication, Long> {
     fun findByEmailAndProviderAndRealm(email: String, provider: AuthProvider, realm: Realm): Authentication?
 
     fun findByEmailAndPassword(email: String, password: String): Authentication?
+
+    fun findByUidAndRealm(uid: String, realm: Realm): Authentication?
 }

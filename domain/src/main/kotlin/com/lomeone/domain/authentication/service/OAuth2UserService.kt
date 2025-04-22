@@ -7,8 +7,7 @@ import com.lomeone.domain.authentication.exception.OAuth2ProviderNotSupportedExc
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.user.service.CreateUserCommand
 import com.lomeone.domain.user.service.CreateUserResult
-import com.lomeone.domain.user.service.CreateUserService
-import com.lomeone.domain.user.service.GetUserByUserTokenQuery
+import com.lomeone.domain.user.service.CreateUser
 import com.lomeone.domain.user.service.GetUserByUserTokenService
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -22,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class OAuth2UserService(
     private val authenticationRepository: AuthenticationRepository,
-    private val createUserService: CreateUserService,
+    private val createUserService: CreateUser,
     private val getUserByUserTokenService: GetUserByUserTokenService,
     private val registerAuthenticationService: RegisterAuthenticationService
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -73,21 +72,16 @@ class OAuth2UserService(
 
     private fun createUser(userInfo: OAuth2UserInfo, uid: String): CreateUserResult {
         val command = CreateUserCommand(
-            userInfo = CreateUserCommand.UserInfo(
-                name = userInfo.getName(),
-                nickname = userInfo.getNickname(),
-                email =  userInfo.getEmail(),
-                phoneNumber = userInfo.getPhoneNumber(),
-                birthday = userInfo.getBirthday()
-            ),
-            authenticationInfo = CreateUserCommand.AuthenticationInfo(
-                email = userInfo.getEmail(),
-                provider = userInfo.getProvider(),
-                uid = uid
-            )
+            name = userInfo.getName(),
+            nickname = userInfo.getNickname(),
+            email = userInfo.getEmail(),
+            phoneNumber = userInfo.getPhoneNumber(),
+            birthday = userInfo.getBirthday(),
+            authenticationUid = uid,
+            realmCode = "userInfo.getRealmCode()"
         )
 
-        return createUserService.createUser(command)
+        return createUserService.execute(command)
     }
 }
 

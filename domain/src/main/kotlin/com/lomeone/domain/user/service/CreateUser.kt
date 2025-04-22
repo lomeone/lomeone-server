@@ -40,7 +40,7 @@ class CreateUser(
         ))
 
         return CreateUserResult(
-            userToken = user.userToken
+            userToken = savedUser.userToken
         )
     }
 

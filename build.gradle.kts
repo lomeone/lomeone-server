@@ -15,6 +15,8 @@ val springCloudOpenFeignVersion: String by project
 val springCloudHystrixVersion: String by project
 val springCloudRibbonVersion: String by project
 
+val eunoiaExceptionVersion: String by project
+
 plugins {
 	id("org.springframework.boot")
 	id("io.spring.dependency-management")
@@ -46,6 +48,13 @@ allprojects {
 
 	repositories {
 		mavenCentral()
+		maven {
+			url = uri("https://maven.pkg.github.com/lomeone/eunoia")
+			credentials {
+				username = System.getenv("GITHUB_ACTOR")
+				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
 	}
 
 	tasks.test {
@@ -122,6 +131,8 @@ subprojects {
 		implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$springCloudOpenFeignVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix:$springCloudHystrixVersion")
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:$springCloudRibbonVersion")
+
+		implementation("com.lomeone.eunoia:exception:$eunoiaExceptionVersion")
 
 		developmentOnly("org.springframework.boot:spring-boot-devtools")
 		testImplementation("org.springframework.boot:spring-boot-starter-test")

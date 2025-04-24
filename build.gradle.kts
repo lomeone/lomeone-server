@@ -16,6 +16,7 @@ val springCloudHystrixVersion: String by project
 val springCloudRibbonVersion: String by project
 
 val eunoiaExceptionVersion: String by project
+val eunoiaKotlinUtilVersion: String by project
 
 plugins {
 	id("org.springframework.boot")
@@ -104,7 +105,6 @@ subprojects {
 		jvmToolchain(21)
 	}
 
-
 	dependencies {
 		// Kotlin
 		implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -133,6 +133,7 @@ subprojects {
 		implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:$springCloudRibbonVersion")
 
 		implementation("com.lomeone.eunoia:exception:$eunoiaExceptionVersion")
+		implementation("com.lomeone.eunoia:kotlin-util:$eunoiaKotlinUtilVersion")
 
 		developmentOnly("org.springframework.boot:spring-boot-devtools")
 		testImplementation("org.springframework.boot:spring-boot-starter-test")

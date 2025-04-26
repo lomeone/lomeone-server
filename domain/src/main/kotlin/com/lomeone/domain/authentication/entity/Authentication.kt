@@ -7,8 +7,8 @@ import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.realm.entity.Realm
 import com.lomeone.domain.user.entity.User
+import com.lomeone.eunoia.kotlin.util.string.StringUtils.generateRandomString
 import com.lomeone.util.converter.EmailCryptoConverter
-import com.lomeone.util.string.RandomStringUtil.generateRandomString
 import java.time.LocalDateTime
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
@@ -75,7 +75,7 @@ class Authentication(
     private fun checkPasswordIsNotNullIfEmailProvider(password: String?) {
         this.provider == AuthProvider.EMAIL && password == null
                 && throw AuthenticationPasswordInvalidException(
-                    message = "Password must be not null if provider is email",
+                    message = "Authentication invalid password: Password must be not null if provider is email",
                     detail = mapOf("provider" to this.provider)
                 )
     }

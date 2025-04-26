@@ -1,18 +1,20 @@
 package com.lomeone.domain.authentication.exception
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ErrorCode
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ExceptionDetail
+
+private const val MESSAGE = "Authentication not found"
+private val ERROR_CODE = ErrorCode(
+    code = "authentication/not-found",
+    exceptionCategory = ExceptionCategory.NOT_FOUND
+)
 
 class AuthenticationNotFoundException(
     detail: Map<String, Any>
-) : CustomException(
-    errorCode = ERROR_CODE,
+) : EunioaException(
     message = MESSAGE,
-    exceptionCategory = ExceptionCategory.NOT_FOUND,
-    detail = detail
-) {
-    companion object {
-        const val ERROR_CODE = "authentication/not-found"
-        const val MESSAGE = "Authentication not found"
-    }
-}
+    errorCode = ERROR_CODE,
+    detail = ExceptionDetail(detail)
+)

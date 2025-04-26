@@ -9,6 +9,8 @@ val prometheusVersion: String by project
 val micrometerTracingVersion: String by project
 val opentelemetryVersion: String by project
 
+val eunoiaSpringWebRestVersion: String by project
+
 val imageRegistry: String by project
 val serviceName: String by project
 
@@ -46,6 +48,8 @@ dependencies {
     implementation("io.micrometer:micrometer-tracing:${micrometerTracingVersion}")
     implementation("io.micrometer:micrometer-tracing-bridge-brave:${micrometerTracingVersion}")
     implementation("io.opentelemetry:opentelemetry-exporter-otlp:${opentelemetryVersion}")
+
+    implementation("com.lomeone.eunoia:spring-web-rest:$eunoiaSpringWebRestVersion")
 }
 
 tasks {

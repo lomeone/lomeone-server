@@ -1,18 +1,20 @@
 package com.lomeone.domain.authentication.exception
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ErrorCode
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ExceptionDetail
+
+private const val MESSAGE = "Not yet supported oauth2 provider"
+private val ERROR_CODE = ErrorCode(
+    code = "authentication/oauth-provider-not-supported",
+    exceptionCategory = ExceptionCategory.BAD_REQUEST
+)
 
 class OAuth2ProviderNotSupportedException(
     detail: Map<String, Any>
-) : CustomException(
-    errorCode = ERROR_CODE,
+) : EunioaException(
     message = MESSAGE,
-    exceptionCategory = ExceptionCategory.BAD_REQUEST,
-    detail = detail
-) {
-    companion object {
-        const val ERROR_CODE = "authentication/oauth-provider-not-supported"
-        const val MESSAGE = "Not yet supported oauth2 provider"
-    }
-}
+    errorCode = ERROR_CODE,
+    detail = ExceptionDetail(detail)
+)

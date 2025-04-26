@@ -1,17 +1,20 @@
 package com.lomeone.domain.authentication.exception
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ErrorCode
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ExceptionDetail
+
+private const val MESSAGE = "Authentication already exists"
+private val ERROR_CODE = ErrorCode(
+    code = "authentication/already-exists",
+    exceptionCategory = ExceptionCategory.BAD_REQUEST
+)
 
 class AuthenticationAlreadyExistsException(
     detail: Map<String, Any>
-) : CustomException(
-    errorCode = ERROR_CODE,
+) : EunioaException(
     message = MESSAGE,
-    exceptionCategory = ExceptionCategory.BAD_REQUEST
-) {
-    companion object {
-        const val ERROR_CODE = "authentication/already-exists"
-        const val MESSAGE = "Authentication already exists"
-    }
-}
+    errorCode = ERROR_CODE,
+    detail = ExceptionDetail(detail)
+)

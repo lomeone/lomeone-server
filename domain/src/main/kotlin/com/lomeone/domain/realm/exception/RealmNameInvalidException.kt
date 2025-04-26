@@ -1,17 +1,21 @@
 package com.lomeone.domain.realm.exception
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ErrorCode
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ExceptionDetail
 
-private const val ERROR_CODE = "realm/name-invalid"
 private const val MESSAGE = "Invalid realm name"
+private val ERROR_CODE = ErrorCode(
+    code = "realm/name-invalid",
+    exceptionCategory = ExceptionCategory.BAD_REQUEST
+)
 
 class RealmNameInvalidException(
     message: String = MESSAGE,
     detail: Map<String, Any>
-) : CustomException(
-    errorCode = ERROR_CODE,
+) : EunioaException(
     message = message,
-    exceptionCategory = ExceptionCategory.BAD_REQUEST,
-    detail = detail
+    errorCode = ERROR_CODE,
+    detail = ExceptionDetail(detail)
 )

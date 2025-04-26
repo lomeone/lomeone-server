@@ -1,7 +1,7 @@
 package com.lomeone.application.graphql.handler
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
 import com.netflix.graphql.dgs.exceptions.DefaultDataFetcherExceptionHandler
 import com.netflix.graphql.types.errors.ErrorType
 import com.netflix.graphql.types.errors.TypedGraphQLError
@@ -14,9 +14,9 @@ import java.util.concurrent.CompletableFuture
 class DgsExceptionHandler : DefaultDataFetcherExceptionHandler() {
     override fun handleException(handlerParameters: DataFetcherExceptionHandlerParameters): CompletableFuture<DataFetcherExceptionHandlerResult> {
         return when(handlerParameters.exception) {
-            is CustomException -> {
+            is EunioaException -> {
                 val error = newInternalError {
-                    errorType(convertExceptionCategoryToDgsErrorType((handlerParameters.exception as CustomException).exceptionCategory))
+                    errorType(convertExceptionCategoryToDgsErrorType((handlerParameters.exception as EunioaException).errorCode.exceptionCategory))
                     message(handlerParameters.exception.message)
                     path(handlerParameters.path)
                 }
@@ -34,6 +34,8 @@ class DgsExceptionHandler : DefaultDataFetcherExceptionHandler() {
             ExceptionCategory.UNAUTHORIZED -> ErrorType.UNAUTHENTICATED
             ExceptionCategory.FORBIDDEN -> ErrorType.PERMISSION_DENIED
             ExceptionCategory.NOT_FOUND -> ErrorType.NOT_FOUND
+            ExceptionCategory.INTERNAL_SERVER_ERROR -> ErrorType.UNAVAILABLE
+            ExceptionCategory.SERVICE_UNAVAILABLE -> ErrorType.UNAVAILABLE
         }
 
     private inline fun newInternalError(block: TypedGraphQLError.Builder.() -> Unit): TypedGraphQLError {

@@ -1,18 +1,20 @@
 package com.lomeone.domain.user.exception
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ErrorCode
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ExceptionDetail
+
+private const val MESSAGE = "User with the same email already exists"
+private val ERROR_CODE = ErrorCode(
+    code = "user/email-already-exists",
+    exceptionCategory = ExceptionCategory.BAD_REQUEST
+)
 
 class UserEmailAlreadyExistsException(
     detail: Map<String, Any>
-) : CustomException(
-    errorCode = ERROR_CODE,
+) : EunioaException(
     message = MESSAGE,
-    exceptionCategory = ExceptionCategory.BAD_REQUEST,
-    detail = detail
-) {
-    companion object {
-        const val ERROR_CODE = "user/email-already-exists"
-        const val MESSAGE = "User with the same email already exists"
-    }
-}
+    errorCode = ERROR_CODE,
+    detail = ExceptionDetail(detail)
+)

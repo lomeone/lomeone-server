@@ -1,18 +1,20 @@
 package com.lomeone.domain.user.exception
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ErrorCode
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ExceptionDetail
+
+private const val MESSAGE = "User not found"
+private val ERROR_CODE = ErrorCode(
+    code = "user/not-found",
+    exceptionCategory = ExceptionCategory.NOT_FOUND
+)
 
 class UserNotFoundException(
     detail: Map<String, Any>
-) : CustomException(
-    errorCode = ERROR_CODE,
+) : EunioaException(
     message = MESSAGE,
-    exceptionCategory = ExceptionCategory.NOT_FOUND,
-    detail = detail
-) {
-    companion object {
-        const val ERROR_CODE = "user/not-found"
-        const val MESSAGE = "User not found"
-    }
-}
+    errorCode = ERROR_CODE,
+    detail = ExceptionDetail(detail)
+)

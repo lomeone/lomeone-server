@@ -7,8 +7,8 @@ import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.realm.entity.Realm
 import com.lomeone.domain.realm.repository.RealmRepository
-import com.lomeone.util.security.authentication.PasswordUtils.checkPasswordValidity
-import com.lomeone.util.string.RandomStringUtil.generateRandomString
+import com.lomeone.eunoia.kotlin.util.security.authentication.PasswordUtils.checkPasswordValidity
+import com.lomeone.eunoia.kotlin.util.string.StringUtils.generateRandomString
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

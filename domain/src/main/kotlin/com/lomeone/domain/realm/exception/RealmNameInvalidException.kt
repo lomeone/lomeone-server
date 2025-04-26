@@ -12,9 +12,10 @@ private val ERROR_CODE = ErrorCode(
 )
 
 class RealmNameInvalidException(
+    message: String = MESSAGE,
     detail: Map<String, Any>
 ) : EunioaException(
-    message = MESSAGE,
+    message = message,
     errorCode = ERROR_CODE,
     detail = ExceptionDetail(detail)
 )

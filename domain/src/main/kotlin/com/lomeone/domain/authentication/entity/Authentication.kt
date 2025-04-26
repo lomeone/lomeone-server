@@ -75,7 +75,7 @@ class Authentication(
     private fun checkPasswordIsNotNullIfEmailProvider(password: String?) {
         this.provider == AuthProvider.EMAIL && password == null
                 && throw AuthenticationPasswordInvalidException(
-                    message = "Password must be not null if provider is email",
+                    message = "Authentication invalid password: Password must be not null if provider is email",
                     detail = mapOf("provider" to this.provider)
                 )
     }

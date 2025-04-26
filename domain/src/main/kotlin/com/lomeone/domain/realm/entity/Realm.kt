@@ -43,7 +43,7 @@ class Realm(
     }
 
     private fun ensureNameIsNotBlank(name: String) {
-        name.isBlank() && throw RealmNameInvalidException(message = "Realm name is blank", detail = mapOf("name" to name))
+        name.isBlank() && throw RealmNameInvalidException(message = "Invalid realm name: Realm name must not be blank", detail = mapOf("name" to name))
     }
 
     fun updateName(name: String) {

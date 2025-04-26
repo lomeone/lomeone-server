@@ -2,7 +2,7 @@ package com.lomeone.domain.realm.entity
 
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.realm.exception.RealmNameInvalidException
-import com.lomeone.util.string.RandomStringUtil.generateRandomString
+import com.lomeone.eunoia.kotlin.util.string.StringUtils.generateRandomString
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -36,7 +36,7 @@ class Realm(
     var status: RealmStatus = RealmStatus.PENDING
         protected set
 
-    private fun generateAffix() =  generateRandomString((('0'..'9') + ('a'..'z') + ('A'..'Z')).toSet(), 8)
+    private fun generateAffix() = generateRandomString((('0'..'9') + ('a'..'z') + ('A'..'Z')).toSet(), 8)
 
     init {
         ensureNameIsNotBlank(name)

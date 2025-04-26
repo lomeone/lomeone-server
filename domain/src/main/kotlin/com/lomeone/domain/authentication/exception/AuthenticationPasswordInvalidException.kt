@@ -1,19 +1,20 @@
 package com.lomeone.domain.authentication.exception
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ErrorCode
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ExceptionDetail
+
+private const val MESSAGE = "Authentication invalid password"
+private val ERROR_CODE = ErrorCode(
+    code = "authentication/invalid-password",
+    exceptionCategory = ExceptionCategory.BAD_REQUEST
+)
 
 class AuthenticationPasswordInvalidException(
-    message: String = MESSAGE,
     detail: Map<String, Any>
-) : CustomException(
+) : EunioaException(
+    message = MESSAGE,
     errorCode = ERROR_CODE,
-    message = message,
-    exceptionCategory = ExceptionCategory.BAD_REQUEST,
-    detail = detail
-) {
-    companion object {
-        const val ERROR_CODE = "authentication/invalid-password"
-        const val MESSAGE = "Authentication invalid password"
-    }
-}
+    detail = ExceptionDetail(detail)
+)

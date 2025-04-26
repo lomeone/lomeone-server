@@ -1,17 +1,20 @@
 package com.lomeone.domain.authentication.exception
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ErrorCode
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ExceptionDetail
 
 private const val MESSAGE = "Authentication already associated"
-private const val ERROR_CODE = "authentication/already-associated"
+private val ERROR_CODE = ErrorCode(
+    code = "authentication/already-associated",
+    exceptionCategory = ExceptionCategory.BAD_REQUEST
+)
 
 class AuthenticationAlreadyAssociatedException(
-    message: String = MESSAGE,
     detail: Map<String, Any>,
-) : CustomException(
-    errorCode = ERROR_CODE,
+) : EunioaException(
     message = MESSAGE,
-    exceptionCategory = ExceptionCategory.BAD_REQUEST,
-    detail = detail,
+    errorCode = ERROR_CODE,
+    detail = ExceptionDetail(detail)
 )

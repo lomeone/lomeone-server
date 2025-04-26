@@ -83,19 +83,19 @@ class User(
     }
 
     private fun ensureNameIsNotBlank(name: String) {
-        name.isBlank() && throw UserNameInvalidException(message = "User name is blank", detail = mapOf("name" to name))
+        name.isBlank() && throw UserNameInvalidException(message = "Invalid name: it cannot be blank. Please enter a valid name.", detail = mapOf("name" to name))
     }
 
     private fun ensureNicknameIsNotBlank(nickname: String) {
-        nickname.isBlank() && throw UserNicknameInvalidException(message = "User nickname is blank", detail = mapOf("nickname" to nickname))
+        nickname.isBlank() && throw UserNicknameInvalidException(message = "Invalid nickname: it cannot be blank. Please enter a valid nickname.", detail = mapOf("nickname" to nickname))
     }
 
     private fun ensurePhoneNumberIsNotBlank(phoneNumber: String) {
-        phoneNumber.isBlank() && throw UserPhoneNumberInvalidException(message = "User phone number is blank", detail = mapOf("phone_number" to phoneNumber))
+        phoneNumber.isBlank() && throw UserPhoneNumberInvalidException(message = "Invalid phone number: it cannot be blank. Please enter a valid phone number.", detail = mapOf("phone_number" to phoneNumber))
     }
 
     private fun ensureUserRoleIsNotEmpty(userRoles: List<UserRole>) {
-        userRoles.isEmpty() && throw UserRoleEmptyException()
+        userRoles.isEmpty() && throw UserRoleEmptyException(mapOf(("userRoles" to userRoles)))
     }
 
     fun updateUserInfo(name: String, nickname: String, birthday: LocalDate) {

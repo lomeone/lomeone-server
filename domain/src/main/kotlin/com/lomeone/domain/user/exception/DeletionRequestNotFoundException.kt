@@ -1,18 +1,20 @@
 package com.lomeone.domain.user.exception
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ErrorCode
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ExceptionDetail
+
+private const val MESSAGE = "Deletion request not found"
+private val ERROR_CODE = ErrorCode(
+    code = "user/deletion-request-not-found",
+    exceptionCategory = ExceptionCategory.BAD_REQUEST
+)
 
 class DeletionRequestNotFoundException(
     detail: Map<String, Any>
-) : CustomException(
-    errorCode = ERROR_CODE,
+) : EunioaException(
     message = MESSAGE,
-    exceptionCategory = ExceptionCategory.BAD_REQUEST,
-    detail = detail
-) {
-    companion object {
-        const val ERROR_CODE = "user/deletion-request-not-found"
-        const val MESSAGE = "Deletion request not found"
-    }
-}
+    errorCode = ERROR_CODE,
+    detail = ExceptionDetail(detail)
+)

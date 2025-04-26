@@ -1,18 +1,20 @@
 package com.lomeone.domain.realm.exception
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ErrorCode
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ExceptionDetail
+
+private const val MESSAGE = "Realm not found"
+private val ERROR_CODE = ErrorCode(
+    code = "realm/not-found",
+    exceptionCategory = ExceptionCategory.NOT_FOUND
+)
 
 class RealmNotFoundException(
     detail: Map<String, Any>
-) : CustomException(
-    errorCode = ERROR_CODE,
+) : EunioaException(
     message = MESSAGE,
-    exceptionCategory = ExceptionCategory.NOT_FOUND,
-    detail = detail
-) {
-    companion object {
-        const val ERROR_CODE = "realm/not-found"
-        const val MESSAGE = "Realm not found"
-    }
-}
+    errorCode = ERROR_CODE,
+    detail = ExceptionDetail(detail)
+)

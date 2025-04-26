@@ -1,15 +1,20 @@
 package com.lomeone.domain.user.exception
 
-import com.lomeone.util.exception.CustomException
-import com.lomeone.util.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ErrorCode
+import com.lomeone.eunoia.exception.EunioaException
+import com.lomeone.eunoia.exception.ExceptionCategory
+import com.lomeone.eunoia.exception.ExceptionDetail
 
-class UserRoleEmptyException : CustomException(
-    errorCode = ERROR_CODE,
-    message = MESSAGE,
+private const val MESSAGE = "User role must be not empty"
+private val ERROR_CODE = ErrorCode(
+    code = "user/role-empty",
     exceptionCategory = ExceptionCategory.BAD_REQUEST
-) {
-    companion object {
-        const val ERROR_CODE = "user/role-empty"
-        const val MESSAGE = "User role must be not empty"
-    }
-}
+)
+
+class UserRoleEmptyException(
+    detail: Map<String, Any>
+) : EunioaException(
+    message = MESSAGE,
+    errorCode = ERROR_CODE,
+    detail = ExceptionDetail(detail)
+)

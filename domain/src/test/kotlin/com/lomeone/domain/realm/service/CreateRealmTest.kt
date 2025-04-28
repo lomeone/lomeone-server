@@ -37,6 +37,20 @@ class CreateRealmTest : BehaviorSpec({
         }
     }
 
+    Given("코드를 입력하지 않으면") {
+        When("Realm을 생성할 때") {
+            val command = CreateRealmCommand(
+                name = "name"
+            )
+
+            val result = createRealm.execute(command)
+
+            Then("Realm이 생성된다") {
+                result.realmId shouldBe 1L
+            }
+        }
+    }
+
     Given("동일한 코드의 Realm이 있으면") {
         every { realmRepository.findByCode(any()) } returns mockk()
 

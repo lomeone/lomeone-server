@@ -15,11 +15,11 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
-class RegisterAuthenticationServiceTest : BehaviorSpec({
+class RegisterAuthenticationTest : BehaviorSpec({
     val authenticationRepository: AuthenticationRepository = mockk()
     val realmRepository: RealmRepository = mockk()
     val bCryptPasswordEncoder: BCryptPasswordEncoder = mockk()
-    val registerAuthenticationService = RegisterAuthenticationService(authenticationRepository, realmRepository, bCryptPasswordEncoder)
+    val registerAuthenticationService = RegisterAuthentication(authenticationRepository, realmRepository, bCryptPasswordEncoder)
 
     val emailInput = "test@gmail.com"
     val uidInput = "testUid1234"
@@ -43,7 +43,7 @@ class RegisterAuthenticationServiceTest : BehaviorSpec({
 
             Then("realm이 없다는 예외가 발생해서 인증정보 생성에 실패한다") {
                 shouldThrow<IllegalArgumentException> {
-                    registerAuthenticationService.registerAuthentication(command)
+                    registerAuthenticationService.execute(command)
                 }
             }
         }
@@ -69,7 +69,7 @@ class RegisterAuthenticationServiceTest : BehaviorSpec({
                 realm = mockRealm
             )
 
-            val result = registerAuthenticationService.registerAuthentication(command)
+            val result = registerAuthenticationService.execute(command)
 
             Then("비밀번호 인코딩을 하지 않고 인증정보가 생성된다") {
                 verify(exactly = 0) { bCryptPasswordEncoder.encode(any()) }
@@ -94,7 +94,7 @@ class RegisterAuthenticationServiceTest : BehaviorSpec({
                 realm = mockRealm
             )
 
-            val result = registerAuthenticationService.registerAuthentication(command)
+            val result = registerAuthenticationService.execute(command)
 
             Then("비밀번호 인코딩을 하고 인증정보가 생성된다") {
                 verify { bCryptPasswordEncoder.encode(any()) }
@@ -127,7 +127,7 @@ class RegisterAuthenticationServiceTest : BehaviorSpec({
 
             Then("중복된 인증정보가 있다는 예외가 발생해서 인증정보 생성에 실패한다") {
                 shouldThrow<AuthenticationAlreadyExistsException> {
-                    registerAuthenticationService.registerAuthentication(command)
+                    registerAuthenticationService.execute(command)
                 }
             }
         }
@@ -155,7 +155,7 @@ class RegisterAuthenticationServiceTest : BehaviorSpec({
 
             Then("중복된 인증정보가 있다는 예외가 발생해서 인증정보 생성에 실패한다") {
                 shouldThrow<AuthenticationAlreadyExistsException> {
-                    registerAuthenticationService.registerAuthentication(command)
+                    registerAuthenticationService.execute(command)
                 }
             }
         }

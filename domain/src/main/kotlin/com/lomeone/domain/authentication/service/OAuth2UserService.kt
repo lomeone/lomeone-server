@@ -23,7 +23,7 @@ class OAuth2UserService(
     private val authenticationRepository: AuthenticationRepository,
     private val createUserService: CreateUser,
     private val getUserByUserTokenService: GetUserByUserTokenService,
-    private val registerAuthenticationService: RegisterAuthenticationService
+    private val registerAuthenticationService: RegisterAuthentication
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     @Transactional
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
@@ -52,7 +52,7 @@ class OAuth2UserService(
 
         realmCode == null && throw IllegalArgumentException("Realm code is required for authentication")
 
-        registerAuthenticationService.registerAuthentication(
+        registerAuthenticationService.execute(
             RegisterAuthenticationCommand(
                 email = oAuthUserInfo.getEmail(),
                 provider = oAuthUserInfo.getProvider(),

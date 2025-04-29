@@ -11,9 +11,9 @@ import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDate
 
-class UpdateUserInfoServiceTest : BehaviorSpec({
+class UpdateUserInfoTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
-    val updateUserInfoService = UpdateUserInfoService(userRepository)
+    val updateUserInfoService = UpdateUserInfo(userRepository)
 
     Given("유저가 존재하면") {
         every { userRepository.findByUserToken(any()) } returns User(
@@ -32,7 +32,7 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
                 birthday = LocalDate.of(2000, 1, 1)
             )
 
-            val result = updateUserInfoService.updateUserInfo(command)
+            val result = updateUserInfoService.execute(command)
 
             Then("유저 정보가 업데이트된다") {
                 result.name shouldBe command.name
@@ -55,7 +55,7 @@ class UpdateUserInfoServiceTest : BehaviorSpec({
 
             Then("유저를 찾을 수 없다는 예외가 발생해서 유저 정보를 업데이트할 수 없다") {
                 shouldThrow<UserNotFoundException> {
-                    updateUserInfoService.updateUserInfo(command)
+                    updateUserInfoService.execute(command)
                 }
             }
         }

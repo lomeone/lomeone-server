@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class RestoreUserService(
+class RestoreUser(
     private val userRepository: UserRepository,
     private val deletionRequestRepository: DeletionRequestRepository
 ) {
     @Transactional
-    fun restoreUser(command: RestoreUserCommand): RestoreUserResult {
+    fun execute(command: RestoreUserCommand): RestoreUserResult {
         val (userToken) = command
 
         val user = getUser(userToken)

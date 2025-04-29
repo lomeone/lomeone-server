@@ -15,10 +15,10 @@ import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDate
 
-class DeletionRequestUserServiceTest : BehaviorSpec({
+class DeletionRequestUserTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
     val deletionRequestRepository: DeletionRequestRepository = mockk()
-    val deletionRequestUserService = DeletionRequestUserService(
+    val deletionRequestUserService = RequestUserDeletion(
         userRepository = userRepository,
         deletionRequestRepository = deletionRequestRepository
     )
@@ -46,7 +46,7 @@ class DeletionRequestUserServiceTest : BehaviorSpec({
                 reason = "탈퇴 요청"
             )
 
-            val result = deletionRequestUserService.deletionRequestUser(command)
+            val result = deletionRequestUserService.execute(command)
 
             Then("삭제 요청이 처리된다.") {
                 result.userToken shouldBe command.userToken
@@ -66,7 +66,7 @@ class DeletionRequestUserServiceTest : BehaviorSpec({
 
             Then("이미 삭제 요청이 있다는 예외가 발생해서 삭제 요청을 할 수 없다") {
                 shouldThrow<DeletionRequestAlreadyExistsException> {
-                    deletionRequestUserService.deletionRequestUser(command)
+                    deletionRequestUserService.execute(command)
                 }
             }
         }
@@ -84,7 +84,7 @@ class DeletionRequestUserServiceTest : BehaviorSpec({
 
             Then("유저를 찾을 수 없다는 예외가 발생해서 삭제 요청을 할 수 없다") {
                 shouldThrow<UserNotFoundException> {
-                    deletionRequestUserService.deletionRequestUser(command)
+                    deletionRequestUserService.execute(command)
                 }
             }
         }

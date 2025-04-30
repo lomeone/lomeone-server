@@ -15,10 +15,10 @@ import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDate
 
-class RestoreUserServiceTest : BehaviorSpec({
+class RestoreUserTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
     val deletionRequestRepository: DeletionRequestRepository = mockk()
-    val restoreUserService = RestoreUserService(userRepository, deletionRequestRepository)
+    val restoreUserService = RestoreUser(userRepository, deletionRequestRepository)
 
 
     Given("삭제 요청을 했고 유저 정보에 있는 유저 토큰으로") {
@@ -39,7 +39,7 @@ class RestoreUserServiceTest : BehaviorSpec({
 
         When("복구할 때") {
             val command = RestoreUserCommand(defaultUser.userToken)
-            val result = restoreUserService.restoreUser(command)
+            val result = restoreUserService.execute(command)
 
             Then("복구된다") {
                 result.userToken shouldBe defaultUser.userToken
@@ -55,7 +55,7 @@ class RestoreUserServiceTest : BehaviorSpec({
 
             Then("유저가 없다는 예외가 발생해서 복구할 수 없다") {
                 shouldThrow<UserNotFoundException> {
-                    restoreUserService.restoreUser(command)
+                    restoreUserService.execute(command)
                 }
             }
         }
@@ -78,7 +78,7 @@ class RestoreUserServiceTest : BehaviorSpec({
 
             Then("삭제 요청을 찾을 수 없다는 예외가 발생해서 복구할 수 없다") {
                 shouldThrow<DeletionRequestNotFoundException> {
-                    restoreUserService.restoreUser(command)
+                    restoreUserService.execute(command)
                 }
             }
         }

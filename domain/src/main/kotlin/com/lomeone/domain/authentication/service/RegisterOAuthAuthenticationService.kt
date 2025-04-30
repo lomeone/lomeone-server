@@ -1,7 +1,7 @@
 package com.lomeone.domain.authentication.service
 
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
-import com.lomeone.domain.user.service.GetUserByUserTokenService
+import com.lomeone.domain.user.service.GetUserByUserToken
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
 import org.springframework.security.oauth2.core.user.OAuth2User
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class RegisterOAuthAuthenticationService(
     private val authenticationRepository: AuthenticationRepository,
-    private val getUserByUserTokenService: GetUserByUserTokenService
+    private val getUserByUserTokenService: GetUserByUserToken
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     @Transactional
     override fun loadUser(userRequest: OAuth2UserRequest?): OAuth2User {

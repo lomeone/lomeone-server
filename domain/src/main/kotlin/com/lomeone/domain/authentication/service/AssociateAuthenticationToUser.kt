@@ -37,6 +37,10 @@ class AssociateAuthenticationToUser(
         )
     }
 
+    private fun getUserByUserToken(userToken: String): User =
+        userRepository.findByUserToken(userToken)
+            ?: throw UserNotFoundException(mapOf("userToken" to userToken))
+
     private fun getRealm(realmCode: String): Realm =
         realmRepository.findByCode(realmCode)
             ?: throw RealmNotFoundException(mapOf("realmCode" to realmCode))
@@ -44,10 +48,6 @@ class AssociateAuthenticationToUser(
     private fun getAuthentication(uid: String, realm: Realm): Authentication =
         authenticationRepository.findByUidAndRealm(uid, realm)
             ?: throw AuthenticationNotFoundException(mapOf("uid" to uid, "realm" to realm))
-
-    private fun getUserByUserToken(userToken: String): User =
-        userRepository.findByUserToken(userToken)
-            ?: throw UserNotFoundException(mapOf("userToken" to userToken))
 }
 
 data class AssociateAuthenticationToUserCommand(

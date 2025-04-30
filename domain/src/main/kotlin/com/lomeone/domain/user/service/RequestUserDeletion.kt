@@ -12,12 +12,12 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Service
-class DeletionRequestUserService(
+class RequestUserDeletion(
     private val userRepository: UserRepository,
     private val deletionRequestRepository: DeletionRequestRepository
 ) {
     @Transactional
-    fun deletionRequestUser(command: DeletionRequestUserCommand): DeletionRequestUserResult {
+    fun execute(command: DeletionRequestUserCommand): DeletionRequestUserResult {
         val (userToken, reason) = command
 
         verifyDuplicate(userToken)

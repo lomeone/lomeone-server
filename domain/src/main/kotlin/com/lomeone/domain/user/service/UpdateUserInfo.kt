@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Service
-class UpdateUserInfoService(
+class UpdateUserInfo(
     private val userRepository: UserRepository
 ) {
     @Transactional
-    fun updateUserInfo(command: UpdateUserInfoCommand): UpdateUserInfoResult {
+    fun execute(command: UpdateUserInfoCommand): UpdateUserInfoResult {
         val (userToken, name, nickname, birthday) = command
 
         val user = getUser(userToken)

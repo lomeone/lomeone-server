@@ -8,7 +8,7 @@ import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.user.service.CreateUserCommand
 import com.lomeone.domain.user.service.CreateUserResult
 import com.lomeone.domain.user.service.CreateUser
-import com.lomeone.domain.user.service.GetUserByUserTokenService
+import com.lomeone.domain.user.service.GetUserByUserToken
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional
 class OAuth2UserService(
     private val authenticationRepository: AuthenticationRepository,
     private val createUserService: CreateUser,
-    private val getUserByUserTokenService: GetUserByUserTokenService,
-    private val registerAuthenticationService: RegisterAuthenticationService
+    private val getUserByUserTokenService: GetUserByUserToken,
+    private val registerAuthenticationService: RegisterAuthentication
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     @Transactional
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
@@ -52,7 +52,7 @@ class OAuth2UserService(
 
         realmCode == null && throw IllegalArgumentException("Realm code is required for authentication")
 
-        registerAuthenticationService.registerAuthentication(
+        registerAuthenticationService.execute(
             RegisterAuthenticationCommand(
                 email = oAuthUserInfo.getEmail(),
                 provider = oAuthUserInfo.getProvider(),

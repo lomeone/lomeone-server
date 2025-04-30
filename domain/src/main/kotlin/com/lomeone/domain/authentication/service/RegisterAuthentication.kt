@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class RegisterAuthenticationService(
+class RegisterAuthentication(
     private val authenticationRepository: AuthenticationRepository,
     private val realmRepository: RealmRepository,
     private val bCryptPasswordEncoder: BCryptPasswordEncoder
 ) {
     @Transactional
-    fun registerAuthentication(command: RegisterAuthenticationCommand): RegisterAuthenticationResult {
+    fun execute(command: RegisterAuthenticationCommand): RegisterAuthenticationResult {
         val (email, password, provider, uid, realmCode) = command
 
         val realm = getRealm(realmCode)

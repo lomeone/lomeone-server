@@ -1,8 +1,8 @@
-package com.lomeone.domain.realm.service
+package com.lomeone.domain.authentication.service
 
-import com.lomeone.domain.realm.entity.Realm
-import com.lomeone.domain.realm.exception.RealmAlreadyExistException
-import com.lomeone.domain.realm.repository.RealmRepository
+import com.lomeone.domain.authentication.entity.Realm
+import com.lomeone.domain.authentication.exception.RealmAlreadyExistException
+import com.lomeone.domain.authentication.repository.RealmRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

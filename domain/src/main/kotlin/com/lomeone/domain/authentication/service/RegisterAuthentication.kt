@@ -5,8 +5,8 @@ import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.exception.AuthenticationAlreadyExistsException
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
-import com.lomeone.domain.realm.entity.Realm
-import com.lomeone.domain.realm.repository.RealmRepository
+import com.lomeone.domain.authentication.entity.Realm
+import com.lomeone.domain.authentication.repository.RealmRepository
 import com.lomeone.eunoia.kotlin.util.security.authentication.PasswordUtils.checkPasswordValidity
 import com.lomeone.eunoia.kotlin.util.string.StringUtils.generateRandomString
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder

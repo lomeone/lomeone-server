@@ -3,9 +3,9 @@ package com.lomeone.domain.authentication.service
 import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.authentication.exception.AuthenticationNotFoundException
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
-import com.lomeone.domain.realm.entity.Realm
-import com.lomeone.domain.realm.exception.RealmNotFoundException
-import com.lomeone.domain.realm.repository.RealmRepository
+import com.lomeone.domain.authentication.entity.Realm
+import com.lomeone.domain.authentication.exception.RealmNotFoundException
+import com.lomeone.domain.authentication.repository.RealmRepository
 import com.lomeone.domain.user.entity.User
 import com.lomeone.domain.user.exception.UserNotFoundException
 import com.lomeone.domain.user.repository.UserRepository

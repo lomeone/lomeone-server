@@ -5,7 +5,6 @@ import com.lomeone.domain.authentication.exception.AuthenticationProviderIsNotEm
 import com.lomeone.domain.authentication.exception.AuthenticationPasswordInvalidException
 import com.lomeone.domain.common.entity.AuditEntity
 import com.lomeone.domain.common.entity.Email
-import com.lomeone.domain.realm.entity.Realm
 import com.lomeone.domain.user.entity.User
 import com.lomeone.eunoia.kotlin.util.string.StringUtils.generateRandomString
 import com.lomeone.util.converter.EmailCryptoConverter

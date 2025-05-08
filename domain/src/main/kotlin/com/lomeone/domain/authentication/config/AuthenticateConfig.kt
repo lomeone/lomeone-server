@@ -4,8 +4,8 @@ import com.lomeone.domain.authentication.entity.AuthProvider
 import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.authentication.exception.AuthenticationNotFoundException
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
-import com.lomeone.domain.realm.exception.RealmNotFoundException
-import com.lomeone.domain.realm.repository.RealmRepository
+import com.lomeone.domain.authentication.exception.RealmNotFoundException
+import com.lomeone.domain.authentication.repository.RealmRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.core.GrantedAuthority

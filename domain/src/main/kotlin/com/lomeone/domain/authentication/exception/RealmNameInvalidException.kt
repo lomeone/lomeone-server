@@ -1,20 +1,21 @@
-package com.lomeone.domain.realm.exception
+package com.lomeone.domain.authentication.exception
 
 import com.lomeone.eunoia.exception.ErrorCode
 import com.lomeone.eunoia.exception.EunioaException
 import com.lomeone.eunoia.exception.ExceptionCategory
 import com.lomeone.eunoia.exception.ExceptionDetail
 
-private const val MESSAGE = "Realm already exists."
+private const val MESSAGE = "Invalid realm name"
 private val ERROR_CODE = ErrorCode(
-    code = "realm/already-exist",
+    code = "realm/name-invalid",
     exceptionCategory = ExceptionCategory.BAD_REQUEST
 )
 
-class RealmAlreadyExistException(
+class RealmNameInvalidException(
+    message: String = MESSAGE,
     detail: Map<String, Any>
 ) : EunioaException(
-    message = MESSAGE,
+    message = message,
     errorCode = ERROR_CODE,
     detail = ExceptionDetail(detail)
 )

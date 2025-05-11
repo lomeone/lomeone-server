@@ -1,7 +1,7 @@
-package com.lomeone.domain.realm.entity
+package com.lomeone.domain.authentication.entity
 
 import com.lomeone.domain.common.entity.AuditEntity
-import com.lomeone.domain.realm.exception.RealmNameInvalidException
+import com.lomeone.domain.authentication.exception.RealmNameInvalidException
 import com.lomeone.eunoia.kotlin.util.string.StringUtils.generateRandomString
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

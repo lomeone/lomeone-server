@@ -5,8 +5,8 @@ import com.lomeone.domain.authentication.entity.Authentication
 import com.lomeone.domain.authentication.exception.AuthenticationAlreadyExistsException
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
-import com.lomeone.domain.realm.entity.Realm
-import com.lomeone.domain.realm.repository.RealmRepository
+import com.lomeone.domain.authentication.entity.Realm
+import com.lomeone.domain.authentication.repository.RealmRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

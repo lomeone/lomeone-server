@@ -31,6 +31,9 @@ dependencies {
         exclude(module = "undertow-websockets-jsr")
     }
 
+    // Security
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+
     // DGS
     implementation(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:$dgsVersion"))
     implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter") {

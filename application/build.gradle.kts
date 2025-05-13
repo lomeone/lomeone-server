@@ -65,7 +65,7 @@ tasks {
 
 jib {
     from {
-        image = "amazoncorretto:21"
+        image = "amazoncorretto:21.0.6-alpine3.21"
         platforms {
             platform {
                 architecture = "amd64"

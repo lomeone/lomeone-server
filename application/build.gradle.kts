@@ -31,6 +31,9 @@ dependencies {
         exclude(module = "undertow-websockets-jsr")
     }
 
+    // Security
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+
     // DGS
     implementation(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:$dgsVersion"))
     implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter") {
@@ -62,7 +65,7 @@ tasks {
 
 jib {
     from {
-        image = "amazoncorretto:21"
+        image = "amazoncorretto:21.0.6-alpine3.21"
         platforms {
             platform {
                 architecture = "amd64"

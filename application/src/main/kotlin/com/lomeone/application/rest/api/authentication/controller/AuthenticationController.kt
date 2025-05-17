@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/authentication")
+@RequestMapping("/api/v1/authentications")
 class AuthenticationController(
     private val registerAuthentication: RegisterAuthentication
 ) {
-    @PostMapping("/realms/{realm}/authentications/email")
+    @PostMapping("/realms/{realm}/email")
     fun registerEmailAuthentication(
         @PathVariable realm: String,
         @RequestBody request: RegisterEmailAuthenticationRequest

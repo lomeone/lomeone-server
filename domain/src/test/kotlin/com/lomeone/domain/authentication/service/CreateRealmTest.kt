@@ -15,7 +15,7 @@ class CreateRealmTest : BehaviorSpec({
 
     beforeTest {
         val mockRealm: Realm = mockk()
-        every { mockRealm.id } returns 1L
+        every { mockRealm.code } returns "realm-code"
         every { realmRepository.save(any()) } returns mockRealm
     }
 
@@ -25,14 +25,14 @@ class CreateRealmTest : BehaviorSpec({
         When("Realm을 생성할 때") {
             val command = CreateRealmCommand(
                 name = "name",
-                code = "code"
+                code = "realm-code"
             )
 
             val result = createRealm.execute(command)
 
             Then("Realm이 생성된다") {
 
-                result.realmId shouldBe 1L
+                result.realmCode shouldBe "realm-code"
             }
         }
     }
@@ -46,7 +46,7 @@ class CreateRealmTest : BehaviorSpec({
             val result = createRealm.execute(command)
 
             Then("Realm이 생성된다") {
-                result.realmId shouldBe 1L
+                result.realmCode shouldBe "realm-code"
             }
         }
     }

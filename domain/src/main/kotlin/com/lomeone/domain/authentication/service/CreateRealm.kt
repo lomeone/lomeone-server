@@ -21,7 +21,7 @@ class CreateRealm(
             )
         )
 
-        return CreateRealmResult(realm.id)
+        return CreateRealmResult(realm.code)
     }
 
     private fun ensureNotDuplicateRealm(code: String?) {
@@ -35,5 +35,5 @@ data class CreateRealmCommand(
 )
 
 data class CreateRealmResult(
-    val realmId: Long
+    val realmCode: String
 )

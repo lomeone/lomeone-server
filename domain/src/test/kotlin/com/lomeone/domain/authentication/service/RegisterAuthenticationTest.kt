@@ -6,6 +6,7 @@ import com.lomeone.domain.authentication.exception.AuthenticationAlreadyExistsEx
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.authentication.entity.Realm
+import com.lomeone.domain.authentication.exception.RealmNotFoundException
 import com.lomeone.domain.authentication.repository.RealmRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
@@ -42,7 +43,7 @@ class RegisterAuthenticationTest : BehaviorSpec({
             )
 
             Then("realm이 없다는 예외가 발생해서 인증정보 생성에 실패한다") {
-                shouldThrow<IllegalArgumentException> {
+                shouldThrow<RealmNotFoundException> {
                     registerAuthenticationService.execute(command)
                 }
             }

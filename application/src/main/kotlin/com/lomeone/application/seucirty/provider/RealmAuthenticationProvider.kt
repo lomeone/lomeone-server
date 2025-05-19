@@ -50,7 +50,7 @@ class RealmAuthenticationProvider(
         )
 
         val presentedPassword = authentication.credentials.toString()
-        passwordEncoder.matches(presentedPassword, userDetails.password) && throw BadCredentialsException(
+        !passwordEncoder.matches(presentedPassword, userDetails.password) && throw BadCredentialsException(
             messages.getMessage(
                 "RealmAuthenticationProvider.badCredentials",
                 "Bad credentials"

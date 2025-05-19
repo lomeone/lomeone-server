@@ -33,7 +33,7 @@ class RealmAuthenticationProvider(
 
         userDetailsChecker.check(userDetails)
 
-        authenticationCheck(userDetails, token)
+        checkAuthentication(userDetails, token)
 
         return createSuccessAuthentication(userDetails, authentication, userDetails)
     }
@@ -41,20 +41,27 @@ class RealmAuthenticationProvider(
     private fun determineUserName(authentication: Authentication): String =
         if (authentication.principal != null) authentication.name else "NONE_PROVIDED"
 
-    private fun authenticationCheck(userDetails: UserDetails, authentication: RealmUsernamePasswordAuthenticationToken) {
+    private fun checkAuthentication(userDetails: UserDetails, authentication: RealmUsernamePasswordAuthenticationToken) {
+        checkAuthenticationCredentialsIsNotNull(authentication)
+
+        checkPasswordMatches(authentication, userDetails)
+    }
+
+    private fun checkAuthenticationCredentialsIsNotNull(authentication: Authentication) {
         authentication.credentials == null && throw BadCredentialsException(
             messages.getMessage(
                 "RealmAuthenticationProvider.badCredentials",
                 "Bad credentials"
             )
         )
+    }
 
-        val presentedPassword = authentication.credentials.toString()
-        !passwordEncoder.matches(presentedPassword, userDetails.password) && throw BadCredentialsException(
-            messages.getMessage(
-                "RealmAuthenticationProvider.badCredentials",
-                "Bad credentials"
-
+    private fun checkPasswordMatches(authentication: Authentication, userDetails: UserDetails) {
+        !passwordEncoder.matches(authentication.credentials.toString(), userDetails.password) &&
+                throw BadCredentialsException(
+                    messages.getMessage(
+                        "RealmAuthenticationProvider.badCredentials",
+                        "Bad credentials"
             )
         )
     }

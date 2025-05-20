@@ -6,6 +6,7 @@ import com.lomeone.domain.authentication.exception.AuthenticationAlreadyExistsEx
 import com.lomeone.domain.authentication.repository.AuthenticationRepository
 import com.lomeone.domain.common.entity.Email
 import com.lomeone.domain.authentication.entity.Realm
+import com.lomeone.domain.authentication.exception.RealmNotFoundException
 import com.lomeone.domain.authentication.repository.RealmRepository
 import com.lomeone.eunoia.kotlin.util.security.authentication.PasswordUtils.checkPasswordValidity
 import com.lomeone.eunoia.kotlin.util.string.StringUtils.generateRandomString
@@ -40,10 +41,8 @@ class RegisterAuthentication(
         return RegisterAuthenticationResult(authentication.uid)
     }
 
-    private fun getRealm(realmCode: String): Realm {
-        return realmRepository.findByCode(realmCode)
-            ?: throw IllegalArgumentException("Realm not found with code: $realmCode")
-    }
+    private fun getRealm(realmCode: String): Realm =
+        realmRepository.findByCode(realmCode) ?: throw RealmNotFoundException(mapOf("code" to realmCode))
 
     private fun verifyDuplicate(email: String, provider: AuthProvider, uid: String, realm: Realm) {
         authenticationRepository.findByEmailAndProviderAndRealm(email, provider, realm) != null

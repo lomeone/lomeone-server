@@ -29,6 +29,7 @@ class SecurityConfig(
     ): SecurityFilterChain {
         http.httpBasic { it.disable() }
             .csrf { it.disable() }
+            .headers { it.frameOptions { it.disable() } }  // for h2-console
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .formLogin { it.disable() }
             .authorizeHttpRequests {

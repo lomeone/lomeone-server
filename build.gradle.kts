@@ -103,6 +103,10 @@ subprojects {
 
 	kotlin {
 		jvmToolchain(21)
+		compilerOptions {
+			freeCompilerArgs.addAll("-Xjsr305=strict")
+			jvmTarget = JvmTarget.JVM_21
+		}
 	}
 
 	dependencies {
@@ -143,13 +147,6 @@ subprojects {
 		testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
 		testImplementation("io.kotest:kotest-property:$kotestVersion")
 		testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
-	}
-
-	tasks.withType<KotlinCompile> {
-		compilerOptions {
-			freeCompilerArgs.add("-Xjsr305=strict")
-			jvmTarget = JvmTarget.JVM_21
-		}
 	}
 }
 

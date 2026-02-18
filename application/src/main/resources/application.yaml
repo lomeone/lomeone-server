@@ -46,21 +46,6 @@ spring:
 server:
   shutdown: graceful
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "health,metrics,prometheus"
-
-  tracing:
-    enabled: true
-
-micrometer:
-  tracing:
-    bridge:
-      brave:
-        enabled: true
-
 cloud:
   aws:
     region:
@@ -83,3 +68,13 @@ oauth:
 logging:
   level:
     root: DEBUG
+
+otel:
+  exporter:
+    otlp:
+      endpoint: http://jaeger-inmemory-instance-collector.observability.svc.cluster.local:4317
+      protocol: grpc
+  logs:
+    exporter: none
+  metrics:
+    exporter: none

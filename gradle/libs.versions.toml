@@ -44,7 +44,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 
 # aws sdk kotlin
 aws-sdk-kotlin-bom = { module = "aws.sdk.kotlin:bom", version.ref = "awsSdkKotlin" }
-aws-sdk-kotlinkms = { module = "aws.sdk.kotlin:kms" }
+aws-sdk-kotlin-kms = { module = "aws.sdk.kotlin:kms" }
 aws-sdk-kotlin-dynamodb = { module = "aws.sdk.kotlin:dynamodb" }
 aws-sdk-kotlin-sts = { module = "aws.sdk.kotlin:sts" }
 

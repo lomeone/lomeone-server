@@ -1,5 +1,7 @@
-group = rootProject.group
-version = rootProject.version
+plugins {
+    alias(libs.plugins.kotlin.jpa)
+    alias(libs.plugins.ksp)
+}
 
 allOpen {
     annotation("jakarta.persistence.Entity")
@@ -8,5 +10,10 @@ allOpen {
 }
 
 dependencies {
-    implementation(project(":util"))
+//    implementation(project(":util"))
+
+    // jpa
+    implementation(libs.spring.boot.starter.data.jpa)
+    implementation(libs.bundles.querydsl)
+    ksp(libs.querydsl.ksp.codegen)
 }

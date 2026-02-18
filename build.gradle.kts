@@ -1,7 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.io.ByteArrayOutputStream
-
 val groupName: String by project
 
 val queryDslVersion: String by project
@@ -19,42 +15,33 @@ val eunoiaExceptionVersion: String by project
 val eunoiaKotlinUtilVersion: String by project
 
 plugins {
-	id("org.springframework.boot")
-	id("io.spring.dependency-management")
-	kotlin("jvm")
-	kotlin("plugin.spring")
-	kotlin("kapt")
-	kotlin("plugin.jpa")
-	id("com.google.cloud.tools.jib")
-	id("org.jetbrains.kotlinx.kover")
-	id("com.github.kt3k.coveralls")
-	id("org.sonarqube")
+	alias(libs.plugins.kotlin.jvm)
+	alias(libs.plugins.spring.boot)
+	alias(libs.plugins.kotlin.spring)
+	alias(libs.plugins.kover)
+	alias(libs.plugins.coveralls)
+	alias(libs.plugins.soraqube)
 }
+
+val catalog = libs
 
 allprojects {
 	group = groupName
 	version = getGitHash()
 
-	apply {
-		plugin("kotlin")
-		plugin("kotlin-spring")
-		plugin("kotlin-jpa")
-		plugin("kotlin-kapt")
-		plugin("org.springframework.boot")
-		plugin("io.spring.dependency-management")
-		plugin("com.google.cloud.tools.jib")
-		plugin("org.jetbrains.kotlinx.kover")
-		plugin("org.sonarqube")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "org.jetbrains.kotlinx.kover")
+
+	java {
+		sourceCompatibility = JavaVersion.VERSION_21
+		targetCompatibility = JavaVersion.VERSION_21
 	}
 
-	repositories {
-		mavenCentral()
-		maven {
-			url = uri("https://maven.pkg.github.com/lomeone/eunoia")
-			credentials {
-				username = System.getenv("GITHUB_ACTOR")
-				password = System.getenv("GITHUB_TOKEN")
-			}
+	kotlin {
+		jvmToolchain(21)
+
+		compilerOptions {
+			freeCompilerArgs.addAll("-Xjsr305=strict")
 		}
 	}
 
@@ -92,24 +79,33 @@ configurations {
 }
 
 subprojects {
-	java {
-		sourceCompatibility = JavaVersion.VERSION_21
-		targetCompatibility = JavaVersion.VERSION_21
-
-		toolchain {
-			languageVersion = JavaLanguageVersion.of(21)
-		}
-	}
-
-	kotlin {
-		jvmToolchain(21)
-		compilerOptions {
-			freeCompilerArgs.addAll("-Xjsr305=strict")
-			jvmTarget = JvmTarget.JVM_21
-		}
-	}
+	apply(plugin = "org.springframework.boot")
+	apply(plugin = "org.jetbrains.kotlin.plugin.spring")
 
 	dependencies {
+		// maven bom
+		implementation(platform(catalog.kotlinx.serialization.bom))
+		implementation(platform(catalog.kotlinx.coroutines.bom))
+		implementation(platform(catalog.spring.boot.bom))
+		implementation(platform(catalog.spring.cloud.bom))
+		implementation(platform(catalog.querydsl.bom))
+		implementation(platform(catalog.dgs.bom))
+		implementation(platform(catalog.aws.sdk.kotlin.bom))
+		implementation(platform(catalog.opentelemetry.instrumentation.bom))
+		implementation(platform(catalog.aws.smithy.kotlin.bom))
+
+		// common dependencies
+		implementation(catalog.kotlinx.serialization.json)
+		implementation(catalog.bundles.kotlinx.coroutines)
+		implementation(catalog.kotlin.logging)
+		implementation(catalog.opentelemetry.spring.boot.starter)
+
+		// test implementation maven bom
+		testImplementation(platform(catalog.kotest.bom))
+
+		// common test dependencies
+		testImplementation(catalog.bundles.kotest.test.suite)
+
 		// Kotlin
 		implementation("org.jetbrains.kotlin:kotlin-reflect")
 		implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -125,11 +121,8 @@ subprojects {
 		runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
 
 		// JPA
-		implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+		implementation(catalog.spring.boot.starter.data.jpa)
 		implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
-		kapt("com.querydsl:querydsl-apt:$queryDslVersion:jakarta")
-		kapt("jakarta.persistence:jakarta.persistence-api")
-		kapt("jakarta.annotation:jakarta.annotation-api")
 
 		// Spring Cloud
 		implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$springCloudOpenFeignVersion")
@@ -139,7 +132,7 @@ subprojects {
 		implementation("com.lomeone.eunoia:exception:$eunoiaExceptionVersion")
 		implementation("com.lomeone.eunoia:kotlin-util:$eunoiaKotlinUtilVersion")
 
-		developmentOnly("org.springframework.boot:spring-boot-devtools")
+//		developmentOnly("org.springframework.boot:spring-boot-devtools")
 		testImplementation("org.springframework.boot:spring-boot-starter-test")
 		testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
 
@@ -156,19 +149,14 @@ dependencies {
 	kover(project(":infrastructure"))
 }
 
-fun getGitHash(): String {
-	val stdout = ByteArrayOutputStream()
-	exec {
-		commandLine = listOf("git", "rev-parse", "--short", "HEAD")
-		standardOutput = stdout
-	}
-	return stdout.toString().trim()
-}
+fun getGitHash(): String = providers.exec {
+	commandLine("git", "rev-parse", "--short=10", "HEAD")
+}.standardOutput.asText.get().trim()
 
-coveralls {
-	jacocoReportPath = "${projectDir}/build/reports/kover/report.xml"
-	sourceDirs = subprojects.map { it.sourceSets.main.get().allSource.srcDirs.toList() }
-		.toList().flatten().map { relativePath(it) }
+coverallsJacoco {
+	reportPath = "${projectDir}/build/reports/kover/report.xml"
+	reportSourceSets = subprojects.map { it.sourceSets.main.get().allSource.srcDirs.toList() }
+		.toList().flatten()
 }
 
 sonar {

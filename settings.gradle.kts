@@ -1,32 +1,25 @@
 val serviceName: String by settings
 rootProject.name = serviceName
 
-pluginManagement {
-    val springBootVersion: String by settings
-    val springDependencyManagement: String by settings
-    val kotlinVersion: String by settings
-    val jibVersion: String by settings
-    val dgsCodegenVersion: String by settings
-    val koverVersion: String by settings
-    val coverallsVersion: String by settings
-    val sonarqubeVersion: String by settings
-
-    plugins {
-        id("org.springframework.boot") version springBootVersion
-        id("io.spring.dependency-management") version springDependencyManagement
-        kotlin("jvm") version kotlinVersion
-        kotlin("plugin.spring") version kotlinVersion
-        kotlin("kapt") version kotlinVersion
-        kotlin("plugin.jpa") version kotlinVersion
-        id("com.google.cloud.tools.jib") version jibVersion
-        id("com.netflix.dgs.codegen") version dgsCodegenVersion
-        id("org.jetbrains.kotlinx.kover") version koverVersion
-        id("com.github.kt3k.coveralls") version coverallsVersion
-        id("org.sonarqube") version sonarqubeVersion
+dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
+    repositories {
+        mavenCentral()
+        maven {
+            url = uri("https://maven.pkg.github.com/lomeone/eunoia")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
 
-include("infrastructure")
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+}
+
 include("domain")
+include("infrastructure")
 include("application")
 include("util")

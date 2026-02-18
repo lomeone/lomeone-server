@@ -1,24 +1,18 @@
-group = rootProject.group
-version = rootProject.version
-
-val springCloudAWSVersion: String by rootProject
-val awsSecretsMangerJDBCVersion: String by rootProject
-val awsStsVersion: String by rootProject
+plugins {
+    alias(libs.plugins.kotlin.jpa)
+    alias(libs.plugins.ksp)
+}
 
 dependencies {
     implementation(project(":domain"))
 
-    // AWS
-    implementation("io.awspring.cloud:spring-cloud-aws-starter:$springCloudAWSVersion")
-    implementation("io.awspring.cloud:spring-cloud-aws-starter-secrets-manager:$springCloudAWSVersion")
-    implementation("com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:$awsSecretsMangerJDBCVersion")
-    implementation("software.amazon.awssdk:sts:$awsStsVersion")
+    // Observability
+    implementation(libs.aws.smithy.kotlin.telemetry.provider.otel)
 
     // JDBC Driver
-    runtimeOnly("com.h2database:h2")
-    runtimeOnly("com.mysql:mysql-connector-j")
-}
+    runtimeOnly(libs.mysql)
 
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
+
+    // test
+    testRuntimeOnly(libs.h2)
 }

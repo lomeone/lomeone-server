@@ -15,19 +15,20 @@ val imageRegistry: String by project
 val serviceName: String by project
 
 plugins {
-    id("com.netflix.dgs.codegen")
+    alias(libs.plugins.dgs.codegen)
+    alias(libs.plugins.jib)
 }
 
 dependencies {
     implementation(project(":domain"))
     implementation(project(":infrastructure"))
-    implementation(project(":util"))
+//    implementation(project(":util"))
 
     // Web
-    implementation("org.springframework.boot:spring-boot-starter-web") {
+    implementation(libs.spring.boot.starter.web) {
         exclude(module = "spring-boot-starter-tomcat")
     }
-    implementation("org.springframework.boot:spring-boot-starter-undertow") {
+    implementation(libs.spring.boot.starter.undertow) {
         exclude(module = "undertow-websockets-jsr")
     }
 
@@ -35,22 +36,16 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
     // DGS
-    implementation(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:$dgsVersion"))
-    implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter") {
+    implementation(libs.bundles.dgs) {
         exclude(module = "spring-boot-starter-tomcat")
     }
-    implementation("com.netflix.graphql.dgs:graphql-dgs-extended-scalars:$dgsVersion")
 
     // Swagger
     implementation("org.springdoc:springdoc-openapi-ui:$springdocOpenapiVersion")
     implementation("org.springdoc:springdoc-openapi-kotlin:$springdocOpenapiVersion")
 
     // Observability
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("io.micrometer:micrometer-registry-prometheus:${prometheusVersion}")
-    implementation("io.micrometer:micrometer-tracing:${micrometerTracingVersion}")
-    implementation("io.micrometer:micrometer-tracing-bridge-brave:${micrometerTracingVersion}")
-    implementation("io.opentelemetry:opentelemetry-exporter-otlp:${opentelemetryVersion}")
+    implementation(libs.spring.boot.starter.actuator)
 
     implementation("com.lomeone.eunoia:spring-web-rest:$eunoiaSpringWebRestVersion")
 }
@@ -65,7 +60,7 @@ tasks {
 
 jib {
     from {
-        image = "amazoncorretto:21.0.6-alpine3.21"
+        image = "public.ecr.aws/amazoncorretto/amazoncorretto:21-al2023-headless"
         platforms {
             platform {
                 architecture = "amd64"
@@ -95,20 +90,10 @@ fun getImageTags(): Set<String> {
     return tags
 }
 
-fun getGitCurrentBranch(): String {
-    val stdout = ByteArrayOutputStream()
-    exec {
-        commandLine = listOf("git", "rev-parse", "--abbrev-ref", "HEAD")
-        standardOutput = stdout
-    }
-    return stdout.toString().trim().replace("/","-")
-}
+fun getGitCurrentBranch(): String = providers.exec {
+    commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
+}.standardOutput.asText.get().trim().replace("/","-")
 
-fun getGitHash(): String {
-    val stdout = ByteArrayOutputStream()
-    exec {
-        commandLine = listOf("git", "rev-parse", "--short", "HEAD")
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
-}
+fun getGitHash(): String = providers.exec {
+    commandLine("git", "rev-parse", "--short=10", "HEAD")
+}.standardOutput.asText.get().trim()

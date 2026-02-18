@@ -9,10 +9,15 @@ kotlinxDatetime = "0.7.1"
 kotlinxCoroutines = "1.10.2"
 kotlinLogging = "7.0.14"
 awsSdkKotlin="1.5.123"
+awsSmithyKotlin="1.6.2"
 springBoot="3.5.10"
 querydsl="7.1"
 ksp="2.3.5"
+dgs="10.5.0"
+dgsCodegen="8.3.0"
 springCloud="2025.1.1"
+opentelemetry="2.25.0"
+opentelemetryAwsSdk="2.25.0-alpha"
 h2="2.4.240"
 mysql="9.6.0"
 postgresql="42.7.9"
@@ -38,10 +43,14 @@ kotlinx-coroutines-debug = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test" }
 
 # aws sdk kotlin
-aws-bom = { module = "aws.sdk.kotlin:bom", version.ref = "awsSdkKotlin" }
-aws-kms = { module = "aws.sdk.kotlin:kms" }
-aws-dynamodb = { module = "aws.sdk.kotlin:dynamodb" }
-aws-sts = { module = "aws.sdk.kotlin:sts" }
+aws-sdk-kotlin-bom = { module = "aws.sdk.kotlin:bom", version.ref = "awsSdkKotlin" }
+aws-sdk-kotlinkms = { module = "aws.sdk.kotlin:kms" }
+aws-sdk-kotlin-dynamodb = { module = "aws.sdk.kotlin:dynamodb" }
+aws-sdk-kotlin-sts = { module = "aws.sdk.kotlin:sts" }
+
+# aws smithy kotlin
+aws-smithy-kotlin-bom = { module = "aws.smithy.kotlin:bom", version.ref = "awsSmithyKotlin" }
+aws-smithy-kotlin-telemetry-provider-otel = { module = "aws.smithy.kotlin:telemetry-provider-otel" }
 
 # spring boot
 spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBoot" }
@@ -50,16 +59,24 @@ spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-start
 spring-boot-starter-undertow = { module = "org.springframework.boot:spring-boot-starter-undertow" }
 spring-boot-starter-batch = { module = "org.springframework.boot:spring-boot-starter-batch" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 
 # querydsl
 querydsl-bom = { module = "io.github.openfeign.querydsl:querydsl-bom", version.ref = "querydsl" }
 querydsl-jpa = { module = "io.github.openfeign.querydsl:querydsl-jpa" }
-querydsl-jpa-spring = { module = "io.github.openfeign.querydsl:querydsl-jpa-spring" }
-querydsl-ksp-codegen = { module = "io.github.openfeign.querydsl:querydsl-ksp-codegen" }
+querydsl-jpa-spring = { module = "io.github.openfeign.querydsl:querydsl-jpa-spring", version.ref = "querydsl" }
+querydsl-ksp-codegen = { module = "io.github.openfeign.querydsl:querydsl-ksp-codegen", version.ref = "querydsl" }
+
+# dgs
+dgs-bom = { module = "com.netflix.graphql.dgs:graphql-dgs-platform-dependencies", version.ref = "dgs" }
+dgs-spring-graphql-starter = { module = "com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter" }
+dgs-extended-scalars = { module = "com.netflix.graphql.dgs:graphql-dgs-extended-scalars" }
+dgs-extended-validation = { module = "com.netflix.graphql.dgs:graphql-dgs-extended-validation" }
+dgs-spring-boot-micrometer = { module = "com.netflix.graphql.dgs:graphql-dgs-spring-boot-micrometer" }
 
 # spring cloud
 spring-cloud-bom = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "springCloud" }
-spring-cloud-starter-openfeign = { module = "orf.springframework.cloud:spring-cloud-starter-openfeign" }
+spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign" }
 
 # database
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
@@ -72,6 +89,11 @@ postgresql = { module = "org.postgresql:posgresql", version.ref = "postgresql" }
 # logging
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinLogging" }
 
+# opentelemetry
+opentelemetry-instrumentation-bom = { module = "io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom", version.ref = "opentelemetry" }
+opentelemetry-spring-boot-starter = { module = "io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter" }
+opentelemetry-aws-sdk = { module = "io.opentelemetry.instrumentation:opentelemetry-aws-sdk-2.2", version.ref = "opentelemetryAwsSdk" }
+
 # kotest
 kotest-bom = { module = "io.kotest:kotest-bom", version.ref = "kotest" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5" }
@@ -82,8 +104,10 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 # Libraries can be bundled together for easier import
 [bundles]
-kotlinx-coroutines = ["kotlinx-coroutines-core", "kotlinx-coroutines-debug", "kotlinx-coroutines-test"]
-kotest-test-suite = ["kotest-runner-junit5", "kotest-property", "mockk"]
+kotlinx-coroutines = [ "kotlinx-coroutines-core", "kotlinx-coroutines-debug", "kotlinx-coroutines-test" ]
+kotest-test-suite = [ "kotest-runner-junit5", "kotest-property", "mockk" ]
+querydsl = [ "querydsl-jpa", "querydsl-jpa-spring" ]
+dgs = [ "dgs-spring-graphql-starter", "dgs-extended-scalars", "dgs-extended-validation", "dgs-spring-boot-micrometer" ]
 
 [plugins]
 # kotlin
@@ -91,10 +115,15 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 # spring
+spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin"}
 # querydsl
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+#dgs
+dgs-codegen = { id = "com.netflix.dgs.codegen", version.ref = "dgsCodegen" }
+# jib
+jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
 # test-plugin
 coveralls = { id = "com.github.nbaztec.coveralls-jacoco", version.ref = "coveralls" }
 soraqube = { id = "org.sonarqube", version.ref = "sonarqube" }

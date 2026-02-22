@@ -22,23 +22,14 @@ plugins {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":infrastructure"))
-//    implementation(project(":util"))
 
     // Web
-    implementation(libs.spring.boot.starter.web) {
-        exclude(module = "spring-boot-starter-tomcat")
-    }
-    implementation(libs.spring.boot.starter.undertow) {
-        exclude(module = "undertow-websockets-jsr")
-    }
-
+    implementation(libs.spring.boot.starter.web)
     // Security
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
     // DGS
-    implementation(libs.bundles.dgs) {
-        exclude(module = "spring-boot-starter-tomcat")
-    }
+    implementation(libs.bundles.dgs)
 
     // Swagger
     implementation("org.springdoc:springdoc-openapi-ui:$springdocOpenapiVersion")

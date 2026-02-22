@@ -7,28 +7,25 @@ import com.lomeone.texhol.reservation.repository.ReservationRepository
 import org.springframework.stereotype.Service
 
 @Service
-class ReserveService(
+class CloseReservationUseCase(
     private val reservationRepository: ReservationRepository
 ) {
-    fun reserve(command: ReserveCommand): ReserveResult {
+    operator fun invoke(command: CloseReservationCommand): CloseReservationResult {
         val reservation = findReservation(command)
 
-        ensureReservationOpen(reservation)
+        ensureReservationOpened(reservation)
 
-        command.reservationUsers.forEach {
-            reservation.reserve(it, command.reservationTime)
-        }
+        reservation.closeReservation()
 
         val savedReservation = reservationRepository.save(reservation)
 
-        return ReserveResult(
+        return CloseReservationResult(
+            storeBranch = savedReservation.storeBranch,
             gameType = savedReservation.gameType,
-            session = savedReservation.session,
-            reservation = savedReservation.reservation
+            session = savedReservation.session
         )
     }
-
-    private fun findReservation(command: ReserveCommand): Reservation =
+    private fun findReservation(command: CloseReservationCommand): Reservation =
         reservationRepository.findByStoreBranchAndLatestGameType(command.storeBranch, command.gameType)
             ?: throw ReservationNotFoundException(
                 detail = mapOf(
@@ -37,7 +34,7 @@ class ReserveService(
                 )
             )
 
-    private fun ensureReservationOpen(reservation: Reservation) {
+    private fun ensureReservationOpened(reservation: Reservation) {
         reservation.isClosed() && throw ReservationClosedException(
             detail = mapOf(
                 "storeBranch" to reservation.storeBranch,
@@ -48,15 +45,13 @@ class ReserveService(
     }
 }
 
-data class ReserveCommand(
+data class CloseReservationCommand(
     val storeBranch: String,
-    val gameType: String,
-    val reservationUsers: Set<String>,
-    val reservationTime: String
+    val gameType: String
 )
 
-data class ReserveResult(
+data class CloseReservationResult(
+    val storeBranch: String,
     val gameType: String,
-    val session: Int,
-    val reservation: Map<String, String>
+    val session: Int
 )

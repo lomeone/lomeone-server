@@ -8,10 +8,10 @@ import com.lomeone.texhol.reservation.repository.ReservationRepository
 import org.springframework.stereotype.Service
 
 @Service
-class StartReservationService(
+class StartReservationUseCase(
     private val reservationRepository: ReservationRepository
 ) {
-    fun startReservation(command: StartReservationCommand): StartReservationResult {
+    operator fun invoke(command: StartReservationCommand): StartReservationResult {
         val session = getSessionOfReservation(command)
 
         val reservation = reservationRepository.save(

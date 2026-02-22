@@ -6,10 +6,10 @@ import com.lomeone.texhol.reservation.repository.ReservationRepository
 import org.springframework.stereotype.Service
 
 @Service
-class GetReservationService(
+class GetReservationUseCase(
     private val reservationRepository: ReservationRepository
 ) {
-    fun getReservation(query: GetReservationQuery): GetReservationResult {
+    operator fun invoke(query: GetReservationQuery): GetReservationResult {
         val reservation = findReservation(query)
 
         return GetReservationResult(

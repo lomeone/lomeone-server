@@ -7,10 +7,10 @@ import com.lomeone.texhol.reservation.repository.ReservationRepository
 import org.springframework.stereotype.Service
 
 @Service
-class CancelReservationService(
+class LeaveReservationUseCase(
     private val reservationRepository: ReservationRepository
 ) {
-    fun cancel(command: CancelReservationCommand): CancelReservationResult {
+    operator fun invoke(command: LeaveReservationCommand): LeaveReservationResult {
         val reservation = findReservation(command)
 
         ensureReservationOpened(reservation)
@@ -21,14 +21,14 @@ class CancelReservationService(
 
         val savedReservation = reservationRepository.save(reservation)
 
-        return CancelReservationResult(
+        return LeaveReservationResult(
             gameType = savedReservation.gameType,
             session = savedReservation.session,
             reservation = savedReservation.reservation
         )
     }
 
-    private fun findReservation(command: CancelReservationCommand): Reservation =
+    private fun findReservation(command: LeaveReservationCommand): Reservation =
         reservationRepository.findByStoreBranchAndLatestGameType(command.storeBranch, command.gameType)
             ?: throw ReservationNotFoundException(
                 detail = mapOf(
@@ -48,13 +48,13 @@ class CancelReservationService(
     }
 }
 
-data class CancelReservationCommand(
+data class LeaveReservationCommand(
     val storeBranch: String,
     val gameType: String,
     val cancelUsers: Set<String>
 )
 
-data class CancelReservationResult(
+data class LeaveReservationResult(
     val gameType: String,
     val session: Int,
     val reservation: Map<String, String>

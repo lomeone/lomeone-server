@@ -1,6 +1,5 @@
-package com.lomeone.domain.authentication.entity
+package com.lomeone.authentication.entity
 
-import com.lomeone.authentication.exception.RealmNameInvalidException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe

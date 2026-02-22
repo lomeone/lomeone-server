@@ -1,6 +1,5 @@
-package com.lomeone.domain.common.entity
+package com.lomeone.common.entity
 
-import com.lomeone.common.entity.Email
 import com.lomeone.common.exception.EmailAddressInvalidException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec

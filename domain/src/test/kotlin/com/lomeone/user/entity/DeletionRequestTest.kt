@@ -1,4 +1,4 @@
-package com.lomeone.domain.user.entity
+package com.lomeone.user.entity
 
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe

@@ -1,4 +1,4 @@
-package com.lomeone.domain.authentication.entity
+package com.lomeone.authentication.entity
 
 import com.lomeone.common.entity.Email
 import io.kotest.assertions.throwables.shouldThrow

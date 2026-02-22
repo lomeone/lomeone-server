@@ -1,10 +1,7 @@
-package com.lomeone.domain.user.service
+package com.lomeone.user.service
 
-import com.lomeone.domain.authentication.service.AssociateAuthenticationToUser
-import com.lomeone.user.entity.User
-import com.lomeone.user.exception.UserEmailAlreadyExistsException
-import com.lomeone.user.exception.UserPhoneNumberAlreadyExistsException
-import com.lomeone.user.repository.UserRepository
+
+import com.lomeone.authentication.service.AssociateAuthenticationToUser
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

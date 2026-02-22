@@ -1,4 +1,4 @@
-package com.lomeone.domain.user.service
+package com.lomeone.user.service
 
 import com.lomeone.common.entity.Email
 import io.kotest.assertions.throwables.shouldThrow

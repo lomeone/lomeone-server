@@ -1,4 +1,4 @@
-package com.lomeone.domain.authentication.service
+package com.lomeone.authentication.service
 
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe

@@ -1,4 +1,4 @@
-package com.lomeone.domain.authentication.service
+package com.lomeone.authentication.service
 
 import com.lomeone.authentication.entity.Realm
 import com.lomeone.authentication.exception.RealmNotFoundException

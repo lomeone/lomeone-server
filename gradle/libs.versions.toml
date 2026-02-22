@@ -8,7 +8,8 @@ kotlinxSerialization="1.9.0"
 kotlinxDatetime = "0.7.1"
 kotlinxCoroutines = "1.10.2"
 kotlinLogging = "7.0.14"
-awsSdkKotlin="1.5.123"
+awsSdk="2.41.33"
+awsSdkKotlin="1.6.20"
 awsSmithyKotlin="1.6.2"
 springBoot="3.5.10"
 querydsl="7.1"
@@ -41,11 +42,20 @@ kotlinx-coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bo
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core" }
 kotlinx-coroutines-debug = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-debug" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test" }
+kotlinx-coroutines-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive" }
+
+# aws sdk
+aws-sdk-bom = { module = "software.amazon.awssdk:bom", version.ref = "awsSdk" }
+aws-sdk-sts = { module = "software.amazon.awssdk:sts" }
+aws-sdk-dynamodb = { module = "software.amazon.awssdk:dynamodb" }
+aws-sdk-dynamodb-enhanced = { module = "software.amazon.awssdk:dynamodb-enhanced" }
 
 # aws sdk kotlin
 aws-sdk-kotlin-bom = { module = "aws.sdk.kotlin:bom", version.ref = "awsSdkKotlin" }
-aws-sdk-kotlin-kms = { module = "aws.sdk.kotlin:kms" }
+aws-sdk-kotlin-kms-jvm = { module = "aws.sdk.kotlin:kms-jvm" }
 aws-sdk-kotlin-dynamodb = { module = "aws.sdk.kotlin:dynamodb" }
+aws-sdk-kotlin-dynamodb-mapper = { module = "aws.sdk.kotlin:dynamodb-mapper", version = "1.6.20-beta" }
+aws-sdk-kotlin-dynamodb-mapper-annotation = { module = "aws.sdk.kotlin:dynamodb-mapper-annotations", version = "1.6.20-beta" }
 aws-sdk-kotlin-sts = { module = "aws.sdk.kotlin:sts" }
 
 # aws smithy kotlin
@@ -56,7 +66,6 @@ aws-smithy-kotlin-telemetry-provider-otel = { module = "aws.smithy.kotlin:teleme
 spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBoot" }
 spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
-spring-boot-starter-undertow = { module = "org.springframework.boot:spring-boot-starter-undertow" }
 spring-boot-starter-batch = { module = "org.springframework.boot:spring-boot-starter-batch" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
@@ -104,10 +113,12 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 # Libraries can be bundled together for easier import
 [bundles]
-kotlinx-coroutines = [ "kotlinx-coroutines-core", "kotlinx-coroutines-debug", "kotlinx-coroutines-test" ]
+kotlinx-coroutines = [ "kotlinx-coroutines-core", "kotlinx-coroutines-debug", "kotlinx-coroutines-test", "kotlinx-coroutines-reactive" ]
 kotest-test-suite = [ "kotest-runner-junit5", "kotest-property", "mockk" ]
 querydsl = [ "querydsl-jpa", "querydsl-jpa-spring" ]
 dgs = [ "dgs-spring-graphql-starter", "dgs-extended-scalars", "dgs-extended-validation", "dgs-spring-boot-micrometer" ]
+aws-sdk-dynamodb = [ "aws-sdk-dynamodb", "aws-sdk-dynamodb-enhanced" ]
+aws-sdk-kotlin-dynamodb = [ "aws-sdk-kotlin-dynamodb", "aws-sdk-kotlin-dynamodb-mapper", "aws-sdk-kotlin-dynamodb-mapper-annotation" ]
 
 [plugins]
 # kotlin
@@ -120,6 +131,8 @@ kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotl
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin"}
 # querydsl
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+# dynamodb
+aws-sdk-kotlin-dynamodb-mapper = { id = "aws.sdk.kotlin.hll.dynamodbmapper.schema.generator", version = "1.6.20-beta" }
 #dgs
 dgs-codegen = { id = "com.netflix.dgs.codegen", version.ref = "dgsCodegen" }
 # jib

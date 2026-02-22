@@ -90,9 +90,10 @@ subprojects {
 		implementation(platform(catalog.spring.cloud.bom))
 		implementation(platform(catalog.querydsl.bom))
 		implementation(platform(catalog.dgs.bom))
+		implementation(platform(catalog.aws.sdk.bom))
 		implementation(platform(catalog.aws.sdk.kotlin.bom))
-		implementation(platform(catalog.opentelemetry.instrumentation.bom))
 		implementation(platform(catalog.aws.smithy.kotlin.bom))
+		implementation(platform(catalog.opentelemetry.instrumentation.bom))
 
 		// common dependencies
 		implementation(catalog.kotlinx.serialization.json)

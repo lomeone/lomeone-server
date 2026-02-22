@@ -15,7 +15,7 @@ class LeaveReservationUseCase(
 
         ensureReservationOpened(reservation)
 
-        command.cancelUsers.forEach {
+        command.leaveUsers.forEach {
             reservation.cancel(it)
         }
 
@@ -51,7 +51,7 @@ class LeaveReservationUseCase(
 data class LeaveReservationCommand(
     val storeBranch: String,
     val gameType: String,
-    val cancelUsers: Set<String>
+    val leaveUsers: Set<String>
 )
 
 data class LeaveReservationResult(

@@ -15,7 +15,7 @@ class JoinReservationUseCase(
 
         ensureReservationOpen(reservation)
 
-        command.reservationUsers.forEach {
+        command.joinUsers.forEach {
             reservation.reserve(it, command.reservationTime)
         }
 
@@ -51,7 +51,7 @@ class JoinReservationUseCase(
 data class JoinReservationCommand(
     val storeBranch: String,
     val gameType: String,
-    val reservationUsers: Set<String>,
+    val joinUsers: Set<String>,
     val reservationTime: String
 )
 

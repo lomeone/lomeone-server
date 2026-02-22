@@ -1,14 +1,14 @@
 package com.lomeone.domain.authentication.service
 
-import com.lomeone.domain.authentication.entity.Authentication
-import com.lomeone.domain.authentication.exception.AuthenticationNotFoundException
-import com.lomeone.domain.authentication.repository.AuthenticationRepository
-import com.lomeone.domain.authentication.entity.Realm
-import com.lomeone.domain.authentication.exception.RealmNotFoundException
-import com.lomeone.domain.authentication.repository.RealmRepository
-import com.lomeone.domain.user.entity.User
-import com.lomeone.domain.user.exception.UserNotFoundException
-import com.lomeone.domain.user.repository.UserRepository
+import com.lomeone.authentication.entity.Authentication
+import com.lomeone.authentication.exception.AuthenticationNotFoundException
+import com.lomeone.authentication.repository.AuthenticationRepository
+import com.lomeone.authentication.entity.Realm
+import com.lomeone.authentication.exception.RealmNotFoundException
+import com.lomeone.authentication.repository.RealmRepository
+import com.lomeone.user.entity.User
+import com.lomeone.user.exception.UserNotFoundException
+import com.lomeone.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -16,24 +16,25 @@ import io.mockk.every
 import io.mockk.mockk
 
 class AssociateAuthenticationToUserTest : BehaviorSpec({
-    val authenticationRepository: AuthenticationRepository = mockk()
-    val realmRepository: RealmRepository = mockk()
-    val userRepository: UserRepository = mockk()
-    val associateAuthenticationToUser = AssociateAuthenticationToUser(
-        authenticationRepository,
-        realmRepository,
-        userRepository
-    )
+    val authenticationRepository: com.lomeone.authentication.repository.AuthenticationRepository = mockk()
+    val realmRepository: com.lomeone.authentication.repository.RealmRepository = mockk()
+    val userRepository: com.lomeone.user.repository.UserRepository = mockk()
+    val associateAuthenticationToUser =
+        _root_ide_package_.com.lomeone.authentication.service.AssociateAuthenticationToUser(
+            authenticationRepository,
+            realmRepository,
+            userRepository
+        )
 
     beforeTest {
-        val mockAuthentication: Authentication = mockk()
+        val mockAuthentication: com.lomeone.authentication.entity.Authentication = mockk()
         every { mockAuthentication.user } returns null
     }
 
     Given("유저, Realm, 인증이 존재하면") {
-        val mockAuthentication: Authentication = mockk()
-        val mockUser: User = mockk()
-        val mockRealm: Realm = mockk()
+        val mockAuthentication: com.lomeone.authentication.entity.Authentication = mockk()
+        val mockUser: com.lomeone.user.entity.User = mockk()
+        val mockRealm: com.lomeone.authentication.entity.Realm = mockk()
         every { mockUser.userToken } returns "user-token"
         every { mockRealm.code } returns "code1234"
         every { mockAuthentication.uid } returns "uid1234"
@@ -44,7 +45,7 @@ class AssociateAuthenticationToUserTest : BehaviorSpec({
         every { authenticationRepository.findByUidAndRealm(any(), any()) } returns mockAuthentication
 
         When("인증에 유저를 연결할 때") {
-            val command = AssociateAuthenticationToUserCommand(
+            val command = _root_ide_package_.com.lomeone.authentication.service.AssociateAuthenticationToUserCommand(
                 "user-token",
                 "uid1234",
                 "code1234"
@@ -61,8 +62,8 @@ class AssociateAuthenticationToUserTest : BehaviorSpec({
     }
 
     Given("인증이 존재하지 않으면") {
-        val mockUser: User = mockk()
-        val mockRealm: Realm = mockk()
+        val mockUser: com.lomeone.user.entity.User = mockk()
+        val mockRealm: com.lomeone.authentication.entity.Realm = mockk()
         every { mockUser.userToken } returns "user-token"
         every { mockRealm.code } returns "code1234"
 
@@ -71,14 +72,14 @@ class AssociateAuthenticationToUserTest : BehaviorSpec({
         every { authenticationRepository.findByUidAndRealm(any(), any()) } returns null
 
         When("인증에 유저를 연결할 때") {
-            val command = AssociateAuthenticationToUserCommand(
+            val command = _root_ide_package_.com.lomeone.authentication.service.AssociateAuthenticationToUserCommand(
                 "user-token",
                 "uid1234",
                 "code1234"
             )
 
             Then("인증이 존재하지 않는 예외가 발생해서 인증에 유저를 연결할 수 없다") {
-                shouldThrow<AuthenticationNotFoundException> {
+                shouldThrow<com.lomeone.authentication.exception.AuthenticationNotFoundException> {
                     associateAuthenticationToUser.execute(command)
                 }
             }
@@ -86,21 +87,21 @@ class AssociateAuthenticationToUserTest : BehaviorSpec({
     }
 
     Given("Realm이 존재하지 않으면") {
-        val mockUser: User = mockk()
+        val mockUser: com.lomeone.user.entity.User = mockk()
         every { mockUser.userToken } returns "user-token"
         every { realmRepository.findByCode(any()) } returns null
 
         every { userRepository.findByUserToken(any()) } returns mockUser
 
         When("인증에 유저를 연결할 때") {
-            val command = AssociateAuthenticationToUserCommand(
+            val command = _root_ide_package_.com.lomeone.authentication.service.AssociateAuthenticationToUserCommand(
                 "user-token",
                 "uid1234",
                 "code1234"
             )
 
             Then("Realm이 존재하지 않는 예외가 발생해서 인증에 유저를 연결할 수 없다") {
-                shouldThrow<RealmNotFoundException> {
+                shouldThrow<com.lomeone.authentication.exception.RealmNotFoundException> {
                     associateAuthenticationToUser.execute(command)
                 }
             }
@@ -111,14 +112,14 @@ class AssociateAuthenticationToUserTest : BehaviorSpec({
         every { userRepository.findByUserToken(any()) } returns null
 
         When("인증에 유저를 연결할 때") {
-            val command = AssociateAuthenticationToUserCommand(
+            val command = _root_ide_package_.com.lomeone.authentication.service.AssociateAuthenticationToUserCommand(
                 "user-token",
                 "uid1234",
                 "code1234"
             )
 
             Then("유저가 존재하지 않는 예외가 발생해서 인증에 유저를 연결할 수 없다") {
-                shouldThrow<UserNotFoundException> {
+                shouldThrow<com.lomeone.user.exception.UserNotFoundException> {
                     associateAuthenticationToUser.execute(command)
                 }
             }

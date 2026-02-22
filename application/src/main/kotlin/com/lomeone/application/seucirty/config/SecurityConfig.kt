@@ -2,11 +2,11 @@ package com.lomeone.application.seucirty.config
 
 import com.lomeone.application.seucirty.filter.EmailPasswordAuthenticationFilter
 import com.lomeone.application.seucirty.handler.OAuthAuthenticationSuccessHandler
-import com.lomeone.domain.authentication.entity.AuthProvider
-import com.lomeone.domain.authentication.exception.OAuth2ProviderNotSupportedException
-import com.lomeone.domain.authentication.service.AuthRegisterProvider
-import com.lomeone.domain.authentication.service.JwtTokenProvider
-import com.lomeone.domain.authentication.service.OAuth2UserService
+import com.lomeone.authentication.entity.AuthProvider
+import com.lomeone.authentication.exception.OAuth2ProviderNotSupportedException
+import com.lomeone.authentication.service.AuthRegisterProvider
+import com.lomeone.authentication.service.JwtTokenProvider
+import com.lomeone.authentication.service.OAuth2UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
@@ -18,14 +18,14 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val oAuth2UserService: OAuth2UserService,
+    private val oAuth2UserService: com.lomeone.authentication.service.OAuth2UserService,
     private val oAuthAuthenticationSuccessHandler: OAuthAuthenticationSuccessHandler
 ) {
     @Bean
     fun filterChain(
         http: HttpSecurity,
         authenticationConfiguration: AuthenticationConfiguration,
-        jwtTokenProvider: JwtTokenProvider
+        jwtTokenProvider: com.lomeone.authentication.service.JwtTokenProvider
     ): SecurityFilterChain {
         http.httpBasic { it.disable() }
             .csrf { it.disable() }
@@ -45,21 +45,23 @@ class SecurityConfig(
                         userInfoEndpointConfig
                             .userService { userRequest ->
                                 when (val registrationId = userRequest.clientRegistration.registrationId) {
-                                    AuthProvider.GOOGLE.value,
-                                    AuthProvider.FACEBOOK.value,
-                                    AuthProvider.APPLE.value,
-                                    AuthProvider.GITHUB.value,
-                                    AuthProvider.KAKAO.value,
-                                    AuthProvider.NAVER.value,
-                                    AuthProvider.LINE.value -> oAuth2UserService.loadUser(userRequest)
-                                    AuthRegisterProvider.GOOGLE.value,
-                                    AuthRegisterProvider.FACEBOOK.value,
-                                    AuthRegisterProvider.APPLE.value,
-                                    AuthRegisterProvider.GITHUB.value,
-                                    AuthRegisterProvider.KAKAO.value,
-                                    AuthRegisterProvider.NAVER.value,
-                                    AuthRegisterProvider.LINE.value -> TODO("Not yet implemented")
-                                    else -> throw OAuth2ProviderNotSupportedException(mapOf("oauth2" to registrationId))
+                                    _root_ide_package_.com.lomeone.authentication.entity.AuthProvider.GOOGLE.value,
+                                    _root_ide_package_.com.lomeone.authentication.entity.AuthProvider.FACEBOOK.value,
+                                    _root_ide_package_.com.lomeone.authentication.entity.AuthProvider.APPLE.value,
+                                    _root_ide_package_.com.lomeone.authentication.entity.AuthProvider.GITHUB.value,
+                                    _root_ide_package_.com.lomeone.authentication.entity.AuthProvider.KAKAO.value,
+                                    _root_ide_package_.com.lomeone.authentication.entity.AuthProvider.NAVER.value,
+                                    _root_ide_package_.com.lomeone.authentication.entity.AuthProvider.LINE.value -> oAuth2UserService.loadUser(userRequest)
+                                    _root_ide_package_.com.lomeone.authentication.service.AuthRegisterProvider.GOOGLE.value,
+                                    _root_ide_package_.com.lomeone.authentication.service.AuthRegisterProvider.FACEBOOK.value,
+                                    _root_ide_package_.com.lomeone.authentication.service.AuthRegisterProvider.APPLE.value,
+                                    _root_ide_package_.com.lomeone.authentication.service.AuthRegisterProvider.GITHUB.value,
+                                    _root_ide_package_.com.lomeone.authentication.service.AuthRegisterProvider.KAKAO.value,
+                                    _root_ide_package_.com.lomeone.authentication.service.AuthRegisterProvider.NAVER.value,
+                                    _root_ide_package_.com.lomeone.authentication.service.AuthRegisterProvider.LINE.value -> TODO("Not yet implemented")
+                                    else -> throw _root_ide_package_.com.lomeone.authentication.exception.OAuth2ProviderNotSupportedException(
+                                        mapOf("oauth2" to registrationId)
+                                    )
                                 }
                             }
                     }

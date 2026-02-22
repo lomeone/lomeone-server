@@ -1,7 +1,7 @@
 package com.lomeone.application.seucirty.handler
 
-import com.lomeone.domain.authentication.service.JwtTokenProvider
-import com.lomeone.domain.authentication.service.REFRESH_EXPIRES_AT
+import com.lomeone.authentication.service.JwtTokenProvider
+import com.lomeone.authentication.service.REFRESH_EXPIRES_AT
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 
 class EmailPasswordAuthenticationSuccessHandler(
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: com.lomeone.authentication.service.JwtTokenProvider
 ) : AuthenticationSuccessHandler {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
@@ -34,7 +34,7 @@ class EmailPasswordAuthenticationSuccessHandler(
         val cookie = Cookie(name, value)
         cookie.path = "/"
         cookie.isHttpOnly = true
-        cookie.maxAge = REFRESH_EXPIRES_AT.toInt()
+        cookie.maxAge = _root_ide_package_.com.lomeone.authentication.service.REFRESH_EXPIRES_AT.toInt()
         cookie.domain = "lomeone.com"
 
         return cookie

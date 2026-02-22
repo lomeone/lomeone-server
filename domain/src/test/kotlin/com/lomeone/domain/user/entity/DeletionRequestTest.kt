@@ -5,16 +5,16 @@ import io.kotest.matchers.shouldBe
 
 class DeletionRequestTest : FreeSpec({
     "삭제 요청을 할 수 있다" - {
-        val deletionRequest = DeletionRequest(
+        val deletionRequest = _root_ide_package_.com.lomeone.user.entity.DeletionRequest(
             userToken = "user1234",
             reason = "delete user"
         )
 
-        deletionRequest.status shouldBe DeletionStatus.REQUEST
+        deletionRequest.status shouldBe _root_ide_package_.com.lomeone.user.entity.DeletionStatus.REQUEST
 
         "삭제 요청을 취소하고 복구할 수 있다" - {
             deletionRequest.restore()
-            deletionRequest.status shouldBe DeletionStatus.RESTORE
+            deletionRequest.status shouldBe _root_ide_package_.com.lomeone.user.entity.DeletionStatus.RESTORE
         }
     }
 })

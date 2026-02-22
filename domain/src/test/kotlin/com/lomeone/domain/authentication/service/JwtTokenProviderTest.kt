@@ -7,7 +7,8 @@ import io.mockk.mockk
 import org.springframework.security.core.Authentication
 
 class JwtTokenProviderTest : FreeSpec({
-    val jwtTokenProvider = JwtTokenProvider("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz")
+    val jwtTokenProvider =
+        _root_ide_package_.com.lomeone.authentication.service.JwtTokenProvider("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz")
 
     "인증 정보를 통해서 jwt token을 발급할 수 있다" - {
         val authentication: Authentication = mockk()

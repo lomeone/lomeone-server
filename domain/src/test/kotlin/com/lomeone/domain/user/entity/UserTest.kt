@@ -1,10 +1,6 @@
 package com.lomeone.domain.user.entity
 
-import com.lomeone.domain.common.entity.Email
-import com.lomeone.domain.user.exception.UserNameInvalidException
-import com.lomeone.domain.user.exception.UserNicknameInvalidException
-import com.lomeone.domain.user.exception.UserPhoneNumberInvalidException
-import com.lomeone.domain.user.exception.UserRoleEmptyException
+import com.lomeone.common.entity.Email
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldContain
@@ -12,7 +8,7 @@ import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 
 class UserTest : FreeSpec({
-    val defaultUser = User(
+    val defaultUser = _root_ide_package_.com.lomeone.user.entity.User(
         name = "name",
         nickname = "nickname",
         email = Email("test@gmail.com"),
@@ -28,7 +24,7 @@ class UserTest : FreeSpec({
             val phoneNumberInput = "+821012345678"
             val birthdayInput = LocalDate.of(2000, 1, 1)
 
-            val user = User(
+            val user = _root_ide_package_.com.lomeone.user.entity.User(
                 name = nameInput,
                 nickname = nicknameInput,
                 email = emailInput,
@@ -45,17 +41,17 @@ class UserTest : FreeSpec({
 
         "이름이 공백이면 이름이 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
             val nameInput = ""
-            shouldThrow<UserNameInvalidException> {
-                User(
+            shouldThrow<com.lomeone.user.exception.UserNameInvalidException> {
+                _root_ide_package_.com.lomeone.user.entity.User(
                     name = nameInput,
                     nickname = "nickname",
                     email = Email("email@gmail.com"),
                     phoneNumber = "+821012345678",
                     birthday = LocalDate.now(),
                     userRoles = mutableListOf(
-                        UserRole(
-                            role = Role(
-                                roleName = RoleName.MEMBER
+                        _root_ide_package_.com.lomeone.user.entity.UserRole(
+                            role = _root_ide_package_.com.lomeone.user.entity.Role(
+                                roleName = _root_ide_package_.com.lomeone.user.entity.RoleName.MEMBER
                             )
                         )
                     )
@@ -65,17 +61,17 @@ class UserTest : FreeSpec({
 
         "닉네임이 공백이면 닉네임이 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
             val nicknameInput = ""
-            shouldThrow<UserNicknameInvalidException> {
-                User(
+            shouldThrow<com.lomeone.user.exception.UserNicknameInvalidException> {
+                _root_ide_package_.com.lomeone.user.entity.User(
                     name = "name",
                     nickname = nicknameInput,
                     email = Email("email@gmail.com"),
                     phoneNumber = "+821012345678",
                     birthday = LocalDate.now(),
                     userRoles = mutableListOf(
-                        UserRole(
-                            role = Role(
-                                roleName = RoleName.MEMBER
+                        _root_ide_package_.com.lomeone.user.entity.UserRole(
+                            role = _root_ide_package_.com.lomeone.user.entity.Role(
+                                roleName = _root_ide_package_.com.lomeone.user.entity.RoleName.MEMBER
                             )
                         )
                     )
@@ -85,17 +81,17 @@ class UserTest : FreeSpec({
 
         "핸드폰 번호가 공백이면 핸드폰 번호가 공백이라는 예외가 발생해서 유저를 생성할 수 없다" - {
             val phoneNumberInput = ""
-            shouldThrow<UserPhoneNumberInvalidException> {
-                User(
+            shouldThrow<com.lomeone.user.exception.UserPhoneNumberInvalidException> {
+                _root_ide_package_.com.lomeone.user.entity.User(
                     name = "name",
                     nickname = "nickname",
                     email = Email("email@gmail.com"),
                     phoneNumber = phoneNumberInput,
                     birthday = LocalDate.now(),
                     userRoles = mutableListOf(
-                        UserRole(
-                            role = Role(
-                                roleName = RoleName.MEMBER
+                        _root_ide_package_.com.lomeone.user.entity.UserRole(
+                            role = _root_ide_package_.com.lomeone.user.entity.Role(
+                                roleName = _root_ide_package_.com.lomeone.user.entity.RoleName.MEMBER
                             )
                         )
                     )
@@ -104,9 +100,9 @@ class UserTest : FreeSpec({
         }
 
         "유저 역할이 없으면 유저 역할이 없다는 예외가 발생해서 유저를 생성할 수 없다" - {
-            val userRolesInput = mutableListOf<UserRole>()
-            shouldThrow<UserRoleEmptyException> {
-                User(
+            val userRolesInput = mutableListOf<com.lomeone.user.entity.UserRole>()
+            shouldThrow<com.lomeone.user.exception.UserRoleEmptyException> {
+                _root_ide_package_.com.lomeone.user.entity.User(
                     name = "name",
                     nickname = "nickname",
                     email = Email("email@gmail.com"),
@@ -133,14 +129,14 @@ class UserTest : FreeSpec({
 
         "이름이 공백이면 이름이 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val nameInput = ""
-            shouldThrow<UserNameInvalidException> {
+            shouldThrow<com.lomeone.user.exception.UserNameInvalidException> {
                 defaultUser.updateUserInfo(nameInput, "nickname", LocalDate.now())
             }
         }
 
         "닉네임이 공백이면 닉네임이 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val nicknameInput = ""
-            shouldThrow<UserNicknameInvalidException> {
+            shouldThrow<com.lomeone.user.exception.UserNicknameInvalidException> {
                 defaultUser.updateUserInfo("name", nicknameInput, LocalDate.now())
             }
         }
@@ -161,20 +157,21 @@ class UserTest : FreeSpec({
 
         "휴대폰 번호가 공백이면 휴대폰 번호가 공백이라는 예외가 발생해서 유저 정보를 업데이트 할 수 없다" - {
             val phoneNumberInput = ""
-            shouldThrow<UserPhoneNumberInvalidException> {
+            shouldThrow<com.lomeone.user.exception.UserPhoneNumberInvalidException> {
                 defaultUser.updatePhoneNumber(phoneNumberInput)
             }
         }
     }
 
     "유저는 역할을 추가할 수 있다" - {
-        val roleInput = Role(roleName = RoleName.MEMBER)
+        val roleInput =
+            _root_ide_package_.com.lomeone.user.entity.Role(roleName = _root_ide_package_.com.lomeone.user.entity.RoleName.MEMBER)
         defaultUser.addRole(roleInput)
         defaultUser.userRoles.map { it.role } shouldContain (roleInput)
     }
 
     "유저는 삭제 요청할 수 있다" - {
-        val deleteUser = User(
+        val deleteUser = _root_ide_package_.com.lomeone.user.entity.User(
             name = "name",
             nickname = "nickname",
             email = Email("test@gmail.com"),
@@ -183,11 +180,11 @@ class UserTest : FreeSpec({
         )
 
         deleteUser.deleteRequest()
-        deleteUser.status shouldBe UserStatus.DELETION_REQUESTED
+        deleteUser.status shouldBe _root_ide_package_.com.lomeone.user.entity.UserStatus.DELETION_REQUESTED
 
         "삭제 요청한 유저는 복구 요청을 할 수 있다" - {
             deleteUser.restore()
-            defaultUser.status shouldBe UserStatus.ACTIVE
+            defaultUser.status shouldBe _root_ide_package_.com.lomeone.user.entity.UserStatus.ACTIVE
         }
     }
 })

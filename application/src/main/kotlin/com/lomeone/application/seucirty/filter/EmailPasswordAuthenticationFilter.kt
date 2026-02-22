@@ -3,7 +3,7 @@ package com.lomeone.application.seucirty.filter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.lomeone.application.seucirty.handler.EmailPasswordAuthenticationSuccessHandler
-import com.lomeone.domain.authentication.service.JwtTokenProvider
+import com.lomeone.authentication.service.JwtTokenProvider
 import com.lomeone.application.seucirty.provider.RealmUsernamePasswordAuthenticationToken
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 class EmailPasswordAuthenticationFilter(
     private val authenticationManager: AuthenticationManager,
-    jwtTokenProvider: JwtTokenProvider
+    jwtTokenProvider: com.lomeone.authentication.service.JwtTokenProvider
 ) : UsernamePasswordAuthenticationFilter(authenticationManager) {
 
     private val log = LoggerFactory.getLogger(this.javaClass)

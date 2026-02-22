@@ -1,10 +1,10 @@
 package com.lomeone.domain.user.service
 
 import com.lomeone.domain.authentication.service.AssociateAuthenticationToUser
-import com.lomeone.domain.user.entity.User
-import com.lomeone.domain.user.exception.UserEmailAlreadyExistsException
-import com.lomeone.domain.user.exception.UserPhoneNumberAlreadyExistsException
-import com.lomeone.domain.user.repository.UserRepository
+import com.lomeone.user.entity.User
+import com.lomeone.user.exception.UserEmailAlreadyExistsException
+import com.lomeone.user.exception.UserPhoneNumberAlreadyExistsException
+import com.lomeone.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -13,12 +13,13 @@ import io.mockk.mockk
 import java.time.LocalDate
 
 class CreateUserTest : BehaviorSpec({
-    val userRepository: UserRepository = mockk()
+    val userRepository: com.lomeone.user.repository.UserRepository = mockk()
     val associateAuthenticationToUser: AssociateAuthenticationToUser = mockk()
-    val createUser = CreateUser(userRepository, associateAuthenticationToUser)
+    val createUser =
+        _root_ide_package_.com.lomeone.user.service.CreateUser(userRepository, associateAuthenticationToUser)
 
     beforeTest {
-        val mockUser: User = mockk()
+        val mockUser: com.lomeone.user.entity.User = mockk()
         every { mockUser.userToken } returns "user-token"
         every { userRepository.save(any()) } returns mockUser
     }
@@ -29,7 +30,7 @@ class CreateUserTest : BehaviorSpec({
         every { associateAuthenticationToUser.execute(any()) } returns mockk()
 
         When("유저를 생성할 때") {
-            val command = CreateUserCommand(
+            val command = _root_ide_package_.com.lomeone.user.service.CreateUserCommand(
                 name = "name",
                 nickname = "nickname",
                 email = "email@gmail.com",
@@ -51,7 +52,7 @@ class CreateUserTest : BehaviorSpec({
         every { userRepository.findByEmail(any()) } returns mockk()
         every { userRepository.findByPhoneNumber(any()) } returns null
         When("유저를 생성할 때") {
-            val command = CreateUserCommand(
+            val command = _root_ide_package_.com.lomeone.user.service.CreateUserCommand(
                 name = "name",
                 nickname = "nickname",
                 email = "email@gmail.com",
@@ -62,7 +63,7 @@ class CreateUserTest : BehaviorSpec({
             )
 
             Then("유저가 이미 존재한다는 예외가 발생해서 유저를 생성할 수 없다") {
-                shouldThrow<UserEmailAlreadyExistsException> {
+                shouldThrow<com.lomeone.user.exception.UserEmailAlreadyExistsException> {
                     createUser.execute(command)
                 }
             }
@@ -74,7 +75,7 @@ class CreateUserTest : BehaviorSpec({
         every { userRepository.findByPhoneNumber(any()) } returns mockk()
 
         When("유저를 생성할 때") {
-            val command = CreateUserCommand(
+            val command = _root_ide_package_.com.lomeone.user.service.CreateUserCommand(
                 name = "name",
                 nickname = "nickname",
                 email = "email@gmail.com",
@@ -85,7 +86,7 @@ class CreateUserTest : BehaviorSpec({
             )
 
             Then("유저가 이미 존재한다는 예외가 발생해서 유저를 생성할 수 없다") {
-                shouldThrow<UserPhoneNumberAlreadyExistsException> {
+                shouldThrow<com.lomeone.user.exception.UserPhoneNumberAlreadyExistsException> {
                     createUser.execute(command)
                 }
             }

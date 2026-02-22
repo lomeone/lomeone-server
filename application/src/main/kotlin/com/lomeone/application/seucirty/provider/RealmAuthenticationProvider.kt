@@ -1,6 +1,6 @@
 package com.lomeone.application.seucirty.provider
 
-import com.lomeone.domain.authentication.config.RealmUserDetailsLoader
+import com.lomeone.authentication.config.RealmUserDetailsLoader
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.BadCredentialsException
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class RealmAuthenticationProvider(
-    private val loadUserByRealmAndUsername: RealmUserDetailsLoader,
+    private val loadUserByRealmAndUsername: com.lomeone.authentication.config.RealmUserDetailsLoader,
     private val passwordEncoder: PasswordEncoder
 ) : AuthenticationProvider {
 

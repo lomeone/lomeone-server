@@ -1,9 +1,6 @@
 package com.lomeone.domain.user.service
 
-import com.lomeone.domain.common.entity.Email
-import com.lomeone.domain.user.entity.User
-import com.lomeone.domain.user.exception.UserNotFoundException
-import com.lomeone.domain.user.repository.UserRepository
+import com.lomeone.common.entity.Email
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -12,11 +9,11 @@ import io.mockk.mockk
 import java.time.LocalDate
 
 class UpdateUserInfoTest : BehaviorSpec({
-    val userRepository: UserRepository = mockk()
-    val updateUserInfoService = UpdateUserInfo(userRepository)
+    val userRepository: com.lomeone.user.repository.UserRepository = mockk()
+    val updateUserInfoService = _root_ide_package_.com.lomeone.user.service.UpdateUserInfo(userRepository)
 
     Given("유저가 존재하면") {
-        every { userRepository.findByUserToken(any()) } returns User(
+        every { userRepository.findByUserToken(any()) } returns _root_ide_package_.com.lomeone.user.entity.User(
             name = "name",
             nickname = "nickname",
             email = Email("email@gmail.com"),
@@ -25,7 +22,7 @@ class UpdateUserInfoTest : BehaviorSpec({
         )
 
         When("유저 정보를 업데이트할 때") {
-            val command = UpdateUserInfoCommand(
+            val command = _root_ide_package_.com.lomeone.user.service.UpdateUserInfoCommand(
                 userToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
@@ -46,7 +43,7 @@ class UpdateUserInfoTest : BehaviorSpec({
         every { userRepository.findByUserToken(any()) } returns null
 
         When("유저 정보를 업데이트할 때") {
-            val command = UpdateUserInfoCommand(
+            val command = _root_ide_package_.com.lomeone.user.service.UpdateUserInfoCommand(
                 userToken = "user1234",
                 name = "John",
                 nickname = "Tomy",
@@ -54,7 +51,7 @@ class UpdateUserInfoTest : BehaviorSpec({
             )
 
             Then("유저를 찾을 수 없다는 예외가 발생해서 유저 정보를 업데이트할 수 없다") {
-                shouldThrow<UserNotFoundException> {
+                shouldThrow<com.lomeone.user.exception.UserNotFoundException> {
                     updateUserInfoService.execute(command)
                 }
             }

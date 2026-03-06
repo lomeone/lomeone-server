@@ -1,21 +1,15 @@
 package com.lomeone.user.exception
 
-import com.lomeone.eunoia.exception.ErrorCode
 import com.lomeone.eunoia.exception.EunioaException
-import com.lomeone.eunoia.exception.ExceptionCategory
 import com.lomeone.eunoia.exception.ExceptionDetail
 
-private const val MESSAGE = "Invalid name"
-private val ERROR_CODE = ErrorCode(
-    code = "user/name-invalid",
-    exceptionCategory = ExceptionCategory.BAD_REQUEST
-)
+private const val MESSAGE = "User name is invalid"
 
 class UserNameInvalidException(
-    message: String = _root_ide_package_.com.lomeone.user.exception.MESSAGE,
+    message: String = MESSAGE,
     detail: Map<String, Any>
 ) : EunioaException(
     message = message,
-    errorCode = _root_ide_package_.com.lomeone.user.exception.ERROR_CODE,
+    errorCode = UserErrorCode.NAME_INVALID,
     detail = ExceptionDetail(detail)
 )

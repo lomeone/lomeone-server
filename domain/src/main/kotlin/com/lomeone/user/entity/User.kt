@@ -4,6 +4,10 @@ import com.lomeone.util.converter.EmailCryptoConverter
 import com.lomeone.common.entity.AuditEntity
 import com.lomeone.common.entity.Email
 import com.lomeone.eunoia.kotlin.util.string.StringUtils.generateRandomString
+import com.lomeone.user.exception.UserNameInvalidException
+import com.lomeone.user.exception.UserNicknameInvalidException
+import com.lomeone.user.exception.UserPhoneNumberInvalidException
+import com.lomeone.user.exception.UserRoleEmptyException
 import java.time.LocalDate
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
@@ -35,10 +39,10 @@ class User(
     email: Email,
     phoneNumber: String,
     birthday: LocalDate,
-    userRoles: MutableList<com.lomeone.user.entity.UserRole> = mutableListOf(
-        _root_ide_package_.com.lomeone.user.entity.UserRole(
-            role = _root_ide_package_.com.lomeone.user.entity.Role(
-                roleName = _root_ide_package_.com.lomeone.user.entity.RoleName.MEMBER
+    userRoles: MutableList<UserRole> = mutableListOf(
+        UserRole(
+            role = Role(
+                roleName = RoleName.MEMBER
             )
         )
     )
@@ -63,13 +67,13 @@ class User(
         protected set
 
     @Enumerated(EnumType.STRING)
-    var status: com.lomeone.user.entity.UserStatus = _root_ide_package_.com.lomeone.user.entity.UserStatus.ACTIVE
+    var status: UserStatus = UserStatus.ACTIVE
         protected set
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private val _userRoles: MutableList<com.lomeone.user.entity.UserRole> = userRoles
-    val userRoles: List<com.lomeone.user.entity.UserRole> get() = this._userRoles
+    private val _userRoles: MutableList<UserRole> = userRoles
+    val userRoles: List<UserRole> get() = this._userRoles
 
     init {
         ensureNameIsNotBlank(name)
@@ -79,28 +83,28 @@ class User(
     }
 
     private fun ensureNameIsNotBlank(name: String) {
-        name.isBlank() && throw _root_ide_package_.com.lomeone.user.exception.UserNameInvalidException(
+        name.isBlank() && throw UserNameInvalidException(
             message = "Invalid name: it cannot be blank. Please enter a valid name.",
             detail = mapOf("name" to name)
         )
     }
 
     private fun ensureNicknameIsNotBlank(nickname: String) {
-        nickname.isBlank() && throw _root_ide_package_.com.lomeone.user.exception.UserNicknameInvalidException(
+        nickname.isBlank() && throw UserNicknameInvalidException(
             message = "Invalid nickname: it cannot be blank. Please enter a valid nickname.",
             detail = mapOf("nickname" to nickname)
         )
     }
 
     private fun ensurePhoneNumberIsNotBlank(phoneNumber: String) {
-        phoneNumber.isBlank() && throw _root_ide_package_.com.lomeone.user.exception.UserPhoneNumberInvalidException(
+        phoneNumber.isBlank() && throw UserPhoneNumberInvalidException(
             message = "Invalid phone number: it cannot be blank. Please enter a valid phone number.",
             detail = mapOf("phone_number" to phoneNumber)
         )
     }
 
-    private fun ensureUserRoleIsNotEmpty(userRoles: List<com.lomeone.user.entity.UserRole>) {
-        userRoles.isEmpty() && throw _root_ide_package_.com.lomeone.user.exception.UserRoleEmptyException(mapOf(("userRoles" to userRoles)))
+    private fun ensureUserRoleIsNotEmpty(userRoles: List<UserRole>) {
+        userRoles.isEmpty() && throw UserRoleEmptyException(detail = mapOf(("userRoles" to userRoles)))
     }
 
     fun updateUserInfo(name: String, nickname: String, birthday: LocalDate) {
@@ -120,16 +124,16 @@ class User(
         this.phoneNumber = phoneNumber
     }
 
-    fun addRole(role: com.lomeone.user.entity.Role) {
-        this._userRoles.add(_root_ide_package_.com.lomeone.user.entity.UserRole(role = role))
+    fun addRole(role: Role) {
+        this._userRoles.add(UserRole(role = role))
     }
 
     fun deleteRequest() {
-        this.status = _root_ide_package_.com.lomeone.user.entity.UserStatus.DELETION_REQUESTED
+        this.status = UserStatus.DELETION_REQUESTED
     }
 
     fun restore() {
-        this.status = _root_ide_package_.com.lomeone.user.entity.UserStatus.ACTIVE
+        this.status = UserStatus.ACTIVE
     }
 }
 

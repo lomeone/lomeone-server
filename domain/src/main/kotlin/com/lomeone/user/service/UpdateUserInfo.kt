@@ -9,17 +9,17 @@ import java.time.LocalDate
 
 @Service
 class UpdateUserInfo(
-    private val userRepository: com.lomeone.user.repository.UserRepository
+    private val userRepository: UserRepository
 ) {
     @Transactional
-    fun execute(command: com.lomeone.user.service.UpdateUserInfoCommand): com.lomeone.user.service.UpdateUserInfoResult {
+    fun execute(command: UpdateUserInfoCommand): UpdateUserInfoResult {
         val (userToken, name, nickname, birthday) = command
 
         val user = getUser(userToken)
 
         user.updateUserInfo(name, nickname, birthday)
 
-        return _root_ide_package_.com.lomeone.user.service.UpdateUserInfoResult(
+        return UpdateUserInfoResult(
             userToken = user.userToken,
             name = user.name,
             nickname = user.nickname,
@@ -28,7 +28,7 @@ class UpdateUserInfo(
     }
 
     private fun getUser(userToken: String) = userRepository.findByUserToken(userToken)
-        ?: throw _root_ide_package_.com.lomeone.user.exception.UserNotFoundException(mapOf("user_token" to userToken))
+        ?: throw UserNotFoundException(detail = mapOf("user_token" to userToken))
 }
 
 data class UpdateUserInfoCommand(

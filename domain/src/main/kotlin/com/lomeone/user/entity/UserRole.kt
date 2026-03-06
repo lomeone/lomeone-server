@@ -23,7 +23,7 @@ class UserRole(
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    val role: com.lomeone.user.entity.Role
+    val role: Role
 ) : AuditEntity()
 
 @Entity
@@ -35,7 +35,7 @@ class Role(
     val id: Long = 0L,
 
     @Enumerated(EnumType.STRING)
-    val roleName: com.lomeone.user.entity.RoleName
+    val roleName: RoleName
 ) : AuditEntity()
 
 enum class RoleName {

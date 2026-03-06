@@ -9,20 +9,20 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class GetUserByUserToken(
-    private val userRepository: com.lomeone.user.repository.UserRepository
+    private val userRepository: UserRepository
 ) {
     @Transactional(readOnly = true)
-    fun execute(request: com.lomeone.user.service.GetUserByUserTokenQuery): com.lomeone.user.service.GetUserByUserTokenResult {
+    fun execute(request: GetUserByUserTokenQuery): GetUserByUserTokenResult {
         val user = getUser(request.userToken)
-        return _root_ide_package_.com.lomeone.user.service.GetUserByUserTokenResult(user)
+        return GetUserByUserTokenResult(user)
     }
 
     private fun getUser(userToken: String) =
-        userRepository.findByUserToken(userToken) ?: throw _root_ide_package_.com.lomeone.user.exception.UserNotFoundException(
-            mapOf("user_token" to userToken)
+        userRepository.findByUserToken(userToken) ?: throw UserNotFoundException(
+            detail = mapOf("user_token" to userToken)
         )
 }
 
 data class GetUserByUserTokenQuery(@field:NotBlank val userToken: String)
 
-data class GetUserByUserTokenResult(val user: com.lomeone.user.entity.User)
+data class GetUserByUserTokenResult(val user: User)

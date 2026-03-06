@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class RestoreUser(
-    private val userRepository: com.lomeone.user.repository.UserRepository,
-    private val deletionRequestRepository: com.lomeone.user.repository.DeletionRequestRepository
+    private val userRepository: UserRepository,
+    private val deletionRequestRepository: DeletionRequestRepository
 ) {
     @Transactional
-    fun execute(command: com.lomeone.user.service.RestoreUserCommand): com.lomeone.user.service.RestoreUserResult {
+    fun execute(command: RestoreUserCommand): RestoreUserResult {
         val (userToken) = command
 
         val user = getUser(userToken)
@@ -25,16 +25,16 @@ class RestoreUser(
         val deletionRequest = getDeletionRequest(userToken)
         deletionRequest.restore()
 
-        return _root_ide_package_.com.lomeone.user.service.RestoreUserResult(user.userToken)
+        return RestoreUserResult(user.userToken)
     }
 
-    private fun getDeletionRequest(userToken: String): com.lomeone.user.entity.DeletionRequest =
-        deletionRequestRepository.findByUserTokenAndStatus(userToken, _root_ide_package_.com.lomeone.user.entity.DeletionStatus.REQUEST)
-            ?: throw _root_ide_package_.com.lomeone.user.exception.DeletionRequestNotFoundException(mapOf("user_token" to userToken))
+    private fun getDeletionRequest(userToken: String): DeletionRequest =
+        deletionRequestRepository.findByUserTokenAndStatus(userToken, DeletionStatus.REQUEST)
+            ?: throw DeletionRequestNotFoundException(mapOf("user_token" to userToken))
 
     private fun getUser(userToken: String) =
-        userRepository.findByUserToken(userToken) ?: throw _root_ide_package_.com.lomeone.user.exception.UserNotFoundException(
-            mapOf("user_token" to userToken)
+        userRepository.findByUserToken(userToken) ?: throw UserNotFoundException(
+            detail = mapOf("user_token" to userToken)
         )
 }
 

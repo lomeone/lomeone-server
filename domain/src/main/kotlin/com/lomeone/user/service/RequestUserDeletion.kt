@@ -13,11 +13,11 @@ import java.time.LocalDate
 
 @Service
 class RequestUserDeletion(
-    private val userRepository: com.lomeone.user.repository.UserRepository,
-    private val deletionRequestRepository: com.lomeone.user.repository.DeletionRequestRepository
+    private val userRepository: UserRepository,
+    private val deletionRequestRepository: DeletionRequestRepository
 ) {
     @Transactional
-    fun execute(command: com.lomeone.user.service.DeletionRequestUserCommand): com.lomeone.user.service.DeletionRequestUserResult {
+    fun execute(command: DeletionRequestUserCommand): DeletionRequestUserResult {
         val (userToken, reason) = command
 
         verifyDuplicate(userToken)
@@ -27,13 +27,13 @@ class RequestUserDeletion(
         user.deleteRequest()
 
         val deletionRequest = deletionRequestRepository.save(
-            _root_ide_package_.com.lomeone.user.entity.DeletionRequest(
+            DeletionRequest(
                 userToken = userToken,
                 reason = reason
             )
         )
 
-        return _root_ide_package_.com.lomeone.user.service.DeletionRequestUserResult(
+        return DeletionRequestUserResult(
             userToken = deletionRequest.userToken,
             deletionCompletedAt = deletionRequest.createdAt.toLocalDate()
         )
@@ -42,17 +42,17 @@ class RequestUserDeletion(
     private fun verifyDuplicate(userToken: String) {
         val deletionRequest = deletionRequestRepository.findByUserTokenAndStatus(
             userToken = userToken,
-            status = _root_ide_package_.com.lomeone.user.entity.DeletionStatus.REQUEST
+            status = DeletionStatus.REQUEST
         )
 
         if (deletionRequest != null) {
-            throw _root_ide_package_.com.lomeone.user.exception.DeletionRequestAlreadyExistsException(mapOf("user_token" to userToken))
+            throw DeletionRequestAlreadyExistsException(mapOf("user_token" to userToken))
         }
     }
 
     private fun getUser(userToken: String) =
         userRepository.findByUserToken(userToken)
-        ?: throw _root_ide_package_.com.lomeone.user.exception.UserNotFoundException(mapOf("user_token" to userToken))
+        ?: throw UserNotFoundException(detail = mapOf("user_token" to userToken))
 }
 
 data class DeletionRequestUserCommand(

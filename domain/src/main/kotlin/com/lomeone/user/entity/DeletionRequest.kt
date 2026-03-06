@@ -21,11 +21,11 @@ class DeletionRequest(
     val userToken: String,
     val reason: String
 ) : AuditEntity() {
-    var status: com.lomeone.user.entity.DeletionStatus = _root_ide_package_.com.lomeone.user.entity.DeletionStatus.REQUEST
+    var status: DeletionStatus = DeletionStatus.REQUEST
         protected set
 
     fun restore() {
-        this.status = _root_ide_package_.com.lomeone.user.entity.DeletionStatus.RESTORE
+        this.status = DeletionStatus.RESTORE
     }
 }
 

@@ -1,6 +1,10 @@
 package com.lomeone.user.service
 
 import com.lomeone.common.entity.Email
+import com.lomeone.user.entity.User
+import com.lomeone.user.exception.UserEmailAlreadyExistsException
+import com.lomeone.user.exception.UserPhoneNumberAlreadyExistsException
+import com.lomeone.user.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -8,14 +12,13 @@ import jakarta.validation.constraints.NotBlank
 
 @Service
 class CreateUser(
-    private val userRepository: com.lomeone.user.repository.UserRepository,
-    private val associateAuthenticationToUser: com.lomeone.authentication.service.AssociateAuthenticationToUser,
+    private val userRepository: UserRepository,
 ) {
     @Transactional
-    fun execute(command: com.lomeone.user.service.CreateUserCommand): com.lomeone.user.service.CreateUserResult {
+    fun execute(command: CreateUserCommand): CreateUserResult {
         val (name, nickname, email, phoneNumber, birthday, authenticationUid, realmCode) = command
 
-        val user = _root_ide_package_.com.lomeone.user.entity.User(
+        val user = User(
             name = name,
             nickname = nickname,
             email = Email(email),
@@ -27,24 +30,16 @@ class CreateUser(
 
         val savedUser = userRepository.save(user)
 
-        associateAuthenticationToUser.execute(
-            _root_ide_package_.com.lomeone.authentication.service.AssociateAuthenticationToUserCommand(
-                userToken = savedUser.userToken,
-                uid = authenticationUid,
-                realmCode = realmCode
-            )
-        )
-
-        return _root_ide_package_.com.lomeone.user.service.CreateUserResult(
+        return CreateUserResult(
             userToken = savedUser.userToken
         )
     }
 
-    private fun verifyDuplicate(user: com.lomeone.user.entity.User) {
+    private fun verifyDuplicate(user: User) {
         userRepository.findByEmail(user.email.value) != null
-                && throw _root_ide_package_.com.lomeone.user.exception.UserEmailAlreadyExistsException(mapOf("email" to user.email))
+                && throw UserEmailAlreadyExistsException(detail = mapOf("email" to user.email))
         userRepository.findByPhoneNumber(user.phoneNumber) != null
-                && throw _root_ide_package_.com.lomeone.user.exception.UserPhoneNumberAlreadyExistsException(mapOf("phone_number" to user.phoneNumber))
+                && throw UserPhoneNumberAlreadyExistsException(detail = mapOf("phone_number" to user.phoneNumber))
     }
 }
 

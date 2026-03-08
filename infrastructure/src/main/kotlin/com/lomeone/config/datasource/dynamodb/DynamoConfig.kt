@@ -12,7 +12,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import java.net.URI
 
 @Configuration
-@ConfigurationProperties(prefix = "database.dynamo")
+@ConfigurationProperties(prefix = "cloud.aws.dynamodb")
 class DynamoConfig {
     lateinit var region: String
     lateinit var host: String

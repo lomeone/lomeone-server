@@ -21,5 +21,5 @@ plugins {
 
 include("domain")
 include("infrastructure")
-include("application")
 include("util")
+include("api")

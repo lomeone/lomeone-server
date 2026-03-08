@@ -90,61 +90,35 @@ subprojects {
 		implementation(platform(catalog.spring.cloud.bom))
 		implementation(platform(catalog.querydsl.bom))
 		implementation(platform(catalog.dgs.bom))
+		implementation(platform(catalog.springdoc.openapi.bom))
+		implementation(platform(catalog.aws.sdk.bom))
 		implementation(platform(catalog.aws.sdk.kotlin.bom))
-		implementation(platform(catalog.opentelemetry.instrumentation.bom))
 		implementation(platform(catalog.aws.smithy.kotlin.bom))
+		implementation(platform(catalog.opentelemetry.instrumentation.bom))
 
 		// common dependencies
 		implementation(catalog.kotlinx.serialization.json)
 		implementation(catalog.bundles.kotlinx.coroutines)
 		implementation(catalog.kotlin.logging)
 		implementation(catalog.opentelemetry.spring.boot.starter)
+		implementation(catalog.spring.boot.starter.validation)
+		implementation(catalog.eunoia.exception)
+		implementation(catalog.eunoia.kotlin.util)
 
 		// test implementation maven bom
 		testImplementation(platform(catalog.kotest.bom))
 
 		// common test dependencies
 		testImplementation(catalog.bundles.kotest.test.suite)
-
-		// Kotlin
-		implementation("org.jetbrains.kotlin:kotlin-reflect")
-		implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-
-		// Spring
-		implementation("org.springframework.boot:spring-boot-starter-validation")
-		implementation("org.springframework.boot:spring-boot-starter-security")
-		implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-
-		// Jwt
-		implementation("io.jsonwebtoken:jjwt-api:$jwtVersion")
-		runtimeOnly("io.jsonwebtoken:jjwt-impl:$jwtVersion")
-		runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
-
-		// JPA
-		implementation(catalog.spring.boot.starter.data.jpa)
-		implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta")
-
-		// Spring Cloud
-		implementation("org.springframework.cloud:spring-cloud-starter-openfeign:$springCloudOpenFeignVersion")
-		implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix:$springCloudHystrixVersion")
-		implementation("org.springframework.cloud:spring-cloud-starter-netflix-ribbon:$springCloudRibbonVersion")
-
-		implementation("com.lomeone.eunoia:exception:$eunoiaExceptionVersion")
-		implementation("com.lomeone.eunoia:kotlin-util:$eunoiaKotlinUtilVersion")
+		testImplementation(catalog.spring.boot.starter.test)
 
 //		developmentOnly("org.springframework.boot:spring-boot-devtools")
-		testImplementation("org.springframework.boot:spring-boot-starter-test")
-		testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
-
-		// kotest
-		testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-		testImplementation("io.kotest:kotest-property:$kotestVersion")
-		testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
+//		testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
 	}
 }
 
 dependencies {
-	kover(project(":application"))
+	kover(project(":api"))
 	kover(project(":domain"))
 	kover(project(":infrastructure"))
 }

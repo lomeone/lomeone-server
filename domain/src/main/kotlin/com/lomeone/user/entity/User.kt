@@ -7,20 +7,16 @@ import com.lomeone.eunoia.kotlin.util.string.StringUtils.generateRandomString
 import com.lomeone.user.exception.UserNameInvalidException
 import com.lomeone.user.exception.UserNicknameInvalidException
 import com.lomeone.user.exception.UserPhoneNumberInvalidException
-import com.lomeone.user.exception.UserRoleEmptyException
 import java.time.LocalDate
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
-import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Index
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 @Entity

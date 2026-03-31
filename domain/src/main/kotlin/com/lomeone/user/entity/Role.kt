@@ -3,26 +3,27 @@ package com.lomeone.user.entity
 import com.lomeone.common.entity.AuditEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
+import jakarta.persistence.Index
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "user_roles")
-class UserRole(
+@Table(name = "roles", indexes = [Index(name = "idx_roles_role_name_u1", columnList = "roleName", unique = true)])
+class Role(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_role_id")
+    @Column(name = "role_id")
     val id: Long = 0L,
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    val user: User,
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    val role: Role
+    @Enumerated(EnumType.STRING)
+    val roleName: RoleName
 ) : AuditEntity()
+
+enum class RoleName {
+    MEMBER,
+    ADMIN
+}

@@ -39,13 +39,6 @@ class User(
     email: Email,
     phoneNumber: String,
     birthday: LocalDate,
-    userRoles: MutableList<UserRole> = mutableListOf(
-        UserRole(
-            role = Role(
-                roleName = RoleName.MEMBER
-            )
-        )
-    )
 ) : AuditEntity() {
     @Column(unique = true)
     val userToken: String = generateRandomString((('0'..'9') + ('a'..'z') + ('A'..'Z')).toSet(), 8)
@@ -70,16 +63,10 @@ class User(
     var status: UserStatus = UserStatus.ACTIVE
         protected set
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private val _userRoles: MutableList<UserRole> = userRoles
-    val userRoles: List<UserRole> get() = this._userRoles
-
     init {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
         ensurePhoneNumberIsNotBlank(phoneNumber)
-        ensureUserRoleIsNotEmpty(userRoles)
     }
 
     private fun ensureNameIsNotBlank(name: String) {
@@ -103,10 +90,6 @@ class User(
         )
     }
 
-    private fun ensureUserRoleIsNotEmpty(userRoles: List<UserRole>) {
-        userRoles.isEmpty() && throw UserRoleEmptyException(detail = mapOf(("userRoles" to userRoles)))
-    }
-
     fun updateUserInfo(name: String, nickname: String, birthday: LocalDate) {
         ensureNameIsNotBlank(name)
         ensureNicknameIsNotBlank(nickname)
@@ -122,10 +105,6 @@ class User(
     fun updatePhoneNumber(phoneNumber: String) {
         ensurePhoneNumberIsNotBlank(phoneNumber)
         this.phoneNumber = phoneNumber
-    }
-
-    fun addRole(role: Role) {
-        this._userRoles.add(UserRole(role = role))
     }
 
     fun deleteRequest() {

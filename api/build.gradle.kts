@@ -20,7 +20,7 @@ dependencies {
     implementation(libs.spring.boot.starter.actuator)
 
     // Eunoia
-    implementation(libs.eunoia.spring.web.rest)
+    implementation(libs.eunoia.spring.web)
 }
 
 kotlin {

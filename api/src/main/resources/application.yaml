@@ -42,6 +42,22 @@ cloud:
       region: ap-northeast-2
       host: https://dynamodb.ap-northeast-2.amazonaws.com
 
+texhol:
+  database:
+    datasource:
+      primary:
+        secret-id: prod/texhol-db-credentials
+        hostname: oracle-mysql.lomeone.com
+        port: 3306
+        database-name: texhol
+        driver-class-name: com.mysql.cj.jdbc.Driver
+      read-only:
+        secret-id: prod/texhol-db-credentials
+        hostname: oracle-mysql.lomeone.com
+        port: 3306
+        database-name: texhol
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
 logging:
   level:
     root: INFO

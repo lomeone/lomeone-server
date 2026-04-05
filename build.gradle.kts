@@ -16,6 +16,7 @@ val eunoiaKotlinUtilVersion: String by project
 
 plugins {
 	alias(libs.plugins.kotlin.jvm)
+	alias(libs.plugins.kotlin.plugin.serialization)
 	alias(libs.plugins.spring.boot)
 	alias(libs.plugins.kotlin.spring)
 	alias(libs.plugins.kover)
@@ -79,6 +80,7 @@ configurations {
 }
 
 subprojects {
+	apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 	apply(plugin = "org.springframework.boot")
 	apply(plugin = "org.jetbrains.kotlin.plugin.spring")
 
@@ -102,8 +104,10 @@ subprojects {
 		implementation(catalog.kotlin.logging)
 		implementation(catalog.opentelemetry.spring.boot.starter)
 		implementation(catalog.spring.boot.starter.validation)
+		implementation(catalog.eunoia.aws)
 		implementation(catalog.eunoia.exception)
 		implementation(catalog.eunoia.kotlin.util)
+		implementation(catalog.eunoia.security)
 
 		// test implementation maven bom
 		testImplementation(platform(catalog.kotest.bom))

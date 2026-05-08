@@ -13,4 +13,8 @@ object GameEntryErrorCode {
         code = "${ERROR_CODE_PREFIX}/game-entry-not-found",
         exceptionCategory = ExceptionCategory.NOT_FOUND
     )
+    val GAME_ENTRY_ALREADY_EXIST = ErrorCode(
+        code = "${ERROR_CODE_PREFIX}/game-entry-already-exist",
+        exceptionCategory = ExceptionCategory.BAD_REQUEST
+    )
 }

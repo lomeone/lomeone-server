@@ -2,6 +2,7 @@ package com.lomeone.texhol.game.service
 
 import com.lomeone.texhol.game.entity.GameEntry
 import com.lomeone.texhol.game.entity.PaymentMethod
+import com.lomeone.texhol.game.exception.GameEntryAlreadyExistException
 import com.lomeone.texhol.game.repository.GameEntryRepository
 import com.lomeone.texhol.game.exception.GameSessionNotFoundException
 import com.lomeone.texhol.game.repository.GameSessionRepository
@@ -24,6 +25,12 @@ class CreateGameEntry(
 
         val player = playerRepository.findByIdOrNull(command.playerId)
             ?: throw PlayerNotFoundException(detail = mapOf("playerId" to command.playerId))
+
+        if (gameEntryRepository.existsByGameSessionAndPlayer_Id(gameSession, player.id)) {
+            throw GameEntryAlreadyExistException(
+                detail = mapOf("gameSessionId" to command.gameSessionId, "playerId" to command.playerId)
+            )
+        }
 
         val gameEntry = GameEntry.create(
             gameSession = gameSession,

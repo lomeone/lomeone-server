@@ -1,5 +1,6 @@
 package com.lomeone.texhol.game.service
 
+import com.lomeone.texhol.game.exception.GameEntryAlreadyExistException
 import com.lomeone.texhol.game.exception.GameEntryNotFoundException
 import com.lomeone.texhol.game.repository.GameEntryRepository
 import com.lomeone.texhol.player.service.FindOrCreatePlayer
@@ -19,6 +20,11 @@ class ChangeGameEntryPlayer(
             ?: throw GameEntryNotFoundException(detail = mapOf("gameEntryId" to command.gameEntryId))
 
         val player = findOrCreatePlayer(FindOrCreatePlayerCommand(nickname = command.newNickname))
+        if (gameEntryRepository.existsByGameSessionAndPlayer_Id(gameEntry.gameSession, player.id)) {
+            throw GameEntryAlreadyExistException(
+                detail = mapOf("gameEntryId" to command.gameEntryId, "playerId" to player.id)
+            )
+        }
         gameEntry.changePlayer(player)
     }
 }

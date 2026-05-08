@@ -5,6 +5,7 @@ import com.lomeone.texhol.game.repository.GameSessionRepository
 import com.lomeone.texhol.player.exception.PlayerNotFoundException
 import com.lomeone.texhol.player.repository.PlayerRepository
 import com.lomeone.texhol.reservation.entity.Reservation
+import com.lomeone.texhol.reservation.exception.ReservationAlreadyExistException
 import com.lomeone.texhol.reservation.repository.ReservationRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -24,6 +25,12 @@ class CreateReservation(
         val player = playerRepository.findByIdOrNull(command.playerId)
             ?: throw PlayerNotFoundException(detail = mapOf("playerId" to command.playerId))
 
+        if (reservationRepository.existsByGameSessionAndPlayer(gameSession, player)) {
+            throw ReservationAlreadyExistException(
+                detail = mapOf("gameSessionId" to command.gameSessionId, "playerId" to command.playerId)
+            )
+        }
+
         val reservation = Reservation(gameSession = gameSession, player = player, time = command.reservationTime)
         val savedReservation = reservationRepository.save(reservation)
 
@@ -40,4 +47,3 @@ data class CreateReservationCommand(
 data class CreateReservationResult(
     val id: Long
 )
-

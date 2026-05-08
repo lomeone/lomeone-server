@@ -5,6 +5,8 @@ import com.lomeone.texhol.game.entity.ScheduleType
 import com.lomeone.texhol.game.entity.GameSession
 import com.lomeone.texhol.player.entity.Player
 import com.lomeone.texhol.store.entity.Store
+import com.lomeone.texhol.reservation.exception.ReservationInvalidStatusException
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 
@@ -113,6 +115,48 @@ class ReservationTest : FreeSpec({
             reservation.cancel()
 
             reservation.status shouldBe ReservationStatus.CANCELLED
+        }
+
+        "취소된 예약은 등록할 수 없다" {
+            val store = createStore()
+            val gameType = createGameType(store)
+            val gameSession = createGameSession(store, gameType)
+            val player = createPlayer("홍길동")
+            val reservation = Reservation(gameSession, player, "19:00")
+
+            reservation.cancel()
+
+            shouldThrow<ReservationInvalidStatusException> {
+                reservation.register()
+            }
+        }
+
+        "이미 등록된 예약은 다시 등록할 수 없다" {
+            val store = createStore()
+            val gameType = createGameType(store)
+            val gameSession = createGameSession(store, gameType)
+            val player = createPlayer("홍길동")
+            val reservation = Reservation(gameSession, player, "19:00")
+
+            reservation.register()
+
+            shouldThrow<ReservationInvalidStatusException> {
+                reservation.register()
+            }
+        }
+
+        "이미 취소된 예약은 다시 취소할 수 없다" {
+            val store = createStore()
+            val gameType = createGameType(store)
+            val gameSession = createGameSession(store, gameType)
+            val player = createPlayer("홍길동")
+            val reservation = Reservation(gameSession, player, "19:00")
+
+            reservation.cancel()
+
+            shouldThrow<ReservationInvalidStatusException> {
+                reservation.cancel()
+            }
         }
     }
 

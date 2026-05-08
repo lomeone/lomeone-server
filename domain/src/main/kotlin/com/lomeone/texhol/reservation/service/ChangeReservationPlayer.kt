@@ -2,6 +2,7 @@ package com.lomeone.texhol.reservation.service
 
 import com.lomeone.texhol.player.service.FindOrCreatePlayer
 import com.lomeone.texhol.player.service.FindOrCreatePlayerCommand
+import com.lomeone.texhol.reservation.exception.ReservationAlreadyExistException
 import com.lomeone.texhol.reservation.exception.ReservationNotFoundException
 import com.lomeone.texhol.reservation.repository.ReservationRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -19,6 +20,11 @@ class ChangeReservationPlayer(
             ?: throw ReservationNotFoundException(detail = mapOf("reservationId" to command.reservationId))
 
         val player = findOrCreatePlayer(FindOrCreatePlayerCommand(nickname = command.newNickname))
+        if (reservationRepository.existsByGameSessionAndPlayer(reservation.gameSession, player)) {
+            throw ReservationAlreadyExistException(
+                detail = mapOf("reservationId" to command.reservationId, "playerId" to player.id)
+            )
+        }
         reservation.changePlayer(player)
     }
 }

@@ -3,6 +3,7 @@ package com.lomeone.texhol.reservation.entity
 import com.lomeone.common.entity.AuditEntity
 import com.lomeone.texhol.player.entity.Player
 import com.lomeone.texhol.game.entity.GameSession
+import com.lomeone.texhol.reservation.exception.ReservationInvalidStatusException
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -60,10 +61,20 @@ class Reservation(
     }
 
     fun register() {
+        if (this.status != ReservationStatus.WAITING) {
+            throw ReservationInvalidStatusException(
+                detail = mapOf("reservationId" to this.id, "status" to this.status)
+            )
+        }
         this.status = ReservationStatus.REGISTERED
     }
 
     fun cancel() {
+        if (this.status == ReservationStatus.CANCELLED) {
+            throw ReservationInvalidStatusException(
+                detail = mapOf("reservationId" to this.id, "status" to this.status)
+            )
+        }
         this.status = ReservationStatus.CANCELLED
     }
 }

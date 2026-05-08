@@ -13,4 +13,8 @@ object GameTypeErrorCode {
         code = "${ERROR_CODE_PREFIX}/game-type-name-already-exist",
         exceptionCategory = ExceptionCategory.BAD_REQUEST
     )
+    val GAME_TYPE_STORE_MISMATCH = ErrorCode(
+        code = "${ERROR_CODE_PREFIX}/game-type-store-mismatch",
+        exceptionCategory = ExceptionCategory.BAD_REQUEST
+    )
 }

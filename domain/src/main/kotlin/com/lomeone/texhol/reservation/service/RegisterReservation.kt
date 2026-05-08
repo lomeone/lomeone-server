@@ -2,6 +2,7 @@ package com.lomeone.texhol.reservation.service
 
 import com.lomeone.texhol.game.entity.GameEntry
 import com.lomeone.texhol.game.entity.PaymentMethod
+import com.lomeone.texhol.game.exception.GameEntryAlreadyExistException
 import com.lomeone.texhol.game.repository.GameEntryRepository
 import com.lomeone.texhol.reservation.exception.ReservationNotFoundException
 import com.lomeone.texhol.reservation.repository.ReservationRepository
@@ -18,6 +19,12 @@ class RegisterReservation(
     operator fun invoke(command: RegisterReservationCommand): RegisterReservationResult {
         val reservation = reservationRepository.findByIdOrNull(command.reservationId)
             ?: throw ReservationNotFoundException(detail = mapOf("reservationId" to command.reservationId))
+
+        if (gameEntryRepository.existsByGameSessionAndPlayer_Id(reservation.gameSession, reservation.player.id)) {
+            throw GameEntryAlreadyExistException(
+                detail = mapOf("reservationId" to command.reservationId, "playerId" to reservation.player.id)
+            )
+        }
 
         reservation.register()
 

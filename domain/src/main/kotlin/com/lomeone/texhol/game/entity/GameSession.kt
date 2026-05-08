@@ -62,8 +62,7 @@ class GameSession private constructor(
             gameType: GameType,
             session: Int
         ): GameSession {
-            // 일관성 검증: gameType이 해당 store에 속하는지 확인
-            require(gameType.store == store) {
+            require(gameType.belongsTo(store)) {
                 "GameType does not belong to the given Store"
             }
             return GameSession(store, gameType, session)

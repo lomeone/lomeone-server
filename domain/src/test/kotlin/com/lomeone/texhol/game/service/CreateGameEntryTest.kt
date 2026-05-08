@@ -2,6 +2,7 @@ package com.lomeone.texhol.game.service
 
 import com.lomeone.texhol.game.entity.GameSession
 import com.lomeone.texhol.game.entity.PaymentMethod
+import com.lomeone.texhol.game.exception.GameEntryAlreadyExistException
 import com.lomeone.texhol.game.exception.GameSessionNotFoundException
 import com.lomeone.texhol.game.repository.GameEntryRepository
 import com.lomeone.texhol.game.repository.GameSessionRepository
@@ -34,6 +35,7 @@ class CreateGameEntryTest : BehaviorSpec({
 
         every { gameSessionRepository.findByIdOrNull(gameSessionId) } returns gameSession
         every { playerRepository.findByIdOrNull(playerId) } returns player
+        every { gameEntryRepository.existsByGameSessionAndPlayer_Id(gameSession, player.id) } returns false
         every { gameEntryRepository.save(any()) } answers { firstArg() }
 
         When("게임 엔트리를 생성하면") {
@@ -96,6 +98,33 @@ class CreateGameEntryTest : BehaviorSpec({
 
             Then("PlayerNotFoundException이 발생한다") {
                 shouldThrow<PlayerNotFoundException> {
+                    createGameEntry(command)
+                }
+            }
+        }
+    }
+
+    Given("동일한 게임에 이미 참가한 플레이어일 때") {
+        val gameSessionId = 1L
+        val playerId = 1L
+        val store = Store(name = "강남점", location = "서울 강남구", address = null, imageUrl = "")
+        val gameType = GameType(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
+        val gameSession = GameSession.create(store = store, gameType = gameType, session = 1)
+        val player = Player(id = playerId, nickname = "홍길동")
+
+        every { gameSessionRepository.findByIdOrNull(gameSessionId) } returns gameSession
+        every { playerRepository.findByIdOrNull(playerId) } returns player
+        every { gameEntryRepository.existsByGameSessionAndPlayer_Id(gameSession, player.id) } returns true
+
+        When("게임 엔트리를 생성하려고 하면") {
+            val command = CreateGameEntryCommand(
+                gameSessionId = gameSessionId,
+                playerId = playerId,
+                paymentMethod = PaymentMethod.CASH
+            )
+
+            Then("GameEntryAlreadyExistException이 발생한다") {
+                shouldThrow<GameEntryAlreadyExistException> {
                     createGameEntry(command)
                 }
             }

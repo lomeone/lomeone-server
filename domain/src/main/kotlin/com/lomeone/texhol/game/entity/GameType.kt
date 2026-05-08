@@ -56,6 +56,14 @@ class GameType(
             }
         }
     }
+
+    fun belongsTo(store: Store): Boolean {
+        return if (this.store.id != 0L && store.id != 0L) {
+            this.store.id == store.id
+        } else {
+            this.store === store
+        }
+    }
 }
 
 enum class ScheduleType {

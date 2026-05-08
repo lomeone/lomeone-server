@@ -1,6 +1,7 @@
 package com.lomeone.texhol.reservation.service
 
 import com.lomeone.texhol.game.entity.PaymentMethod
+import com.lomeone.texhol.game.exception.GameEntryAlreadyExistException
 import com.lomeone.texhol.game.repository.GameEntryRepository
 import com.lomeone.texhol.reservation.entity.Reservation
 import com.lomeone.texhol.reservation.entity.ReservationStatus
@@ -33,6 +34,7 @@ class RegisterReservationTest : BehaviorSpec({
         val reservation = Reservation(gameSession = gameSession, player = player, time = "19:00")
 
         every { reservationRepository.findByIdOrNull(reservationId) } returns reservation
+        every { gameEntryRepository.existsByGameSessionAndPlayer_Id(gameSession, player.id) } returns false
         every { gameEntryRepository.save(any()) } answers { firstArg() }
 
         When("예약을 게임에 등록하면") {
@@ -65,6 +67,31 @@ class RegisterReservationTest : BehaviorSpec({
 
             Then("ReservationNotFoundException이 발생한다") {
                 shouldThrow<ReservationNotFoundException> {
+                    registerReservation(command)
+                }
+            }
+        }
+    }
+
+    Given("예약자의 게임 엔트리가 이미 존재할 때") {
+        val reservationId = 1L
+        val store = Store(name = "강남점", location = "서울 강남구", address = null, imageUrl = "")
+        val gameType = GameType(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
+        val gameSession = GameSession.create(store = store, gameType = gameType, session = 1)
+        val player = Player(id = 1L, nickname = "홍길동")
+        val reservation = Reservation(gameSession = gameSession, player = player, time = "19:00")
+
+        every { reservationRepository.findByIdOrNull(reservationId) } returns reservation
+        every { gameEntryRepository.existsByGameSessionAndPlayer_Id(gameSession, player.id) } returns true
+
+        When("예약을 게임에 등록하려고 하면") {
+            val command = RegisterReservationCommand(
+                reservationId = reservationId,
+                paymentMethod = PaymentMethod.CASH
+            )
+
+            Then("GameEntryAlreadyExistException이 발생한다") {
+                shouldThrow<GameEntryAlreadyExistException> {
                     registerReservation(command)
                 }
             }

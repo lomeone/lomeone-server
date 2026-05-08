@@ -1,15 +1,15 @@
-package com.lomeone.texhol.reservation.exception
+package com.lomeone.texhol.player.exception
 
 import com.lomeone.eunoia.exception.EunioaException
 import com.lomeone.eunoia.exception.ExceptionDetail
 
-private const val MESSAGE = "Reservation not found"
+private const val MESSAGE = "Player not found"
 
-class ReservationNotFoundException(
+class PlayerNotFoundException(
     message: String = MESSAGE,
     detail: Map<String, Any> = mapOf()
 ) : EunioaException(
     message = message,
-    errorCode = ReservationErrorCode.RESERVATION_NOT_FOUND,
+    errorCode = PlayerErrorCode.PLAYER_NOT_FOUND,
     detail = ExceptionDetail(detail)
 )

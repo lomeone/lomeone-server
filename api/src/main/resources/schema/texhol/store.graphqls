@@ -1,0 +1,29 @@
+type Store {
+    id: ID!
+    name: String!
+    location: String!
+    address: String
+    imageUrl: String!
+    createdAt: String!
+    updatedAt: String!
+}
+
+extend type Query {
+    store(id: ID!): Store
+    stores: [Store!]!
+}
+
+extend type Mutation {
+    createStore(input: CreateStoreInput!): CreateStorePayload!
+}
+
+input CreateStoreInput {
+    name: String!
+    location: String!
+    address: String
+    imageUrl: String!
+}
+
+type CreateStorePayload {
+    store: Store!
+}

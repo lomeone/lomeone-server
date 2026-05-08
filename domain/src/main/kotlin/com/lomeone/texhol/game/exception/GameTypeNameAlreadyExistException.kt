@@ -1,15 +1,15 @@
-package com.lomeone.texhol.reservation.exception
+package com.lomeone.texhol.game.exception
 
 import com.lomeone.eunoia.exception.EunioaException
 import com.lomeone.eunoia.exception.ExceptionDetail
 
-private const val MESSAGE = "Reservation not found"
+private const val MESSAGE = "GameType name already exists"
 
-class ReservationNotFoundException(
+class GameTypeNameAlreadyExistException(
     message: String = MESSAGE,
     detail: Map<String, Any> = mapOf()
 ) : EunioaException(
     message = message,
-    errorCode = ReservationErrorCode.RESERVATION_NOT_FOUND,
+    errorCode = GameTypeErrorCode.GAME_TYPE_NAME_ALREADY_EXIST,
     detail = ExceptionDetail(detail)
 )

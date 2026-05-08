@@ -1,0 +1,44 @@
+type GameSession {
+    id: ID!
+    store: Store!
+    gameType: GameType!
+    session: Int!
+    status: GameSessionStatus!
+    createdAt: String!
+    updatedAt: String!
+}
+
+enum GameSessionStatus {
+    RECRUITING
+    EARLY_CLOSE
+    CLOSED
+}
+
+extend type Query {
+    gameSession(id: ID!): GameSession
+    gameSessionsByStore(storeId: ID!, status: GameSessionStatus): [GameSession!]!
+}
+
+extend type Mutation {
+    createGameSession(input: CreateGameSessionInput!): CreateGameSessionPayload!
+    updateGameSessionStatus(input: UpdateGameSessionStatusInput!): UpdateGameSessionStatusPayload!
+}
+
+input CreateGameSessionInput {
+    storeId: ID!
+    gameTypeId: ID!
+    session: Int!
+}
+
+type CreateGameSessionPayload {
+    gameSession: GameSession!
+}
+
+input UpdateGameSessionStatusInput {
+    gameSessionId: ID!
+    status: GameSessionStatus!
+}
+
+type UpdateGameSessionStatusPayload {
+    gameSession: GameSession!
+}

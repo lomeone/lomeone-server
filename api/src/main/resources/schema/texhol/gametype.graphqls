@@ -1,0 +1,38 @@
+type GameType {
+    id: ID!
+    store: Store!
+    name: String!
+    scheduleType: ScheduleType!
+    dayOfWeek: Int
+    description: String
+    createdAt: String!
+    updatedAt: String!
+}
+
+enum ScheduleType {
+    DAILY
+    WEEKLY
+    MONTHLY
+    CUSTOM
+}
+
+extend type Query {
+    gameType(id: ID!): GameType
+    gameTypesByStore(storeId: ID!): [GameType!]!
+}
+
+extend type Mutation {
+    createGameType(input: CreateGameTypeInput!): CreateGameTypePayload!
+}
+
+input CreateGameTypeInput {
+    storeId: ID!
+    name: String!
+    scheduleType: ScheduleType!
+    dayOfWeek: Int
+    description: String
+}
+
+type CreateGameTypePayload {
+    gameType: GameType!
+}

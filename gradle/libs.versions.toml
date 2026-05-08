@@ -66,6 +66,7 @@ aws-smithy-kotlin-telemetry-provider-otel = { module = "aws.smithy.kotlin:teleme
 spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBoot" }
 spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-websocket = { module = "org.springframework.boot:spring-boot-starter-websocket" }
 spring-boot-starter-batch = { module = "org.springframework.boot:spring-boot-starter-batch" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
@@ -126,7 +127,7 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 kotlinx-coroutines = [ "kotlinx-coroutines-core", "kotlinx-coroutines-debug", "kotlinx-coroutines-test" ]
 kotest-test-suite = [ "kotest-runner-junit5", "kotest-property", "kotest-extensions-spring", "mockk" ]
 querydsl = [ "querydsl-jpa", "querydsl-jpa-spring" ]
-dgs = [ "dgs-spring-graphql-starter", "dgs-extended-scalars", "dgs-extended-validation", "dgs-spring-boot-micrometer" ]
+dgs = [ "dgs-spring-graphql-starter",  "dgs-extended-scalars", "dgs-extended-validation", "dgs-spring-boot-micrometer" ]
 aws-sdk-dynamodb = [ "aws-sdk-dynamodb", "aws-sdk-dynamodb-enhanced" ]
 aws-sdk-kotlin-dynamodb = [ "aws-sdk-kotlin-dynamodb", "aws-sdk-kotlin-dynamodb-mapper", "aws-sdk-kotlin-dynamodb-mapper-annotation" ]
 

@@ -10,14 +10,12 @@ kotlinxCoroutines = "1.10.2"
 kotlinLogging = "7.0.14"
 awsSdk = "2.41.33"
 awsSdkKotlin = "1.6.20"
-awsSmithyKotlin = "1.6.2"
 springBoot = "4.0.3"
 querydsl = "7.1"
 ksp = "2.3.5"
 dgs = "11.1.0"
 dgsCodegen = "8.3.0"
 springCloud = "2025.1.1"
-opentelemetry = "2.25.0-alpha"
 h2 = "2.4.240"
 mysql = "9.6.0"
 postgresql = "42.7.9"
@@ -57,10 +55,6 @@ aws-sdk-kotlin-dynamodb = { module = "aws.sdk.kotlin:dynamodb" }
 aws-sdk-kotlin-dynamodb-mapper = { module = "aws.sdk.kotlin:dynamodb-mapper", version = "1.6.20-beta" }
 aws-sdk-kotlin-dynamodb-mapper-annotation = { module = "aws.sdk.kotlin:dynamodb-mapper-annotations", version = "1.6.20-beta" }
 aws-sdk-kotlin-sts = { module = "aws.sdk.kotlin:sts" }
-
-# aws smithy kotlin
-aws-smithy-kotlin-bom = { module = "aws.smithy.kotlin:bom", version.ref = "awsSmithyKotlin" }
-aws-smithy-kotlin-telemetry-provider-otel = { module = "aws.smithy.kotlin:telemetry-provider-otel" }
 
 # spring boot
 spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBoot" }
@@ -107,11 +101,6 @@ eunoia-spring-web = { module = "com.lomeone.eunoia:spring-web", version.ref = "e
 
 # logging
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinLogging" }
-
-# opentelemetry
-opentelemetry-instrumentation-bom = { module = "io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha", version.ref = "opentelemetry" }
-opentelemetry-spring-boot-starter = { module = "io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter" }
-opentelemetry-aws-sdk = { module = "io.opentelemetry.instrumentation:opentelemetry-aws-sdk-2.2" }
 
 # kotest
 kotest-bom = { module = "io.kotest:kotest-bom", version.ref = "kotest" }

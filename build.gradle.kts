@@ -93,16 +93,12 @@ subprojects {
 		implementation(platform(catalog.querydsl.bom))
 		implementation(platform(catalog.dgs.bom))
 		implementation(platform(catalog.springdoc.openapi.bom))
-		implementation(platform(catalog.aws.sdk.bom))
 		implementation(platform(catalog.aws.sdk.kotlin.bom))
-		implementation(platform(catalog.aws.smithy.kotlin.bom))
-		implementation(platform(catalog.opentelemetry.instrumentation.bom))
 
 		// common dependencies
 		implementation(catalog.kotlinx.serialization.json)
 		implementation(catalog.bundles.kotlinx.coroutines)
 		implementation(catalog.kotlin.logging)
-		implementation(catalog.opentelemetry.spring.boot.starter)
 		implementation(catalog.spring.boot.starter.validation)
 		implementation(catalog.eunoia.aws)
 		implementation(catalog.eunoia.exception)

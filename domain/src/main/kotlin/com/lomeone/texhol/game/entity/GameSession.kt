@@ -43,7 +43,6 @@ class GameSession private constructor(
     @JoinColumn(name = "game_type_id", nullable = false)
     val gameType: GameType,
 
-    @Column(nullable = false)
     val session: Int
 ) : AuditEntity() {
     @Id
@@ -52,7 +51,6 @@ class GameSession private constructor(
     val id: Long = 0L
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     var status: GameSessionStatus = GameSessionStatus.RECRUITING
         protected set
 

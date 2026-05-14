@@ -39,7 +39,6 @@ class Reservation(
 
     player: Player,
 
-    @Column(nullable = false, length = 50)
     val time: String
 ) : AuditEntity() {
     @Id

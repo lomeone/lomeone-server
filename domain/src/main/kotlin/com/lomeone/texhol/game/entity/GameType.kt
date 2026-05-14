@@ -31,17 +31,13 @@ class GameType(
     @JoinColumn(name = "store_id", nullable = false)
     val store: Store,
 
-    @Column(nullable = false, length = 100)
     val name: String,
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     val scheduleType: ScheduleType,
 
-    @Column(nullable = true)
     val dayOfWeek: Int?, // 0-6 (Sunday-Saturday), only used when scheduleType is WEEKLY
 
-    @Column(length = 500, nullable = true)
     val description: String?
 ) : AuditEntity() {
     @Id

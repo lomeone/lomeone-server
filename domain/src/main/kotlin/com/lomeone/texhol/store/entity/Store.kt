@@ -24,19 +24,15 @@ class Store(
     @Column(name = "store_id")
     val id: Long = 0L
 
-    @Column(nullable = false)
     var name: String = name
         protected set
 
-    @Column(nullable = false)
     var location: String = location
         protected set
 
-    @Column(length = 500, nullable = true)
     var address: String? = address
         protected set
 
-    @Column(nullable = false)
     var imageUrl: String = imageUrl
         protected set
 

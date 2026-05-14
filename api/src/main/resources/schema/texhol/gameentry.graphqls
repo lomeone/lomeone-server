@@ -1,0 +1,80 @@
+type GameEntry {
+    id: ID!
+    gameSession: GameSession!
+    player: Player!
+    status: GameEntryStatus!
+    buyInRecords: [BuyInRecord!]!
+    reBuyCount: Int!
+    createdAt: String!
+    updatedAt: String!
+}
+
+type BuyInRecord {
+    type: BuyInType!
+    paymentMethod: PaymentMethod!
+    createdAt: String!
+}
+
+enum GameEntryStatus {
+    ALIVE
+    SIT_OUT
+}
+
+enum BuyInType {
+    INITIAL
+    RE_BUY
+}
+
+enum PaymentMethod {
+    CASH
+    CARD
+    POINTS
+}
+
+extend type Query {
+    gameEntry(id: ID!): GameEntry
+    gameEntriesByGameSession(gameSessionId: ID!): [GameEntry!]!
+}
+
+extend type Mutation {
+    createGameEntry(input: CreateGameEntryInput!): CreateGameEntryPayload!
+    addReBuy(input: AddReBuyInput!): AddReBuyPayload!
+    toggleSitOut(input: ToggleSitOutInput!): ToggleSitOutPayload!
+    changeGameEntryPlayer(input: ChangeGameEntryPlayerInput!): ChangeGameEntryPlayerPayload!
+}
+
+input CreateGameEntryInput {
+    gameSessionId: ID!
+    playerId: ID!
+    paymentMethod: PaymentMethod!
+}
+
+type CreateGameEntryPayload {
+    gameEntry: GameEntry!
+}
+
+input AddReBuyInput {
+    gameEntryId: ID!
+    paymentMethod: PaymentMethod!
+}
+
+type AddReBuyPayload {
+    gameEntry: GameEntry!
+}
+
+input ToggleSitOutInput {
+    gameEntryId: ID!
+}
+
+type ToggleSitOutPayload {
+    gameEntry: GameEntry!
+}
+
+input ChangeGameEntryPlayerInput {
+    gameEntryId: ID!
+    playerId: ID!
+}
+
+type ChangeGameEntryPlayerPayload {
+    gameEntry: GameEntry!
+}

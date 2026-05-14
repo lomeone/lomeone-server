@@ -135,7 +135,7 @@ class DataSourceConfig {
     ): LocalContainerEntityManagerFactoryBean =
         builder
             .dataSource(routingDataSource)
-            .packages("com.oliveyoung.global") // 비즈니스 엔티티 위치
+            .packages("com.lomeone") // 비즈니스 엔티티 위치
             .persistenceUnit("business")
             .properties(jpaProperties(beanFactory))
             .build().apply {

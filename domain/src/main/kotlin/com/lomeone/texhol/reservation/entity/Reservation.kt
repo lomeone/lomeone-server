@@ -1,40 +1,81 @@
 package com.lomeone.texhol.reservation.entity
 
-import java.time.ZonedDateTime
+import com.lomeone.common.entity.AuditEntity
+import com.lomeone.texhol.player.entity.Player
+import com.lomeone.texhol.game.entity.GameSession
+import com.lomeone.texhol.reservation.exception.ReservationInvalidStatusException
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Index
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.Table
 
+@Entity
+@Table(
+    name = "reservations",
+    indexes = [
+        Index(
+            name = "idx_reservations_game_session_id_player_id_u1",
+            columnList = "game_session_id, player_id",
+            unique = true
+        ),
+        Index(
+            name = "idx_reservations_player_id",
+            columnList = "player_id"
+        )
+    ]
+)
 class Reservation(
-    id: String? = null,
-    val storeBranch: String,
-    val gameType: String,
-    val session: Int,
-    reservation: LinkedHashMap<String, String> = linkedMapOf(),
-    var status: ReservationStatus = ReservationStatus.OPEN,
-    val createdAt: ZonedDateTime = ZonedDateTime.now(),
-    val updatedAt: ZonedDateTime = ZonedDateTime.now()
-) {
-    val id: String = id ?: ""
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_session_id", nullable = false)
+    val gameSession: GameSession,
 
-    private val _reservation: LinkedHashMap<String, String> = reservation
-    val reservation: Map<String, String> get() = this._reservation.toMap()
+    player: Player,
 
-    fun reserve(name: String, time: String) {
-        this._reservation[name] = time
+    val time: String
+) : AuditEntity() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "reservation_id")
+    val id: Long = 0L
+
+    @ManyToOne
+    @JoinColumn(name = "player_id")
+    var player: Player = player
+        protected set
+
+    @Enumerated(EnumType.STRING)
+    var status: ReservationStatus = ReservationStatus.WAITING
+        protected set
+
+    fun changePlayer(player: Player) {
+        this.player = player
     }
 
-    fun cancel(name: String) {
-        this._reservation.remove(name)
+    fun register() {
+        if (this.status != ReservationStatus.WAITING) {
+            throw ReservationInvalidStatusException(
+                detail = mapOf("reservationId" to this.id, "status" to this.status)
+            )
+        }
+        this.status = ReservationStatus.REGISTERED
     }
 
-    fun closeReservation() {
-        this.status = ReservationStatus.CLOSED
+    fun cancel() {
+        if (this.status == ReservationStatus.CANCELLED) {
+            throw ReservationInvalidStatusException(
+                detail = mapOf("reservationId" to this.id, "status" to this.status)
+            )
+        }
+        this.status = ReservationStatus.CANCELLED
     }
-
-    fun isOpen() = this.status == ReservationStatus.OPEN
-
-    fun isClosed() = this.status == ReservationStatus.CLOSED
 }
 
-enum class ReservationStatus {
-    OPEN,
-    CLOSED
-}
+enum class ReservationStatus { WAITING, REGISTERED, CANCELLED }

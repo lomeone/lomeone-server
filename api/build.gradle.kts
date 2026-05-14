@@ -1,5 +1,5 @@
-group = "com.lomeone"
-version = "7cd52c5bea"
+val imageRegistry: String by project
+val serviceName: String by project
 
 plugins {
     alias(libs.plugins.dgs.codegen)
@@ -12,6 +12,10 @@ dependencies {
 
     // Web
     implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.websocket)
+
+    // GraphQL
+    implementation(libs.bundles.dgs)
 
     // Swagger
     implementation(libs.springdoc.openapi.starter.webmvc.ui)
@@ -23,10 +27,30 @@ dependencies {
     implementation(libs.eunoia.spring.web)
 }
 
-kotlin {
-    jvmToolchain(21)
+tasks {
+    generateJava {
+        schemaPaths = mutableListOf("$projectDir/src/main/resources/schema")
+        packageName = "com.lomeone.generated"
+        generateClientv2 = true
+    }
 }
 
-tasks.test {
-    useJUnitPlatform()
+jib {
+    from {
+        image = "396428372646.dkr.ecr.ap-northeast-2.amazonaws.com/ecr-public/amazoncorretto/amazoncorretto:21-al2023-headless"
+        platforms {
+            platform {
+                architecture = "amd64"
+                os = "linux"
+            }
+            platform {
+                architecture = "arm64"
+                os = "linux"
+            }
+        }
+    }
+    to {
+        image = "$imageRegistry/$serviceName"
+        tags = setOf(version.toString())
+    }
 }

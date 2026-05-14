@@ -1,0 +1,65 @@
+type Reservation {
+    id: ID!
+    gameSession: GameSession!
+    player: Player!
+    time: String!
+    status: ReservationStatus!
+    createdAt: String!
+    updatedAt: String!
+}
+
+enum ReservationStatus {
+    WAITING
+    REGISTERED
+    CANCELLED
+}
+
+# PaymentMethod는 gameentry.graphqls에 정의됨
+
+extend type Query {
+    reservationsByGameSession(gameSessionId: ID!): [Reservation!]!
+    reservationsByPlayer(playerId: ID!): [Reservation!]!
+}
+
+extend type Mutation {
+    createReservation(input: CreateReservationInput!): CreateReservationPayload!
+    registerReservation(input: RegisterReservationInput!): RegisterReservationPayload!
+    cancelReservation(input: CancelReservationInput!): CancelReservationPayload!
+    changeReservationPlayer(input: ChangeReservationPlayerInput!): ChangeReservationPlayerPayload!
+}
+
+input CreateReservationInput {
+    gameSessionId: ID!
+    playerId: ID!
+    reservationTime: String!
+}
+
+type CreateReservationPayload {
+    reservation: Reservation!
+}
+
+input RegisterReservationInput {
+    reservationId: ID!
+    paymentMethod: PaymentMethod!
+}
+
+type RegisterReservationPayload {
+    reservation: Reservation!
+}
+
+input CancelReservationInput {
+    reservationId: ID!
+}
+
+type CancelReservationPayload {
+    reservation: Reservation!
+}
+
+input ChangeReservationPlayerInput {
+    reservationId: ID!
+    playerId: ID!
+}
+
+type ChangeReservationPlayerPayload {
+    reservation: Reservation!
+}

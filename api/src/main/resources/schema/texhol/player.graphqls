@@ -1,0 +1,32 @@
+type Player {
+    id: ID!
+    nickname: String!
+    createdAt: String!
+    updatedAt: String!
+}
+
+extend type Query {
+    player(id: ID!): Player
+    playerByNickname(nickname: String!): Player
+}
+
+extend type Mutation {
+    createPlayer(input: CreatePlayerInput!): CreatePlayerPayload!
+    findOrCreatePlayer(input: FindOrCreatePlayerInput!): FindOrCreatePlayerPayload!
+}
+
+input CreatePlayerInput {
+    nickname: String!
+}
+
+type CreatePlayerPayload {
+    player: Player!
+}
+
+input FindOrCreatePlayerInput {
+    nickname: String!
+}
+
+type FindOrCreatePlayerPayload {
+    player: Player!
+}

@@ -1,22 +1,15 @@
 package com.lomeone.texhol.reservation.exception
 
-import com.lomeone.eunoia.exception.ErrorCode
 import com.lomeone.eunoia.exception.EunioaException
-import com.lomeone.eunoia.exception.ExceptionCategory
 import com.lomeone.eunoia.exception.ExceptionDetail
 
 private const val MESSAGE = "Reservation not found"
-private val ERROR_CODE = ErrorCode(
-    code = "reservation/not-found",
-    exceptionCategory = ExceptionCategory.NOT_FOUND
-)
 
 class ReservationNotFoundException(
-    detail: Map<String, Any>
+    message: String = MESSAGE,
+    detail: Map<String, Any> = mapOf()
 ) : EunioaException(
-    message = MESSAGE,
-    errorCode = ERROR_CODE,
-    detail = ExceptionDetail(
-        details = detail
-    )
+    message = message,
+    errorCode = ReservationErrorCode.RESERVATION_NOT_FOUND,
+    detail = ExceptionDetail(detail)
 )

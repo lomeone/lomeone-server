@@ -1,6 +1,6 @@
 spring:
   application:
-    name: texhol-server
+    name: lomeone-server
 
   jpa:
     show-sql: true
@@ -37,6 +37,22 @@ texhol:
         hostname: oracle-mysql.lomeone.com
         port: 3306
         database-name: texhol
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+moyemap:
+  database:
+    datasource:
+      primary:
+        secret-id: prod/moyemap-db-credentials
+        hostname: oracle-mysql.lomeone.com
+        port: 3306
+        database-name: moyemap
+        driver-class-name: com.mysql.cj.jdbc.Driver
+      read-only:
+        secret-id: prod/moyemap-db-credentials
+        hostname: oracle-mysql.lomeone.com
+        port: 3306
+        database-name: moyemap
         driver-class-name: com.mysql.cj.jdbc.Driver
 
 logging:

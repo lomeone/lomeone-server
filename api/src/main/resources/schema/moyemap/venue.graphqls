@@ -1,0 +1,142 @@
+type Venue {
+    id: ID!
+    title: String!
+    category: VenueCategory!
+    status: VenueStatus!
+    location: Location!
+    price: Int!
+    currency: String!
+    imageUrl: String!
+    description: String!
+    sourceUrl: String!
+    tags: [String!]!
+    createdAt: String!
+    updatedAt: String!
+}
+
+type VenueMarker {
+    id: ID!
+    title: String!
+    category: VenueCategory!
+    price: Int!
+    currency: String!
+    latitude: Float!
+    longitude: Float!
+    region: String!
+    imageUrl: String!
+    tags: [String!]!
+}
+
+type Location {
+    name: String!
+    address: String!
+    latitude: Float!
+    longitude: Float!
+    region: String!
+    city: String
+    district: String
+}
+
+enum VenueCategory {
+    SOCIAL_PARTY
+    SOLO_PARTY
+    GUESTHOUSE_PARTY
+    ROTATION_DATING
+    NETWORKING
+    HONSOOL_BAR
+    BAR
+    WORKSHOP
+    ETC
+}
+
+enum VenueStatus {
+    DRAFT
+    PUBLISHED
+    HIDDEN
+}
+
+extend type Query {
+    venues(input: GetVenuesInput): [Venue!]!
+    venue(id: ID!): Venue!
+    venueMarkers(input: GetVenueMarkersInput): [VenueMarker!]!
+}
+
+extend type Mutation {
+    createVenue(input: CreateVenueInput!): CreateVenuePayload!
+    updateVenue(input: UpdateVenueInput!): UpdateVenuePayload!
+    publishVenue(id: ID!): PublishVenuePayload!
+    hideVenue(id: ID!): HideVenuePayload!
+}
+
+input GetVenuesInput {
+    categories: [VenueCategory!]
+    region: String
+    minPrice: Int
+    maxPrice: Int
+    northEastLatitude: Float
+    northEastLongitude: Float
+    southWestLatitude: Float
+    southWestLongitude: Float
+}
+
+input GetVenueMarkersInput {
+    northEastLatitude: Float
+    northEastLongitude: Float
+    southWestLatitude: Float
+    southWestLongitude: Float
+    categories: [VenueCategory!]
+    region: String
+}
+
+input CreateVenueInput {
+    title: String!
+    category: VenueCategory!
+    locationName: String!
+    address: String!
+    latitude: Float!
+    longitude: Float!
+    region: String!
+    city: String
+    district: String
+    price: Int!
+    currency: String
+    imageUrl: String!
+    description: String!
+    sourceUrl: String!
+    tags: [String!]
+}
+
+type CreateVenuePayload {
+    venue: Venue!
+}
+
+input UpdateVenueInput {
+    id: ID!
+    title: String
+    category: VenueCategory
+    locationName: String
+    address: String
+    latitude: Float
+    longitude: Float
+    region: String
+    city: String
+    district: String
+    price: Int
+    currency: String
+    imageUrl: String
+    description: String
+    sourceUrl: String
+    tags: [String!]
+}
+
+type UpdateVenuePayload {
+    venue: Venue!
+}
+
+type PublishVenuePayload {
+    venue: Venue!
+}
+
+type HideVenuePayload {
+    venue: Venue!
+}

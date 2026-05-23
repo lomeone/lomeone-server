@@ -1,0 +1,28 @@
+type Review {
+    id: ID!
+    venueId: ID!
+    userName: String!
+    rating: Int!
+    comment: String!
+    createdAt: String!
+    updatedAt: String!
+}
+
+extend type Query {
+    reviewsByVenue(venueId: ID!, minRating: Int): [Review!]!
+}
+
+extend type Mutation {
+    createReview(input: CreateReviewInput!): CreateReviewPayload!
+}
+
+input CreateReviewInput {
+    venueId: ID!
+    userName: String!
+    rating: Int!
+    comment: String!
+}
+
+type CreateReviewPayload {
+    review: Review!
+}

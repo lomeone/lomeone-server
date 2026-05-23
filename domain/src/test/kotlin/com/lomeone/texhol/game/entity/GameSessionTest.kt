@@ -1,6 +1,6 @@
 package com.lomeone.texhol.game.entity
 
-import com.lomeone.texhol.game.entity.GameType
+import com.lomeone.texhol.game.entity.Game
 import com.lomeone.texhol.game.entity.ScheduleType
 import com.lomeone.texhol.store.entity.Store
 import io.kotest.assertions.throwables.shouldThrow
@@ -15,7 +15,7 @@ class GameSessionTest : FreeSpec({
         imageUrl = "https://example.com/store.jpg"
     )
 
-    fun createGameType(store: Store) = GameType(
+    fun createGame(store: Store) = Game(
         store = store,
         name = "데일리",
         scheduleType = ScheduleType.DAILY,
@@ -24,29 +24,29 @@ class GameSessionTest : FreeSpec({
     )
 
     "게임 세션 생성할 때" - {
-        "Store와 GameType으로 게임 세션을 생성할 수 있다" {
+        "Store와 Game으로 게임 세션을 생성할 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
+            val game = createGame(store)
 
             val gameSession = GameSession.create(
                 store = store,
-                gameType = gameType,
+                game = game,
                 session = 1
             )
 
             gameSession.store shouldBe store
-            gameSession.gameType shouldBe gameType
+            gameSession.game shouldBe game
             gameSession.session shouldBe 1
             gameSession.status shouldBe GameSessionStatus.RECRUITING
         }
 
         "다양한 회차로 게임 세션을 생성할 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
+            val game = createGame(store)
 
-            val session1 = GameSession.create(store, gameType, 1)
-            val session2 = GameSession.create(store, gameType, 2)
-            val session3 = GameSession.create(store, gameType, 3)
+            val session1 = GameSession.create(store, game, 1)
+            val session2 = GameSession.create(store, game, 2)
+            val session3 = GameSession.create(store, game, 3)
 
             session1.session shouldBe 1
             session2.session shouldBe 2
@@ -55,16 +55,16 @@ class GameSessionTest : FreeSpec({
 
         "기본 상태는 RECRUITING이다" {
             val store = createStore()
-            val gameType = createGameType(store)
+            val game = createGame(store)
 
-            val gameSession = GameSession.create(store, gameType, 1)
+            val gameSession = GameSession.create(store, game, 1)
 
             gameSession.status shouldBe GameSessionStatus.RECRUITING
         }
     }
 
     "게임 세션 검증할 때" - {
-        "GameType이 다른 Store에 속하면 생성할 수 없다" {
+        "Game이 다른 Store에 속하면 생성할 수 없다" {
             val store1 = Store(
                 name = "강남점",
                 location = "서울 강남구",
@@ -77,12 +77,12 @@ class GameSessionTest : FreeSpec({
                 address = null,
                 imageUrl = "https://example.com/store.jpg"
             )
-            val gameType = createGameType(store1)
+            val game = createGame(store1)
 
             shouldThrow<IllegalArgumentException> {
                 GameSession.create(
-                    store = store2, // 다른 Store
-                    gameType = gameType, // store1의 GameType
+                    store = store2,
+                    game = game, // store1의 Game
                     session = 1
                 )
             }
@@ -92,8 +92,8 @@ class GameSessionTest : FreeSpec({
     "게임 세션 상태 변경할 때" - {
         "게임을 마감할 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = GameSession.create(store, gameType, 1)
+            val game = createGame(store)
+            val gameSession = GameSession.create(store, game, 1)
 
             gameSession.close()
 
@@ -102,8 +102,8 @@ class GameSessionTest : FreeSpec({
 
         "게임을 조기 마감할 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = GameSession.create(store, gameType, 1)
+            val game = createGame(store)
+            val gameSession = GameSession.create(store, game, 1)
 
             gameSession.earlyClose()
 
@@ -112,8 +112,8 @@ class GameSessionTest : FreeSpec({
 
         "마감된 게임을 다시 열 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = GameSession.create(store, gameType, 1)
+            val game = createGame(store)
+            val gameSession = GameSession.create(store, game, 1)
 
             gameSession.close()
             gameSession.reOpen()
@@ -123,8 +123,8 @@ class GameSessionTest : FreeSpec({
 
         "조기 마감된 게임을 다시 열 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = GameSession.create(store, gameType, 1)
+            val game = createGame(store)
+            val gameSession = GameSession.create(store, game, 1)
 
             gameSession.earlyClose()
             gameSession.reOpen()

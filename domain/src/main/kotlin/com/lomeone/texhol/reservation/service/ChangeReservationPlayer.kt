@@ -5,17 +5,21 @@ import com.lomeone.texhol.player.service.FindOrCreatePlayerCommand
 import com.lomeone.texhol.reservation.exception.ReservationAlreadyExistException
 import com.lomeone.texhol.reservation.exception.ReservationNotFoundException
 import com.lomeone.texhol.reservation.repository.ReservationRepository
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import com.lomeone.texhol.common.TexholTransactional
 
 @Service
 class ChangeReservationPlayer(
     private val reservationRepository: ReservationRepository,
     private val findOrCreatePlayer: FindOrCreatePlayer
 ) {
-    @Transactional
+    private val logger = KotlinLogging.logger {}
+
+    @TexholTransactional
     operator fun invoke(command: ChangeReservationPlayerCommand) {
+        logger.info { "Changing reservation player: reservationId=${command.reservationId}, newNickname=${command.newNickname}" }
         val reservation = reservationRepository.findByIdOrNull(command.reservationId)
             ?: throw ReservationNotFoundException(detail = mapOf("reservationId" to command.reservationId))
 
@@ -26,6 +30,7 @@ class ChangeReservationPlayer(
             )
         }
         reservation.changePlayer(player)
+        logger.info { "Reservation player changed: reservationId=${command.reservationId}, playerId=${player.id}" }
     }
 }
 

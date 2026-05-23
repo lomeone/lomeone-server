@@ -36,14 +36,25 @@ class Store(
     var imageUrl: String = imageUrl
         protected set
 
+    init {
+        require(name.isNotBlank()) { "Store name must not be blank" }
+        require(location.isNotBlank()) { "Store location must not be blank" }
+    }
+
     fun updateInfo(
         name: String? = null,
         location: String? = null,
         address: String? = null,
         imageUrl: String? = null
     ) {
-        name?.let { this.name = it }
-        location?.let { this.location = it }
+        name?.let {
+            require(it.isNotBlank()) { "Store name must not be blank" }
+            this.name = it
+        }
+        location?.let {
+            require(it.isNotBlank()) { "Store location must not be blank" }
+            this.location = it
+        }
         address?.let { this.address = it }
         imageUrl?.let { this.imageUrl = it }
     }

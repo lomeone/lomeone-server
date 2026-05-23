@@ -50,7 +50,7 @@ class GameSessionDataFetcher(
         val result = createGameSession(
             CreateGameSessionCommand(
                 storeId = input.storeId.toLong(),
-                gameTypeId = input.gameTypeId.toLong(),
+                gameId = input.gameId.toLong(),
                 session = input.session
             )
         )
@@ -73,7 +73,7 @@ class GameSessionDataFetcher(
     private fun com.lomeone.texhol.game.entity.GameSession.toGraphQL() = GameSession(
         id = this.id.toString(),
         store = this.store.toStoreGraphQL(),
-        gameType = this.gameType.toGameTypeGraphQL(),
+        game = this.game.toGameGraphQL(),
         session = this.session,
         status = this.status.toGraphQL(),
         createdAt = this.createdAt.toString(),
@@ -102,7 +102,7 @@ class GameSessionDataFetcher(
         updatedAt = this.updatedAt.toString()
     )
 
-    private fun com.lomeone.texhol.game.entity.GameType.toGameTypeGraphQL() = com.lomeone.generated.types.GameType(
+    private fun com.lomeone.texhol.game.entity.Game.toGameGraphQL() = com.lomeone.generated.types.Game(
         id = this.id.toString(),
         store = this.store.toStoreGraphQL(),
         name = this.name,

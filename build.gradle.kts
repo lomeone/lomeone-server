@@ -84,6 +84,9 @@ subprojects {
 	apply(plugin = "org.springframework.boot")
 	apply(plugin = "org.jetbrains.kotlin.plugin.spring")
 
+	tasks.bootJar { enabled = false }
+	tasks.jar { enabled = true }
+
 	dependencies {
 		// maven bom
 		implementation(platform(catalog.kotlinx.serialization.bom))
@@ -121,6 +124,10 @@ dependencies {
 	kover(project(":api"))
 	kover(project(":domain"))
 	kover(project(":infrastructure"))
+}
+
+tasks.bootJar {
+	enabled = false
 }
 
 fun getGitHash(): String = providers.exec {

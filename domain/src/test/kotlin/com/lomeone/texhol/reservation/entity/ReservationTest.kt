@@ -1,6 +1,6 @@
 package com.lomeone.texhol.reservation.entity
 
-import com.lomeone.texhol.game.entity.GameType
+import com.lomeone.texhol.game.entity.Game
 import com.lomeone.texhol.game.entity.ScheduleType
 import com.lomeone.texhol.game.entity.GameSession
 import com.lomeone.texhol.player.entity.Player
@@ -18,7 +18,7 @@ class ReservationTest : FreeSpec({
         imageUrl = "https://example.com/store.jpg"
     )
 
-    fun createGameType(store: Store) = GameType(
+    fun createGame(store: Store) = Game(
         store = store,
         name = "데일리",
         scheduleType = ScheduleType.DAILY,
@@ -26,9 +26,9 @@ class ReservationTest : FreeSpec({
         description = null
     )
 
-    fun createGameSession(store: Store, gameType: GameType) = GameSession.create(
+    fun createGameSession(store: Store, game: Game) = GameSession.create(
         store = store,
-        gameType = gameType,
+        game = game,
         session = 1
     )
 
@@ -37,8 +37,8 @@ class ReservationTest : FreeSpec({
     "예약 생성할 때" - {
         "게임 세션과 플레이어로 예약을 생성할 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = createGameSession(store, gameType)
+            val game = createGame(store)
+            val gameSession = createGameSession(store, game)
             val player = createPlayer("홍길동")
 
             val reservation = Reservation(
@@ -55,8 +55,8 @@ class ReservationTest : FreeSpec({
 
         "기본 상태는 WAITING이다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = createGameSession(store, gameType)
+            val game = createGame(store)
+            val gameSession = createGameSession(store, game)
             val player = createPlayer("홍길동")
 
             val reservation = Reservation(gameSession, player, "19:00")
@@ -66,8 +66,8 @@ class ReservationTest : FreeSpec({
 
         "다양한 시간으로 예약을 생성할 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = createGameSession(store, gameType)
+            val game = createGame(store)
+            val gameSession = createGameSession(store, game)
 
             val reservation1 = Reservation(gameSession, createPlayer("홍길동"), "19:00")
             val reservation2 = Reservation(gameSession, createPlayer("김철수"), "19:30")
@@ -82,8 +82,8 @@ class ReservationTest : FreeSpec({
     "예약 상태 변경할 때" - {
         "예약을 등록 상태로 변경할 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = createGameSession(store, gameType)
+            val game = createGame(store)
+            val gameSession = createGameSession(store, game)
             val player = createPlayer("홍길동")
             val reservation = Reservation(gameSession, player, "19:00")
 
@@ -94,8 +94,8 @@ class ReservationTest : FreeSpec({
 
         "예약을 취소할 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = createGameSession(store, gameType)
+            val game = createGame(store)
+            val gameSession = createGameSession(store, game)
             val player = createPlayer("홍길동")
             val reservation = Reservation(gameSession, player, "19:00")
 
@@ -106,8 +106,8 @@ class ReservationTest : FreeSpec({
 
         "등록된 예약을 취소할 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = createGameSession(store, gameType)
+            val game = createGame(store)
+            val gameSession = createGameSession(store, game)
             val player = createPlayer("홍길동")
             val reservation = Reservation(gameSession, player, "19:00")
 
@@ -119,8 +119,8 @@ class ReservationTest : FreeSpec({
 
         "취소된 예약은 등록할 수 없다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = createGameSession(store, gameType)
+            val game = createGame(store)
+            val gameSession = createGameSession(store, game)
             val player = createPlayer("홍길동")
             val reservation = Reservation(gameSession, player, "19:00")
 
@@ -133,8 +133,8 @@ class ReservationTest : FreeSpec({
 
         "이미 등록된 예약은 다시 등록할 수 없다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = createGameSession(store, gameType)
+            val game = createGame(store)
+            val gameSession = createGameSession(store, game)
             val player = createPlayer("홍길동")
             val reservation = Reservation(gameSession, player, "19:00")
 
@@ -147,8 +147,8 @@ class ReservationTest : FreeSpec({
 
         "이미 취소된 예약은 다시 취소할 수 없다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = createGameSession(store, gameType)
+            val game = createGame(store)
+            val gameSession = createGameSession(store, game)
             val player = createPlayer("홍길동")
             val reservation = Reservation(gameSession, player, "19:00")
 
@@ -163,8 +163,8 @@ class ReservationTest : FreeSpec({
     "예약 플레이어 변경할 때" - {
         "예약의 플레이어를 변경할 수 있다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = createGameSession(store, gameType)
+            val game = createGame(store)
+            val gameSession = createGameSession(store, game)
             val player1 = createPlayer("홍길동")
             val player2 = createPlayer("김철수")
             val reservation = Reservation(gameSession, player1, "19:00")
@@ -176,8 +176,8 @@ class ReservationTest : FreeSpec({
 
         "플레이어를 변경해도 다른 정보는 유지된다" {
             val store = createStore()
-            val gameType = createGameType(store)
-            val gameSession = createGameSession(store, gameType)
+            val game = createGame(store)
+            val gameSession = createGameSession(store, game)
             val player1 = createPlayer("홍길동")
             val player2 = createPlayer("김철수")
             val reservation = Reservation(gameSession, player1, "19:00")

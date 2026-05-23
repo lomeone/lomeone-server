@@ -8,9 +8,10 @@ import com.lomeone.texhol.game.exception.GameSessionNotFoundException
 import com.lomeone.texhol.game.repository.GameSessionRepository
 import com.lomeone.texhol.player.exception.PlayerNotFoundException
 import com.lomeone.texhol.player.repository.PlayerRepository
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import com.lomeone.texhol.common.TexholTransactional
 
 @Service
 class CreateGameEntry(
@@ -18,8 +19,11 @@ class CreateGameEntry(
     private val playerRepository: PlayerRepository,
     private val gameEntryRepository: GameEntryRepository
 ) {
-    @Transactional
+    private val logger = KotlinLogging.logger {}
+
+    @TexholTransactional
     operator fun invoke(command: CreateGameEntryCommand): CreateGameEntryResult {
+        logger.info { "Creating game entry: gameSessionId=${command.gameSessionId}, playerId=${command.playerId}, paymentMethod=${command.paymentMethod}" }
         val gameSession = gameSessionRepository.findByIdOrNull(command.gameSessionId)
             ?: throw GameSessionNotFoundException(detail = mapOf("gameSessionId" to command.gameSessionId))
 
@@ -38,6 +42,7 @@ class CreateGameEntry(
             initialPayment = command.paymentMethod
         )
         val savedGameEntry = gameEntryRepository.save(gameEntry)
+        logger.info { "Game entry created: id=${savedGameEntry.id}" }
 
         return CreateGameEntryResult(id = savedGameEntry.id)
     }

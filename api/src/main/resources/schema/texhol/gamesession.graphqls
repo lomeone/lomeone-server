@@ -1,7 +1,7 @@
 type GameSession {
     id: ID!
     store: Store!
-    gameType: GameType!
+    game: Game!
     session: Int!
     status: GameSessionStatus!
     createdAt: String!
@@ -26,7 +26,7 @@ extend type Mutation {
 
 input CreateGameSessionInput {
     storeId: ID!
-    gameTypeId: ID!
+    gameId: ID!
     session: Int!
 }
 

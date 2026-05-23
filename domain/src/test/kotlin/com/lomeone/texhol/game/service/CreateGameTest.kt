@@ -1,8 +1,8 @@
 package com.lomeone.texhol.game.service
 
 import com.lomeone.texhol.game.entity.ScheduleType
-import com.lomeone.texhol.game.exception.GameTypeNameAlreadyExistException
-import com.lomeone.texhol.game.repository.GameTypeRepository
+import com.lomeone.texhol.game.exception.GameNameAlreadyExistException
+import com.lomeone.texhol.game.repository.GameRepository
 import com.lomeone.texhol.store.entity.Store
 import com.lomeone.texhol.store.exception.StoreNotFoundException
 import com.lomeone.texhol.store.repository.StoreRepository
@@ -13,32 +13,32 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.springframework.data.repository.findByIdOrNull
 
-class CreateGameTypeTest : BehaviorSpec({
+class CreateGameTest : BehaviorSpec({
     val storeRepository = mockk<StoreRepository>()
-    val gameTypeRepository = mockk<GameTypeRepository>()
-    val createGameType = CreateGameType(storeRepository, gameTypeRepository)
+    val gameRepository = mockk<GameRepository>()
+    val createGame = CreateGame(storeRepository, gameRepository)
 
-    Given("매장이 존재하고 같은 이름의 게임 타입이 없을 때") {
+    Given("매장이 존재하고 같은 이름의 게임이 없을 때") {
         val storeId = 1L
         val store = Store(name = "강남점", location = "서울 강남구", address = null, imageUrl = "")
 
         every { storeRepository.findByIdOrNull(storeId) } returns store
-        every { gameTypeRepository.existsByStoreAndName(store, "NLH") } returns false
-        every { gameTypeRepository.save(any()) } answers { firstArg() }
+        every { gameRepository.existsByStoreAndName(store, "NLH") } returns false
+        every { gameRepository.save(any()) } answers { firstArg() }
 
-        When("게임 타입을 생성하면") {
-            val command = CreateGameTypeCommand(
+        When("게임을 생성하면") {
+            val command = CreateGameCommand(
                 storeId = storeId,
                 name = "NLH",
                 scheduleType = ScheduleType.WEEKLY,
                 dayOfWeek = 5,
                 description = "금요일 게임"
             )
-            createGameType(command)
+            createGame(command)
 
-            Then("게임 타입이 저장된다") {
+            Then("게임이 저장된다") {
                 verify {
-                    gameTypeRepository.save(match {
+                    gameRepository.save(match {
                         it.store == store && it.name == "NLH" && it.dayOfWeek == 5
                     })
                 }
@@ -46,15 +46,15 @@ class CreateGameTypeTest : BehaviorSpec({
         }
     }
 
-    Given("같은 매장에 같은 이름의 게임 타입이 이미 있을 때") {
+    Given("같은 매장에 같은 이름의 게임이 이미 있을 때") {
         val storeId = 1L
         val store = Store(name = "강남점", location = "서울 강남구", address = null, imageUrl = "")
 
         every { storeRepository.findByIdOrNull(storeId) } returns store
-        every { gameTypeRepository.existsByStoreAndName(store, "NLH") } returns true
+        every { gameRepository.existsByStoreAndName(store, "NLH") } returns true
 
-        When("게임 타입을 생성하려고 하면") {
-            val command = CreateGameTypeCommand(
+        When("게임을 생성하려고 하면") {
+            val command = CreateGameCommand(
                 storeId = storeId,
                 name = "NLH",
                 scheduleType = ScheduleType.DAILY,
@@ -62,9 +62,9 @@ class CreateGameTypeTest : BehaviorSpec({
                 description = null
             )
 
-            Then("GameTypeNameAlreadyExistException이 발생한다") {
-                shouldThrow<GameTypeNameAlreadyExistException> {
-                    createGameType(command)
+            Then("GameNameAlreadyExistException이 발생한다") {
+                shouldThrow<GameNameAlreadyExistException> {
+                    createGame(command)
                 }
             }
         }
@@ -73,8 +73,8 @@ class CreateGameTypeTest : BehaviorSpec({
     Given("매장이 존재하지 않을 때") {
         every { storeRepository.findByIdOrNull(999L) } returns null
 
-        When("게임 타입을 생성하려고 하면") {
-            val command = CreateGameTypeCommand(
+        When("게임을 생성하려고 하면") {
+            val command = CreateGameCommand(
                 storeId = 999L,
                 name = "NLH",
                 scheduleType = ScheduleType.DAILY,
@@ -84,7 +84,7 @@ class CreateGameTypeTest : BehaviorSpec({
 
             Then("StoreNotFoundException이 발생한다") {
                 shouldThrow<StoreNotFoundException> {
-                    createGameType(command)
+                    createGame(command)
                 }
             }
         }

@@ -1,4 +1,4 @@
-type GameType {
+type Game {
     id: ID!
     store: Store!
     name: String!
@@ -17,15 +17,15 @@ enum ScheduleType {
 }
 
 extend type Query {
-    gameType(id: ID!): GameType
-    gameTypesByStore(storeId: ID!): [GameType!]!
+    game(id: ID!): Game
+    gamesByStore(storeId: ID!): [Game!]!
 }
 
 extend type Mutation {
-    createGameType(input: CreateGameTypeInput!): CreateGameTypePayload!
+    createGame(input: CreateGameInput!): CreateGamePayload!
 }
 
-input CreateGameTypeInput {
+input CreateGameInput {
     storeId: ID!
     name: String!
     scheduleType: ScheduleType!
@@ -33,6 +33,6 @@ input CreateGameTypeInput {
     description: String
 }
 
-type CreateGameTypePayload {
-    gameType: GameType!
+type CreateGamePayload {
+    game: Game!
 }

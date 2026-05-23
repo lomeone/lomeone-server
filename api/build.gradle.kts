@@ -27,6 +27,8 @@ dependencies {
     implementation(libs.eunoia.spring.web)
 }
 
+tasks.bootJar { enabled = true }
+
 tasks {
     generateJava {
         schemaPaths = mutableListOf("$projectDir/src/main/resources/schema")

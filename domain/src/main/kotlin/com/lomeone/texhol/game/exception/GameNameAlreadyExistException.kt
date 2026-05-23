@@ -3,13 +3,13 @@ package com.lomeone.texhol.game.exception
 import com.lomeone.eunoia.exception.EunioaException
 import com.lomeone.eunoia.exception.ExceptionDetail
 
-private const val MESSAGE = "GameType does not belong to the given Store"
+private const val MESSAGE = "Game name already exists"
 
-class GameTypeStoreMismatchException(
+class GameNameAlreadyExistException(
     message: String = MESSAGE,
     detail: Map<String, Any> = mapOf()
 ) : EunioaException(
     message = message,
-    errorCode = GameTypeErrorCode.GAME_TYPE_STORE_MISMATCH,
+    errorCode = GameErrorCode.GAME_NAME_ALREADY_EXIST,
     detail = ExceptionDetail(detail)
 )

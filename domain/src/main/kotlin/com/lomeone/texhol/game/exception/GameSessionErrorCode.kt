@@ -13,4 +13,8 @@ object GameSessionErrorCode {
         code = "${ERROR_CODE_PREFIX}/game-session-already-exist",
         exceptionCategory = ExceptionCategory.BAD_REQUEST
     )
+    val GAME_SESSION_INVALID_STATUS = ErrorCode(
+        code = "${ERROR_CODE_PREFIX}/game-session-invalid-status",
+        exceptionCategory = ExceptionCategory.BAD_REQUEST
+    )
 }

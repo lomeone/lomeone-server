@@ -19,4 +19,8 @@ class Player(
     @Column(name = "player_id")
     val id: Long = 0L,
     val nickname: String,
-) : AuditEntity()
+) : AuditEntity() {
+    init {
+        require(nickname.isNotBlank()) { "Player nickname must not be blank" }
+    }
+}

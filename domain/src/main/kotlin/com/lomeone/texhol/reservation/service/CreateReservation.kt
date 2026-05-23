@@ -7,9 +7,10 @@ import com.lomeone.texhol.player.repository.PlayerRepository
 import com.lomeone.texhol.reservation.entity.Reservation
 import com.lomeone.texhol.reservation.exception.ReservationAlreadyExistException
 import com.lomeone.texhol.reservation.repository.ReservationRepository
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import com.lomeone.texhol.common.TexholTransactional
 
 @Service
 class CreateReservation(
@@ -17,8 +18,11 @@ class CreateReservation(
     private val gameSessionRepository: GameSessionRepository,
     private val playerRepository: PlayerRepository
 ) {
-    @Transactional
+    private val logger = KotlinLogging.logger {}
+
+    @TexholTransactional
     operator fun invoke(command: CreateReservationCommand): CreateReservationResult {
+        logger.info { "Creating reservation: gameSessionId=${command.gameSessionId}, playerId=${command.playerId}" }
         val gameSession = gameSessionRepository.findByIdOrNull(command.gameSessionId)
             ?: throw GameSessionNotFoundException(detail = mapOf("gameSessionId" to command.gameSessionId))
 
@@ -33,6 +37,7 @@ class CreateReservation(
 
         val reservation = Reservation(gameSession = gameSession, player = player, time = command.reservationTime)
         val savedReservation = reservationRepository.save(reservation)
+        logger.info { "Reservation created: id=${savedReservation.id}" }
 
         return CreateReservationResult(id = savedReservation.id)
     }

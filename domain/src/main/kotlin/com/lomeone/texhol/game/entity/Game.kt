@@ -6,6 +6,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -15,40 +16,59 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "games", indexes = [
-    Index(name = "idx_games_store_id_game_type_session_u1", columnList = "store_id, game_type, session", unique = true),
-])
+@Table(
+    name = "games",
+    indexes = [
+        Index(
+            name = "idx_games_store_id_name_u1",
+            columnList = "store_id, name",
+            unique = true
+        )
+    ]
+)
 class Game(
-    @ManyToOne
-    @JoinColumn(name = "store_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id", nullable = false)
     val store: Store,
-    val gameType: String,
-    val session: Int,
+
+    val name: String,
+
+    @Enumerated(EnumType.STRING)
+    val scheduleType: ScheduleType,
+
+    val dayOfWeek: Int?,
+
+    val description: String?
 ) : AuditEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "game_id")
     val id: Long = 0L
 
-    @Enumerated(EnumType.STRING)
-    var status: GameStatus = GameStatus.RECRUITING
-        protected set
-
-    fun close() {
-        this.status = GameStatus.CLOSED
+    init {
+        if (scheduleType == ScheduleType.WEEKLY) {
+            require(dayOfWeek != null && dayOfWeek in 0..6) {
+                "dayOfWeek must be between 0 and 6 for WEEKLY schedule type"
+            }
+        } else {
+            require(dayOfWeek == null) {
+                "dayOfWeek must be null for non-WEEKLY schedule type"
+            }
+        }
     }
 
-    fun earlyClose() {
-        this.status = GameStatus.EARLY_CLOSE
-    }
-
-    fun reOpen() {
-        this.status = GameStatus.RECRUITING
+    fun belongsTo(store: Store): Boolean {
+        return if (this.store.id != 0L && store.id != 0L) {
+            this.store.id == store.id
+        } else {
+            this.store === store
+        }
     }
 }
 
-enum class GameStatus {
-    RECRUITING,
-    EARLY_CLOSE,
-    CLOSED
+enum class ScheduleType {
+    DAILY,
+    WEEKLY,
+    MONTHLY,
+    CUSTOM
 }

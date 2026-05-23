@@ -1,40 +1,39 @@
 package com.lomeone.texhol.graphql
 
-import com.lomeone.generated.types.CreateGameTypeInput
-import com.lomeone.generated.types.CreateGameTypePayload
-import com.lomeone.generated.types.GameType
+import com.lomeone.generated.types.CreateGameInput
+import com.lomeone.generated.types.CreateGamePayload
+import com.lomeone.generated.types.Game
 import com.lomeone.generated.types.ScheduleType
 import com.lomeone.generated.types.Store
-import com.lomeone.texhol.game.service.CreateGameType
-import com.lomeone.texhol.game.service.CreateGameTypeCommand
-import com.lomeone.texhol.game.service.GetGameTypesByStore
-import com.lomeone.texhol.game.service.GetGameTypesByStoreCommand
+import com.lomeone.texhol.game.service.CreateGame
+import com.lomeone.texhol.game.service.CreateGameCommand
+import com.lomeone.texhol.game.service.GetGamesByStore
+import com.lomeone.texhol.game.service.GetGamesByStoreCommand
 import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsMutation
 import com.netflix.graphql.dgs.DgsQuery
 import com.netflix.graphql.dgs.InputArgument
 
 @DgsComponent
-class GameTypeDataFetcher(
-    private val createGameType: CreateGameType,
-    private val getGameTypesByStore: GetGameTypesByStore
+class GameDataFetcher(
+    private val createGame: CreateGame,
+    private val getGamesByStore: GetGamesByStore
 ) {
     @DgsQuery
-    fun gameType(@InputArgument id: String): GameType? {
-        // 개별 조회는 추후 구현
+    fun game(@InputArgument id: String): Game? {
         return null
     }
 
     @DgsQuery
-    fun gameTypesByStore(@InputArgument storeId: String): List<GameType> {
-        return getGameTypesByStore(GetGameTypesByStoreCommand(storeId = storeId.toLong()))
+    fun gamesByStore(@InputArgument storeId: String): List<Game> {
+        return getGamesByStore(GetGamesByStoreCommand(storeId = storeId.toLong()))
             .map { it.toGraphQL() }
     }
 
     @DgsMutation
-    fun createGameType(@InputArgument input: CreateGameTypeInput): CreateGameTypePayload {
-        val result = createGameType(
-            CreateGameTypeCommand(
+    fun createGame(@InputArgument input: CreateGameInput): CreateGamePayload {
+        val result = createGame(
+            CreateGameCommand(
                 storeId = input.storeId.toLong(),
                 name = input.name,
                 scheduleType = input.scheduleType.toEntity(),
@@ -42,8 +41,7 @@ class GameTypeDataFetcher(
                 description = input.description
             )
         )
-        // Payload는 추후 개선
-        return CreateGameTypePayload(gameType = GameType(
+        return CreateGamePayload(game = Game(
             id = result.id.toString(),
             store = Store("0", "", "", null, "", "", ""),
             name = input.name,
@@ -55,7 +53,7 @@ class GameTypeDataFetcher(
         ))
     }
 
-    private fun com.lomeone.texhol.game.entity.GameType.toGraphQL() = GameType(
+    private fun com.lomeone.texhol.game.entity.Game.toGraphQL() = Game(
         id = this.id.toString(),
         store = this.store.toGraphQL(),
         name = this.name,

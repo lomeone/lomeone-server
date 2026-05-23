@@ -46,7 +46,7 @@ class Reservation(
     @Column(name = "reservation_id")
     val id: Long = 0L
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id")
     var player: Player = player
         protected set
@@ -56,6 +56,11 @@ class Reservation(
         protected set
 
     fun changePlayer(player: Player) {
+        if (this.status == ReservationStatus.CANCELLED) {
+            throw ReservationInvalidStatusException(
+                detail = mapOf("reservationId" to this.id, "status" to this.status)
+            )
+        }
         this.player = player
     }
 

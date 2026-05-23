@@ -49,7 +49,7 @@ class GameEntry protected constructor(
     var status: GameEntryStatus = GameEntryStatus.ALIVE
         protected set
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id")
     var player: Player = player
         protected set
@@ -72,7 +72,6 @@ class GameEntry protected constructor(
         ): GameEntry {
             val entry = GameEntry(gameSession, player)
             entry._buyInRecords.add(BuyInRecord(BuyInType.INITIAL, initialPayment))
-
             return entry
         }
     }
@@ -83,7 +82,7 @@ class GameEntry protected constructor(
 
     fun addReBuy(method: PaymentMethod) {
         if (this.status != GameEntryStatus.ALIVE) {
-            throw GameEntryNotAliveException(detail = mapOf("gameSession" to this.gameSession, "player" to this.player))
+            throw GameEntryNotAliveException(detail = mapOf("gameSession" to this.gameSession.id, "player" to this.player.id))
         }
         _buyInRecords.add(BuyInRecord(BuyInType.RE_BUY, method))
     }
@@ -91,11 +90,10 @@ class GameEntry protected constructor(
     fun sitOut() {
         this.status = GameEntryStatus.SIT_OUT
     }
+
     fun returnToGame() {
         this.status = GameEntryStatus.ALIVE
     }
 }
 
 enum class GameEntryStatus { ALIVE, SIT_OUT }
-
-

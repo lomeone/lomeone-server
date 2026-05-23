@@ -115,7 +115,7 @@ class ReservationDataFetcher(
         com.lomeone.generated.types.GameSession(
             id = this.id.toString(),
             store = this.store.toStoreGraphQL(),
-            gameType = this.gameType.toGameTypeGraphQL(),
+            game = this.game.toGameGraphQL(),
             session = this.session,
             status = this.status.toGameSessionStatusGraphQL(),
             createdAt = this.createdAt.toString(),
@@ -139,7 +139,7 @@ class ReservationDataFetcher(
         updatedAt = this.updatedAt.toString()
     )
 
-    private fun com.lomeone.texhol.game.entity.GameType.toGameTypeGraphQL() = com.lomeone.generated.types.GameType(
+    private fun com.lomeone.texhol.game.entity.Game.toGameGraphQL() = com.lomeone.generated.types.Game(
         id = this.id.toString(),
         store = this.store.toStoreGraphQL(),
         name = this.name,
@@ -168,7 +168,7 @@ class ReservationDataFetcher(
         gameSession = com.lomeone.generated.types.GameSession(
             id = "0",
             store = com.lomeone.generated.types.Store("0", "", "", null, "", "", ""),
-            gameType = com.lomeone.generated.types.GameType("0", com.lomeone.generated.types.Store("0", "", "", null, "", "", ""), "", com.lomeone.generated.types.ScheduleType.DAILY, null, null, "", ""),
+            game = com.lomeone.generated.types.Game("0", com.lomeone.generated.types.Store("0", "", "", null, "", "", ""), "", com.lomeone.generated.types.ScheduleType.DAILY, null, null, "", ""),
             session = 0,
             status = com.lomeone.generated.types.GameSessionStatus.RECRUITING,
             createdAt = "",

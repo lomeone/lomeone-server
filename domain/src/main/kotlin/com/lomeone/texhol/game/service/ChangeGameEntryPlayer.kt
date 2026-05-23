@@ -5,17 +5,21 @@ import com.lomeone.texhol.game.exception.GameEntryNotFoundException
 import com.lomeone.texhol.game.repository.GameEntryRepository
 import com.lomeone.texhol.player.service.FindOrCreatePlayer
 import com.lomeone.texhol.player.service.FindOrCreatePlayerCommand
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import com.lomeone.texhol.common.TexholTransactional
 
 @Service
 class ChangeGameEntryPlayer(
     private val gameEntryRepository: GameEntryRepository,
     private val findOrCreatePlayer: FindOrCreatePlayer
 ) {
-    @Transactional
+    private val logger = KotlinLogging.logger {}
+
+    @TexholTransactional
     operator fun invoke(command: ChangeGameEntryPlayerCommand) {
+        logger.info { "Changing game entry player: gameEntryId=${command.gameEntryId}, newNickname=${command.newNickname}" }
         val gameEntry = gameEntryRepository.findByIdOrNull(command.gameEntryId)
             ?: throw GameEntryNotFoundException(detail = mapOf("gameEntryId" to command.gameEntryId))
 
@@ -26,6 +30,7 @@ class ChangeGameEntryPlayer(
             )
         }
         gameEntry.changePlayer(player)
+        logger.info { "Game entry player changed: gameEntryId=${command.gameEntryId}, playerId=${player.id}" }
     }
 }
 

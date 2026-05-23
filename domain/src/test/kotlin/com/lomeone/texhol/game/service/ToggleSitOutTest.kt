@@ -6,7 +6,7 @@ import com.lomeone.texhol.game.entity.GameSession
 import com.lomeone.texhol.game.entity.PaymentMethod
 import com.lomeone.texhol.game.exception.GameEntryNotFoundException
 import com.lomeone.texhol.game.repository.GameEntryRepository
-import com.lomeone.texhol.game.entity.GameType
+import com.lomeone.texhol.game.entity.Game
 import com.lomeone.texhol.game.entity.ScheduleType
 import com.lomeone.texhol.player.entity.Player
 import com.lomeone.texhol.store.entity.Store
@@ -24,8 +24,8 @@ class ToggleSitOutTest : BehaviorSpec({
     Given("게임 엔트리가 ALIVE 상태일 때") {
         val gameEntryId = 1L
         val store = Store(name = "강남점", location = "서울 강남구", address = null, imageUrl = "")
-        val gameType = GameType(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
-        val gameSession = GameSession.create(store = store, gameType = gameType, session = 1)
+        val game = Game(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
+        val gameSession = GameSession.create(store = store, game = game, session = 1)
         val player = Player(nickname = "홍길동")
         val gameEntry = GameEntry.create(gameSession, player, PaymentMethod.CASH)
 
@@ -44,8 +44,8 @@ class ToggleSitOutTest : BehaviorSpec({
     Given("게임 엔트리가 SIT_OUT 상태일 때") {
         val gameEntryId = 1L
         val store = Store(name = "강남점", location = "서울 강남구", address = null, imageUrl = "")
-        val gameType = GameType(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
-        val gameSession = GameSession.create(store = store, gameType = gameType, session = 1)
+        val game = Game(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
+        val gameSession = GameSession.create(store = store, game = game, session = 1)
         val player = Player(nickname = "홍길동")
         val gameEntry = GameEntry.create(gameSession, player, PaymentMethod.CASH)
         gameEntry.sitOut()

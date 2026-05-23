@@ -3,15 +3,19 @@ package com.lomeone.texhol.store.service
 import com.lomeone.texhol.store.entity.Store
 import com.lomeone.texhol.store.exception.StoreNameAlreadyExistException
 import com.lomeone.texhol.store.repository.StoreRepository
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import com.lomeone.texhol.common.TexholTransactional
 
 @Service
 class CreateStore(
     private val storeRepository: StoreRepository
 ) {
-    @Transactional
+    private val logger = KotlinLogging.logger {}
+
+    @TexholTransactional
     operator fun invoke(command: CreateStoreCommand): CreateStoreResult {
+        logger.info { "Creating store: name=${command.name}, location=${command.location}" }
         val store = Store(
             name = command.name,
             location = command.location,
@@ -20,6 +24,7 @@ class CreateStore(
         )
         verifyDuplicate(store)
         val savedStore = storeRepository.save(store)
+        logger.info { "Store created: id=${savedStore.id}, name=${savedStore.name}" }
         return CreateStoreResult(
             id = savedStore.id,
             name = savedStore.name,

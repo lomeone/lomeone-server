@@ -1,7 +1,7 @@
 package com.lomeone.texhol.reservation.service
 
 import com.lomeone.texhol.game.entity.GameSession
-import com.lomeone.texhol.game.entity.GameType
+import com.lomeone.texhol.game.entity.Game
 import com.lomeone.texhol.game.entity.ScheduleType
 import com.lomeone.texhol.game.exception.GameSessionNotFoundException
 import com.lomeone.texhol.game.repository.GameSessionRepository
@@ -28,8 +28,8 @@ class CreateReservationTest : BehaviorSpec({
         val gameSessionId = 1L
         val playerId = 1L
         val store = Store(name = "강남점", location = "서울 강남구", address = null, imageUrl = "")
-        val gameType = GameType(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
-        val gameSession = GameSession.create(store = store, gameType = gameType, session = 1)
+        val game = Game(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
+        val gameSession = GameSession.create(store = store, game = game, session = 1)
         val player = Player(id = playerId, nickname = "홍길동")
 
         every { gameSessionRepository.findByIdOrNull(gameSessionId) } returns gameSession
@@ -59,8 +59,8 @@ class CreateReservationTest : BehaviorSpec({
         val gameSessionId = 1L
         val playerId = 1L
         val store = Store(name = "강남점", location = "서울 강남구", address = null, imageUrl = "")
-        val gameType = GameType(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
-        val gameSession = GameSession.create(store = store, gameType = gameType, session = 1)
+        val game = Game(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
+        val gameSession = GameSession.create(store = store, game = game, session = 1)
         val player = Player(id = playerId, nickname = "홍길동")
 
         every { gameSessionRepository.findByIdOrNull(gameSessionId) } returns gameSession
@@ -105,8 +105,8 @@ class CreateReservationTest : BehaviorSpec({
         val gameSessionId = 1L
         val playerId = 999L
         val store = Store(name = "강남점", location = "서울 강남구", address = null, imageUrl = "")
-        val gameType = GameType(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
-        val gameSession = GameSession.create(store = store, gameType = gameType, session = 1)
+        val game = Game(store = store, name = "NLH", scheduleType = ScheduleType.DAILY, dayOfWeek = null, description = null)
+        val gameSession = GameSession.create(store = store, game = game, session = 1)
 
         every { gameSessionRepository.findByIdOrNull(gameSessionId) } returns gameSession
         every { playerRepository.findByIdOrNull(playerId) } returns null

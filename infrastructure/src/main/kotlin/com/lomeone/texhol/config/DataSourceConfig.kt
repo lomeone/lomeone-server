@@ -3,6 +3,7 @@ package com.lomeone.texhol.config
 import com.lomeone.eunoia.security.secret.SecretRegistry
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import org.hibernate.boot.model.naming.PhysicalNamingStrategySnakeCaseImpl
@@ -15,10 +16,13 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource
+import org.springframework.orm.jpa.JpaTransactionManager
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
 import org.springframework.orm.jpa.hibernate.SpringBeanContainer
+import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.TransactionSynchronizationManager
 import javax.sql.DataSource
 
@@ -26,12 +30,19 @@ enum class DataSourceType {
     PRIMARY, READ_ONLY
 }
 
-@Configuration
+@Configuration("texholDataSourceConfig")
 @ConfigurationProperties(prefix = "texhol.database.datasource")
 @EnableJpaAuditing
+@EnableJpaRepositories(
+    basePackages = ["com.lomeone.texhol"],
+    entityManagerFactoryRef = "texholEntityManagerFactory",
+    transactionManagerRef = "texholTransactionManager"
+)
 class DataSourceConfig {
     lateinit var primary: DataSourceConfigProperties
     lateinit var readOnly: DataSourceConfigProperties
+
+    private val logger = KotlinLogging.logger {}
 
     data class DataSourceConfigProperties(
         val secretId: String,
@@ -51,9 +62,9 @@ class DataSourceConfig {
 
     @Bean
     fun primaryDatasourceProperties(secretRegistry: SecretRegistry): DataSourceProperties.Relational {
-        println("Primary DataSource Config - Host: ${primary.hostname}, Port: ${primary.port}, SecretId: ${primary.secretId}")
+        logger.debug { "Primary DataSource Config - Host: ${primary.hostname}, Port: ${primary.port}, SecretId: ${primary.secretId}" }
         val secret = runBlocking { secretRegistry.getSecret(primary.secretId, DataSourceSecret::class) }
-        println("Primary DataSource Secret - Username: ${secret.username}, Password: ${"*".repeat(secret.password.length)}")
+        logger.debug { "Primary DataSource Secret - Username: ${secret.username}, Password: ${"*".repeat(secret.password.length)}" }
 
         return DataSourceProperties.Relational(
             host = primary.hostname,
@@ -128,19 +139,24 @@ class DataSourceConfig {
 
     @Bean
     @Primary
-    fun entityManagerFactory(
+    fun texholEntityManagerFactory(
         builder: EntityManagerFactoryBuilder,
         routingDataSource: DataSource,
         beanFactory: ConfigurableListableBeanFactory
     ): LocalContainerEntityManagerFactoryBean =
         builder
             .dataSource(routingDataSource)
-            .packages("com.lomeone") // 비즈니스 엔티티 위치
-            .persistenceUnit("business")
+            .packages("com.lomeone.texhol", "com.lomeone.common")
+            .persistenceUnit("texhol")
             .properties(jpaProperties(beanFactory))
             .build().apply {
                 setEntityManagerFactoryInterface(jakarta.persistence.EntityManagerFactory::class.java)
             }
+
+    @Bean
+    @Primary
+    fun texholTransactionManager(texholEntityManagerFactory: LocalContainerEntityManagerFactoryBean): PlatformTransactionManager =
+        JpaTransactionManager(texholEntityManagerFactory.`object`!!)
 
     private fun jpaProperties(beanFactory: ConfigurableListableBeanFactory): Map<String, Any> =
         mutableMapOf<String, Any>(

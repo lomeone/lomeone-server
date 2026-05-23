@@ -41,7 +41,6 @@ class GameEntryDataFetcher(
 ) {
     @DgsQuery
     fun gameEntry(@InputArgument id: String): GameEntry? {
-        // 개별 조회는 추후 구현
         return null
     }
 
@@ -61,7 +60,6 @@ class GameEntryDataFetcher(
                 paymentMethod = input.paymentMethod.toEntity()
             )
         )
-        // Payload 구성은 추후 개선
         return CreateGameEntryPayload(gameEntry = GameEntry(
             id = result.id.toString(),
             gameSession = createDummyGameSession(),
@@ -175,7 +173,7 @@ class GameEntryDataFetcher(
         com.lomeone.generated.types.GameSession(
             id = this.id.toString(),
             store = this.store.toStoreGraphQL(),
-            gameType = this.gameType.toGameTypeGraphQL(),
+            game = this.game.toGameGraphQL(),
             session = this.session,
             status = this.status.toGameSessionStatusGraphQL(),
             createdAt = this.createdAt.toString(),
@@ -199,7 +197,7 @@ class GameEntryDataFetcher(
         updatedAt = this.updatedAt.toString()
     )
 
-    private fun com.lomeone.texhol.game.entity.GameType.toGameTypeGraphQL() = com.lomeone.generated.types.GameType(
+    private fun com.lomeone.texhol.game.entity.Game.toGameGraphQL() = com.lomeone.generated.types.Game(
         id = this.id.toString(),
         store = this.store.toStoreGraphQL(),
         name = this.name,
@@ -226,7 +224,7 @@ class GameEntryDataFetcher(
     private fun createDummyGameSession() = com.lomeone.generated.types.GameSession(
         id = "0",
         store = createDummyStore(),
-        gameType = createDummyGameType(),
+        game = createDummyGame(),
         session = 0,
         status = com.lomeone.generated.types.GameSessionStatus.RECRUITING,
         createdAt = "",
@@ -237,7 +235,7 @@ class GameEntryDataFetcher(
 
     private fun createDummyStore() = com.lomeone.generated.types.Store("0", "", "", null, "", "", "")
 
-    private fun createDummyGameType() = com.lomeone.generated.types.GameType(
+    private fun createDummyGame() = com.lomeone.generated.types.Game(
         "0",
         createDummyStore(),
         "",

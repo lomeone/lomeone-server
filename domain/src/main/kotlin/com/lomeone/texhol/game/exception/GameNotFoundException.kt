@@ -3,13 +3,13 @@ package com.lomeone.texhol.game.exception
 import com.lomeone.eunoia.exception.EunioaException
 import com.lomeone.eunoia.exception.ExceptionDetail
 
-private const val MESSAGE = "GameType not found"
+private const val MESSAGE = "Game not found"
 
-class GameTypeNotFoundException(
+class GameNotFoundException(
     message: String = MESSAGE,
     detail: Map<String, Any> = mapOf()
 ) : EunioaException(
     message = message,
-    errorCode = GameTypeErrorCode.GAME_TYPE_NOT_FOUND,
+    errorCode = GameErrorCode.GAME_NOT_FOUND,
     detail = ExceptionDetail(detail)
 )

@@ -28,13 +28,13 @@ texhol:
     datasource:
       primary:
         secret-id: prod/texhol-db-credentials
-        hostname: oracle-mysql.lomeone.com
+        hostname: 132.226.227.63
         port: 3306
         database-name: texhol
         driver-class-name: com.mysql.cj.jdbc.Driver
       read-only:
         secret-id: prod/texhol-db-credentials
-        hostname: oracle-mysql.lomeone.com
+        hostname: 132.226.227.63
         port: 3306
         database-name: texhol
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -44,13 +44,13 @@ moyemap:
     datasource:
       primary:
         secret-id: prod/moyemap-db-credentials
-        hostname: oracle-mysql.lomeone.com
+        hostname: 132.226.227.63
         port: 3306
         database-name: moyemap
         driver-class-name: com.mysql.cj.jdbc.Driver
       read-only:
         secret-id: prod/moyemap-db-credentials
-        hostname: oracle-mysql.lomeone.com
+        hostname: 132.226.227.63
         port: 3306
         database-name: moyemap
         driver-class-name: com.mysql.cj.jdbc.Driver

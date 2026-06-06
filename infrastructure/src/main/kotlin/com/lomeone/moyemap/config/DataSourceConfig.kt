@@ -75,8 +75,9 @@ class DataSourceConfig {
     }
 
     @Bean
-    fun moyemapPrimaryDataSource(moyemapPrimaryDatasourceProperties: DataSourceProperties.Relational): DataSource =
-        createHikariDataSource(moyemapPrimaryDatasourceProperties)
+    fun moyemapPrimaryDataSource(
+        @Qualifier("moyemapPrimaryDatasourceProperties") moyemapPrimaryDatasourceProperties: DataSourceProperties.Relational
+    ): DataSource = createHikariDataSource(moyemapPrimaryDatasourceProperties)
 
     @Bean
     fun moyemapReadOnlyDatasourceProperties(secretRegistry: SecretRegistry): DataSourceProperties.Relational {
@@ -97,8 +98,9 @@ class DataSourceConfig {
     }
 
     @Bean
-    fun moyemapReadOnlyDataSource(moyemapReadOnlyDatasourceProperties: DataSourceProperties.Relational): DataSource =
-        createHikariDataSource(moyemapReadOnlyDatasourceProperties)
+    fun moyemapReadOnlyDataSource(
+        @Qualifier("moyemapReadOnlyDatasourceProperties") moyemapReadOnlyDatasourceProperties: DataSourceProperties.Relational
+    ): DataSource = createHikariDataSource(moyemapReadOnlyDatasourceProperties)
 
     private fun createHikariDataSource(properties: DataSourceProperties.Relational): DataSource =
         HikariDataSource(
@@ -147,7 +149,9 @@ class DataSourceConfig {
             }
 
     @Bean
-    fun moyemapTransactionManager(moyemapEntityManagerFactory: LocalContainerEntityManagerFactoryBean): PlatformTransactionManager =
+    fun moyemapTransactionManager(
+        @Qualifier("moyemapEntityManagerFactory") moyemapEntityManagerFactory: LocalContainerEntityManagerFactoryBean
+    ): PlatformTransactionManager =
         JpaTransactionManager(moyemapEntityManagerFactory.`object`!!)
 
     private fun jpaProperties(beanFactory: ConfigurableListableBeanFactory): Map<String, Any> =

@@ -8,6 +8,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import org.hibernate.boot.model.naming.PhysicalNamingStrategySnakeCaseImpl
 import org.hibernate.cfg.AvailableSettings
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.hibernate.SpringImplicitNamingStrategy
@@ -61,10 +62,10 @@ class DataSourceConfig {
     )
 
     @Bean
-    fun primaryDatasourceProperties(secretRegistry: SecretRegistry): DataSourceProperties.Relational {
-        logger.debug { "Primary DataSource Config - Host: ${primary.hostname}, Port: ${primary.port}, SecretId: ${primary.secretId}" }
+    fun texholPrimaryDatasourceProperties(secretRegistry: SecretRegistry): DataSourceProperties.Relational {
+        logger.debug { "Texhol Primary DataSource Config - Host: ${primary.hostname}, Port: ${primary.port}, SecretId: ${primary.secretId}" }
         val secret = runBlocking { secretRegistry.getSecret(primary.secretId, DataSourceSecret::class) }
-        logger.debug { "Primary DataSource Secret - Username: ${secret.username}, Password: ${"*".repeat(secret.password.length)}" }
+        logger.debug { "Texhol Primary DataSource Secret - Username: ${secret.username}, Password: ${"*".repeat(secret.password.length)}" }
 
         return DataSourceProperties.Relational(
             host = primary.hostname,
@@ -81,10 +82,12 @@ class DataSourceConfig {
     }
 
     @Bean
-    fun primaryDataSource(primaryDatasourceProperties: DataSourceProperties.Relational): DataSource = createHikariDataSource(primaryDatasourceProperties)
+    fun texholPrimaryDataSource(
+        @Qualifier("texholPrimaryDatasourceProperties") texholPrimaryDatasourceProperties: DataSourceProperties.Relational
+    ): DataSource = createHikariDataSource(texholPrimaryDatasourceProperties)
 
     @Bean
-    fun readOnlyDatasourceProperties(secretRegistry: SecretRegistry): DataSourceProperties.Relational {
+    fun texholReadOnlyDatasourceProperties(secretRegistry: SecretRegistry): DataSourceProperties.Relational {
         val secret = runBlocking { secretRegistry.getSecret(readOnly.secretId, DataSourceSecret::class) }
 
         return DataSourceProperties.Relational(
@@ -102,8 +105,9 @@ class DataSourceConfig {
     }
 
     @Bean
-    fun readOnlyDataSource(readOnlyDatasourceProperties: DataSourceProperties.Relational): DataSource = createHikariDataSource(readOnlyDatasourceProperties)
-
+    fun texholReadOnlyDataSource(
+        @Qualifier("texholReadOnlyDatasourceProperties") texholReadOnlyDatasourceProperties: DataSourceProperties.Relational
+    ): DataSource = createHikariDataSource(texholReadOnlyDatasourceProperties)
 
     private fun createHikariDataSource(properties: DataSourceProperties.Relational): DataSource =
         HikariDataSource(
@@ -119,18 +123,18 @@ class DataSourceConfig {
 
     @Bean
     @Primary
-    fun routingDataSource(
-        primaryDataSource: DataSource,
-        readOnlyDataSource: DataSource
+    fun texholRoutingDataSource(
+        @Qualifier("texholPrimaryDataSource") texholPrimaryDataSource: DataSource,
+        @Qualifier("texholReadOnlyDataSource") texholReadOnlyDataSource: DataSource
     ): DataSource {
         val dataSourceMap = mapOf<Any, Any>(
-            DataSourceType.PRIMARY to primaryDataSource,
-            DataSourceType.READ_ONLY to readOnlyDataSource
+            DataSourceType.PRIMARY to texholPrimaryDataSource,
+            DataSourceType.READ_ONLY to texholReadOnlyDataSource
         )
 
         return LazyConnectionDataSourceProxy(
             ReplicationRoutingDataSource().apply {
-                setDefaultTargetDataSource(primaryDataSource)
+                setDefaultTargetDataSource(texholPrimaryDataSource)
                 setTargetDataSources(dataSourceMap)
                 afterPropertiesSet()
             }
@@ -141,11 +145,11 @@ class DataSourceConfig {
     @Primary
     fun texholEntityManagerFactory(
         builder: EntityManagerFactoryBuilder,
-        routingDataSource: DataSource,
+        @Qualifier("texholRoutingDataSource") texholRoutingDataSource: DataSource,
         beanFactory: ConfigurableListableBeanFactory
     ): LocalContainerEntityManagerFactoryBean =
         builder
-            .dataSource(routingDataSource)
+            .dataSource(texholRoutingDataSource)
             .packages("com.lomeone.texhol", "com.lomeone.common")
             .persistenceUnit("texhol")
             .properties(jpaProperties(beanFactory))
@@ -155,7 +159,9 @@ class DataSourceConfig {
 
     @Bean
     @Primary
-    fun texholTransactionManager(texholEntityManagerFactory: LocalContainerEntityManagerFactoryBean): PlatformTransactionManager =
+    fun texholTransactionManager(
+        @Qualifier("texholEntityManagerFactory") texholEntityManagerFactory: LocalContainerEntityManagerFactoryBean
+    ): PlatformTransactionManager =
         JpaTransactionManager(texholEntityManagerFactory.`object`!!)
 
     private fun jpaProperties(beanFactory: ConfigurableListableBeanFactory): Map<String, Any> =
@@ -168,7 +174,6 @@ class DataSourceConfig {
 }
 
 class ReplicationRoutingDataSource : AbstractRoutingDataSource() {
-    override fun determineCurrentLookupKey(): Any {
-        return if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) DataSourceType.READ_ONLY else DataSourceType.PRIMARY
-    }
+    override fun determineCurrentLookupKey(): Any =
+        if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) DataSourceType.READ_ONLY else DataSourceType.PRIMARY
 }

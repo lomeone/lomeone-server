@@ -26,7 +26,7 @@ class Venue(
     title: String,
     category: VenueCategory,
     location: Location,
-    price: Int,
+    minPrice: Int? = null,
     currency: String = "KRW",
     imageUrl: String,
     description: String,
@@ -49,7 +49,7 @@ class Venue(
     var location: Location = location
         protected set
 
-    var price: Int = price
+    var minPrice: Int? = minPrice
         protected set
 
     var currency: String = currency
@@ -76,7 +76,7 @@ class Venue(
 
     init {
         require(title.isNotBlank()) { "Venue title must not be blank" }
-        require(price >= 0) { "Venue price must be non-negative" }
+        require(minPrice == null || minPrice >= 0) { "Venue minPrice must be non-negative" }
     }
 
     fun publish() {
@@ -92,7 +92,7 @@ class Venue(
     fun update(
         title: String? = null,
         category: VenueCategory? = null,
-        price: Int? = null,
+        minPrice: Int? = null,
         currency: String? = null,
         imageUrl: String? = null,
         description: String? = null,
@@ -101,7 +101,7 @@ class Venue(
     ) {
         title?.let { require(it.isNotBlank()) { "Venue title must not be blank" }; this.title = it }
         category?.let { this.category = it }
-        price?.let { require(it >= 0) { "Venue price must be non-negative" }; this.price = it }
+        minPrice?.let { require(it >= 0) { "Venue minPrice must be non-negative" }; this.minPrice = it }
         currency?.let { this.currency = it }
         imageUrl?.let { this.imageUrl = it }
         description?.let { this.description = it }

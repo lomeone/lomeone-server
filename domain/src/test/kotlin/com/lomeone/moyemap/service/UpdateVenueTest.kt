@@ -19,7 +19,7 @@ class UpdateVenueTest : BehaviorSpec({
 
     Given("존재하는 Venue가 주어졌을 때") {
         val location = Location("홍대", "서울 마포구", 37.5571, 126.9243, "홍대/연남")
-        val venue = Venue("원래 제목", VenueCategory.SOCIAL_PARTY, location, 25000, imageUrl = "old.jpg", description = "원래 설명", sourceUrl = "old-url")
+        val venue = Venue("원래 제목", VenueCategory.SOCIAL_PARTY, location, minPrice = 25000, imageUrl = "old.jpg", description = "원래 설명", sourceUrl = "old-url")
 
         every { venueRepository.findById(1L) } returns Optional.of(venue)
         every { venueRepository.save(any()) } answers { firstArg() }
@@ -44,11 +44,11 @@ class UpdateVenueTest : BehaviorSpec({
         }
 
         When("가격을 수정하면") {
-            val command = UpdateVenueCommand(venueId = 1L, price = 30000)
+            val command = UpdateVenueCommand(venueId = 1L, minPrice = 30000)
             val result = updateVenue(command)
 
             Then("가격이 변경된다") {
-                result.price shouldBe 30000
+                result.minPrice shouldBe 30000
             }
         }
 
@@ -56,14 +56,14 @@ class UpdateVenueTest : BehaviorSpec({
             val command = UpdateVenueCommand(
                 venueId = 1L,
                 title = "업데이트된 제목",
-                price = 40000,
+                minPrice = 40000,
                 description = "업데이트된 설명"
             )
             val result = updateVenue(command)
 
             Then("모든 필드가 변경된다") {
                 result.title shouldBe "업데이트된 제목"
-                result.price shouldBe 40000
+                result.minPrice shouldBe 40000
                 result.description shouldBe "업데이트된 설명"
             }
         }

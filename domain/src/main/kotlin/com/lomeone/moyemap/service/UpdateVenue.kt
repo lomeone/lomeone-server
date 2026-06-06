@@ -26,7 +26,7 @@ class UpdateVenue(
         venue.update(
             title = command.title,
             category = command.category,
-            price = command.price,
+            minPrice = command.minPrice,
             currency = command.currency,
             imageUrl = command.imageUrl,
             description = command.description,
@@ -65,7 +65,7 @@ data class UpdateVenueCommand(
     val region: String? = null,
     val city: String? = null,
     val district: String? = null,
-    val price: Int? = null,
+    val minPrice: Int? = null,
     val currency: String? = null,
     val imageUrl: String? = null,
     val description: String? = null,

@@ -4,7 +4,7 @@ type Venue {
     category: VenueCategory!
     status: VenueStatus!
     location: Location!
-    price: Int!
+    minPrice: Int
     currency: String!
     imageUrl: String!
     description: String!
@@ -14,17 +14,23 @@ type Venue {
     updatedAt: String!
 }
 
+# 지도 마커 전용 — Location 중첩 없이 플랫 구조로 렌더링 비용 절감
+# imageUrl/tags/currency 제외: NaverMap.tsx 마커 렌더링에 미사용
 type VenueMarker {
     id: ID!
     title: String!
     category: VenueCategory!
-    price: Int!
-    currency: String!
+    minPrice: Int
     latitude: Float!
     longitude: Float!
     region: String!
-    imageUrl: String!
-    tags: [String!]!
+}
+
+# submitVenue 응답 — 검토 흐름에 필요한 최소 필드
+type SubmitVenuePayload {
+    id: ID!
+    title: String!
+    status: VenueStatus!
 }
 
 type Location {
@@ -56,87 +62,44 @@ enum VenueStatus {
 }
 
 extend type Query {
-    venues(input: GetVenuesInput): [Venue!]!
-    venue(id: ID!): Venue!
-    venueMarkers(input: GetVenueMarkersInput): [VenueMarker!]!
+    venueMarkers(input: GetVenueMarkersInput!): [VenueMarker!]!
+    venues(input: GetVenuesInput!): [Venue!]!
+    venue(id: ID!): Venue
 }
 
 extend type Mutation {
-    createVenue(input: CreateVenueInput!): CreateVenuePayload!
-    updateVenue(input: UpdateVenueInput!): UpdateVenuePayload!
-    publishVenue(id: ID!): PublishVenuePayload!
-    hideVenue(id: ID!): HideVenuePayload!
+    submitVenue(input: SubmitVenueInput!): SubmitVenuePayload!
+}
+
+input GetVenueMarkersInput {
+    southWestLatitude: Float!
+    southWestLongitude: Float!
+    northEastLatitude: Float!
+    northEastLongitude: Float!
+    categories: [VenueCategory!]
+    region: String
 }
 
 input GetVenuesInput {
+    southWestLatitude: Float!
+    southWestLongitude: Float!
+    northEastLatitude: Float!
+    northEastLongitude: Float!
     categories: [VenueCategory!]
     region: String
     minPrice: Int
     maxPrice: Int
-    northEastLatitude: Float
-    northEastLongitude: Float
-    southWestLatitude: Float
-    southWestLongitude: Float
 }
 
-input GetVenueMarkersInput {
-    northEastLatitude: Float
-    northEastLongitude: Float
-    southWestLatitude: Float
-    southWestLongitude: Float
-    categories: [VenueCategory!]
-    region: String
-}
-
-input CreateVenueInput {
+input SubmitVenueInput {
     title: String!
     category: VenueCategory!
-    locationName: String!
-    address: String!
-    latitude: Float!
-    longitude: Float!
-    region: String!
-    city: String
-    district: String
-    price: Int!
-    currency: String
-    imageUrl: String!
-    description: String!
+    minPrice: Int
     sourceUrl: String!
-    tags: [String!]
-}
-
-type CreateVenuePayload {
-    venue: Venue!
-}
-
-input UpdateVenueInput {
-    id: ID!
-    title: String
-    category: VenueCategory
-    locationName: String
-    address: String
-    latitude: Float
-    longitude: Float
-    region: String
-    city: String
-    district: String
-    price: Int
-    currency: String
+    locationName: String!
+    locationAddress: String!
+    locationRegion: String!
     imageUrl: String
-    description: String
-    sourceUrl: String
-    tags: [String!]
-}
-
-type UpdateVenuePayload {
-    venue: Venue!
-}
-
-type PublishVenuePayload {
-    venue: Venue!
-}
-
-type HideVenuePayload {
-    venue: Venue!
+    tags: [String!]!
+    description: String!
 }

@@ -11,7 +11,6 @@ class ReviewTest : FreeSpec({
             title = "venue",
             category = VenueCategory.SOCIAL_PARTY,
             location = location,
-            price = 10000,
             imageUrl = "url",
             description = "desc",
             sourceUrl = "source"
@@ -56,7 +55,6 @@ class ReviewTest : FreeSpec({
             title = "venue",
             category = VenueCategory.SOCIAL_PARTY,
             location = location,
-            price = 10000,
             imageUrl = "url",
             description = "desc",
             sourceUrl = "source"

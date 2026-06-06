@@ -24,7 +24,7 @@ class CreateVenueTest : BehaviorSpec({
                 latitude = 37.5571,
                 longitude = 126.9243,
                 region = "홍대/연남",
-                price = 25000,
+                minPrice = 25000,
                 imageUrl = "https://example.com/party.jpg",
                 description = "매주 금요일 소셜 파티",
                 sourceUrl = "https://example.com/party/1"
@@ -37,7 +37,7 @@ class CreateVenueTest : BehaviorSpec({
                 result.category shouldBe VenueCategory.SOCIAL_PARTY
                 result.location.name shouldBe "홍대입구역 3번 출구 라운지"
                 result.location.address shouldBe "서울특별시 마포구 양화로 160"
-                result.price shouldBe 25000
+                result.minPrice shouldBe 25000
                 result.currency shouldBe "KRW"
 
                 verify {
@@ -59,7 +59,7 @@ class CreateVenueTest : BehaviorSpec({
                 latitude = 37.5571,
                 longitude = 126.9243,
                 region = "홍대/연남",
-                price = 25000,
+                minPrice = 25000,
                 imageUrl = "main.jpg",
                 description = "파티",
                 sourceUrl = "source",
@@ -82,7 +82,6 @@ class CreateVenueTest : BehaviorSpec({
                 latitude = 37.5571,
                 longitude = 126.9243,
                 region = "홍대/연남",
-                price = 25000,
                 imageUrl = "main.jpg",
                 description = "파티",
                 sourceUrl = "source"

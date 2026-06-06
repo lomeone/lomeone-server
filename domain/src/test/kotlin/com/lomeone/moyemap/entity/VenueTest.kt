@@ -19,7 +19,7 @@ class VenueTest : FreeSpec({
                 title = "홍대 금요일 밤 소셜파티",
                 category = VenueCategory.SOCIAL_PARTY,
                 location = createLocation(),
-                price = 25000,
+                minPrice = 25000,
                 imageUrl = "https://example.com/party.jpg",
                 description = "매주 금요일 소셜 파티",
                 sourceUrl = "https://example.com/party/1"
@@ -27,20 +27,25 @@ class VenueTest : FreeSpec({
 
             venue.title shouldBe "홍대 금요일 밤 소셜파티"
             venue.category shouldBe VenueCategory.SOCIAL_PARTY
-            venue.price shouldBe 25000
+            venue.minPrice shouldBe 25000
             venue.currency shouldBe "KRW"
             venue.status shouldBe VenueStatus.DRAFT
             venue.tags shouldBe emptyList()
         }
 
         "생성 시 기본 상태는 DRAFT다" {
-            val venue = Venue("venue", VenueCategory.BAR, createLocation(), 10000, imageUrl = "url", description = "desc", sourceUrl = "source")
+            val venue = Venue("venue", VenueCategory.BAR, createLocation(), imageUrl = "url", description = "desc", sourceUrl = "source")
             venue.status shouldBe VenueStatus.DRAFT
         }
 
         "통화 기본값은 KRW다" {
-            val venue = Venue("venue", VenueCategory.BAR, createLocation(), 10000, imageUrl = "url", description = "desc", sourceUrl = "source")
+            val venue = Venue("venue", VenueCategory.BAR, createLocation(), imageUrl = "url", description = "desc", sourceUrl = "source")
             venue.currency shouldBe "KRW"
+        }
+
+        "minPrice 없이 생성하면 가격 미확인 상태다" {
+            val venue = Venue("venue", VenueCategory.BAR, createLocation(), imageUrl = "url", description = "desc", sourceUrl = "source")
+            venue.minPrice shouldBe null
         }
 
         "태그를 포함해서 생성할 수 있다" {
@@ -48,7 +53,6 @@ class VenueTest : FreeSpec({
                 title = "venue",
                 category = VenueCategory.SOCIAL_PARTY,
                 location = createLocation(),
-                price = 10000,
                 imageUrl = "url",
                 description = "desc",
                 sourceUrl = "source",
@@ -59,70 +63,60 @@ class VenueTest : FreeSpec({
 
         "빈 제목으로 생성하면 예외가 발생한다" {
             shouldThrow<IllegalArgumentException> {
-                Venue("", VenueCategory.BAR, createLocation(), 10000, imageUrl = "url", description = "desc", sourceUrl = "source")
+                Venue("", VenueCategory.BAR, createLocation(), imageUrl = "url", description = "desc", sourceUrl = "source")
             }
         }
 
-        "음수 가격으로 생성하면 예외가 발생한다" {
+        "음수 minPrice로 생성하면 예외가 발생한다" {
             shouldThrow<IllegalArgumentException> {
-                Venue("venue", VenueCategory.BAR, createLocation(), -1, imageUrl = "url", description = "desc", sourceUrl = "source")
+                Venue("venue", VenueCategory.BAR, createLocation(), minPrice = -1, imageUrl = "url", description = "desc", sourceUrl = "source")
             }
         }
 
-        "가격 0은 허용된다" {
-            val venue = Venue("venue", VenueCategory.HONSOOL_BAR, createLocation(), 0, imageUrl = "url", description = "desc", sourceUrl = "source")
-            venue.price shouldBe 0
+        "minPrice 0은 허용된다" {
+            val venue = Venue("venue", VenueCategory.HONSOOL_BAR, createLocation(), minPrice = 0, imageUrl = "url", description = "desc", sourceUrl = "source")
+            venue.minPrice shouldBe 0
         }
     }
 
     "Venue 상태 변경" - {
+        fun makeVenue() = Venue("venue", VenueCategory.BAR, createLocation(), imageUrl = "url", description = "desc", sourceUrl = "source")
+
         "DRAFT 상태에서 게시할 수 있다" {
-            val venue = Venue("venue", VenueCategory.BAR, createLocation(), 10000, imageUrl = "url", description = "desc", sourceUrl = "source")
-
+            val venue = makeVenue()
             venue.publish()
-
             venue.status shouldBe VenueStatus.PUBLISHED
         }
 
         "HIDDEN 상태에서도 게시할 수 있다" {
-            val venue = Venue("venue", VenueCategory.BAR, createLocation(), 10000, imageUrl = "url", description = "desc", sourceUrl = "source")
+            val venue = makeVenue()
             venue.publish()
             venue.hide()
-
             venue.publish()
-
             venue.status shouldBe VenueStatus.PUBLISHED
         }
 
         "이미 PUBLISHED 상태에서 게시하면 예외가 발생한다" {
-            val venue = Venue("venue", VenueCategory.BAR, createLocation(), 10000, imageUrl = "url", description = "desc", sourceUrl = "source")
+            val venue = makeVenue()
             venue.publish()
-
-            shouldThrow<IllegalStateException> {
-                venue.publish()
-            }
+            shouldThrow<IllegalStateException> { venue.publish() }
         }
 
         "PUBLISHED 상태에서 숨길 수 있다" {
-            val venue = Venue("venue", VenueCategory.BAR, createLocation(), 10000, imageUrl = "url", description = "desc", sourceUrl = "source")
+            val venue = makeVenue()
             venue.publish()
-
             venue.hide()
-
             venue.status shouldBe VenueStatus.HIDDEN
         }
 
         "PUBLISHED 상태가 아닌 경우 숨기면 예외가 발생한다" {
-            val venue = Venue("venue", VenueCategory.BAR, createLocation(), 10000, imageUrl = "url", description = "desc", sourceUrl = "source")
-
-            shouldThrow<IllegalStateException> {
-                venue.hide()
-            }
+            val venue = makeVenue()
+            shouldThrow<IllegalStateException> { venue.hide() }
         }
     }
 
     "Venue 정보 수정" - {
-        val venue = Venue("원래 제목", VenueCategory.SOCIAL_PARTY, createLocation(), 20000, imageUrl = "old.jpg", description = "원래 설명", sourceUrl = "old-url")
+        val venue = Venue("원래 제목", VenueCategory.SOCIAL_PARTY, createLocation(), minPrice = 20000, imageUrl = "old.jpg", description = "원래 설명", sourceUrl = "old-url")
 
         "제목을 수정할 수 있다" {
             venue.update(title = "새 제목")
@@ -134,9 +128,9 @@ class VenueTest : FreeSpec({
             venue.category shouldBe VenueCategory.BAR
         }
 
-        "가격을 수정할 수 있다" {
-            venue.update(price = 30000)
-            venue.price shouldBe 30000
+        "minPrice를 수정할 수 있다" {
+            venue.update(minPrice = 30000)
+            venue.minPrice shouldBe 30000
         }
 
         "태그를 수정할 수 있다" {
@@ -147,7 +141,7 @@ class VenueTest : FreeSpec({
 
     "위치 정보 수정" - {
         "새로운 Location으로 교체할 수 있다" {
-            val venue = Venue("venue", VenueCategory.SOCIAL_PARTY, createLocation(), 10000, imageUrl = "url", description = "desc", sourceUrl = "source")
+            val venue = Venue("venue", VenueCategory.SOCIAL_PARTY, createLocation(), imageUrl = "url", description = "desc", sourceUrl = "source")
 
             venue.updateLocation(Location(
                 name = "강남역 11번 출구",

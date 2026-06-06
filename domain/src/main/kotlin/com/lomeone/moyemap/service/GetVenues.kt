@@ -33,10 +33,13 @@ class GetVenues(
             .filter { query.categories == null || it.category in query.categories }
             .filter { query.region == null || it.location.region == query.region }
             .filter {
+                val price = it.minPrice
                 when {
-                    query.minPrice != null && query.maxPrice != null -> it.price in query.minPrice..query.maxPrice
-                    query.minPrice != null -> it.price >= query.minPrice
-                    query.maxPrice != null -> it.price <= query.maxPrice
+                    query.minPrice != null || query.maxPrice != null -> price != null && when {
+                        query.minPrice != null && query.maxPrice != null -> price in query.minPrice..query.maxPrice
+                        query.minPrice != null -> price >= query.minPrice
+                        else -> price <= query.maxPrice!!
+                    }
                     else -> true
                 }
             }

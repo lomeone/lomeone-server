@@ -49,6 +49,6 @@ jib {
     }
     to {
         image = "$imageRegistry/$serviceName"
-        tags = setOf(version.toString(), "dev")
+        tags = setOf(version.toString())
     }
 }

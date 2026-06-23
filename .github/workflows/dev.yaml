@@ -20,7 +20,7 @@ jobs:
     needs: [test]
     uses: lomeone/github-action/.github/workflows/gradle-module-jib.yaml@main
     with:
-      module-name: application
+      module-name: api
     secrets: inherit
 
   deploy:

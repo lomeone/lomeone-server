@@ -1,0 +1,37 @@
+name: Production Deploy
+
+on:
+  push:
+    tags: [ prod ]
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+  packages: read    # This is required for installing dependencies
+
+jobs:
+  deploy:
+    environment: prod
+    name: Deploy production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credential
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ECR_PUSH_ROLE }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Install aws cli
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Image pull in ecr cache
+        run: |
+          export MANIFEST=$(aws ecr batch-get-image --repository-name lomeone-server --image-ids imageTag=${GITHUB_SHA::10} --query 'images[].imageManifest' --output text)
+          aws ecr put-image --repository-name lomeone-server --image-tag prod --image-manifest $MANIFEST

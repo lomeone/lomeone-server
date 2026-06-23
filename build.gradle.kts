@@ -1,19 +1,5 @@
 val groupName: String by project
 
-val queryDslVersion: String by project
-val jwtVersion: String by project
-
-val kotestVersion: String by project
-val kotestSpringVersion: String by project
-val springMockkVersion: String by project
-
-val springCloudOpenFeignVersion: String by project
-val springCloudHystrixVersion: String by project
-val springCloudRibbonVersion: String by project
-
-val eunoiaExceptionVersion: String by project
-val eunoiaKotlinUtilVersion: String by project
-
 plugins {
 	alias(libs.plugins.kotlin.jvm)
 	alias(libs.plugins.kotlin.plugin.serialization)
@@ -114,9 +100,6 @@ subprojects {
 		// common test dependencies
 		testImplementation(catalog.bundles.kotest.test.suite)
 		testImplementation(catalog.spring.boot.starter.test)
-
-//		developmentOnly("org.springframework.boot:spring-boot-devtools")
-//		testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
 	}
 }
 

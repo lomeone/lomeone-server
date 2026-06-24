@@ -12,7 +12,7 @@ permissions:
 jobs:
   deploy:
     environment: prod
-    name: Deploy production
+    name: Deploy prod
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credential

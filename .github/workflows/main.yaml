@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   test:
-    name: Test develop
+    name: Test
     uses: lomeone/github-action/.github/workflows/gradle-kotlin-test.yaml@main
     secrets: inherit
 

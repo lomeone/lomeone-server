@@ -12,7 +12,7 @@ permissions:
 jobs:
   deploy:
     environment: dev
-    name: Deploy develop
+    name: Deploy dev
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credential

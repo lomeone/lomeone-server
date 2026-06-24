@@ -10,8 +10,6 @@ allOpen {
 }
 
 dependencies {
-    implementation(project(":util"))
-
     // jpa
     implementation(libs.spring.boot.starter.data.jpa)
     implementation(libs.bundles.querydsl)

@@ -39,7 +39,7 @@ tasks {
 
 jib {
     from {
-        image = "396428372646.dkr.ecr.ap-northeast-2.amazonaws.com/ecr-public/amazoncorretto/amazoncorretto:21-al2023-headless"
+        image = "public.ecr.aws/amazoncorretto/amazoncorretto:21-al2023-headless"
         platforms {
             platform {
                 architecture = "arm64"

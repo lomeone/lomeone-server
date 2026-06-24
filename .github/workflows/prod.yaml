@@ -1,4 +1,4 @@
-name: Production Deploy
+name: Prod Deploy
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
 jobs:
   deploy:
     environment: prod
-    name: Deploy production
+    name: Deploy prod
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credential
@@ -40,7 +40,7 @@ jobs:
           
           aws --version
 
-      - name: Image pull in ecr cache
+      - name: Move prod image tag
         run: |
           export MANIFEST=$(aws ecr batch-get-image --repository-name lomeone-server --image-ids imageTag=${GITHUB_SHA::10} --query 'images[].imageManifest' --output text)
           aws ecr put-image --repository-name lomeone-server --image-tag prod --image-manifest $MANIFEST

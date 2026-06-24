@@ -128,7 +128,7 @@ kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 # spring
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
-kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin"}
+kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 # querydsl
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 # dynamodb

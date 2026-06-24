@@ -1,4 +1,4 @@
-name: Preview Deploy
+name: Main Branch Workflow
 
 on:
   push:

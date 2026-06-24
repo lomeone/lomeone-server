@@ -40,7 +40,7 @@ jobs:
           
           aws --version
 
-      - name: Image pull in ecr cache
+      - name: Move stg image tag
         run: |
           export MANIFEST=$(aws ecr batch-get-image --repository-name lomeone-server --image-ids imageTag=${GITHUB_SHA::10} --query 'images[].imageManifest' --output text)
           aws ecr put-image --repository-name lomeone-server --image-tag stg --image-manifest $MANIFEST

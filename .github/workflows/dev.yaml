@@ -2,7 +2,7 @@ name: Preview Deploy
 
 on:
   push:
-    branches: [ main ]
+    tags: [ dev ]
 
 permissions:
   id-token: write   # This is required for requesting the JWT
@@ -10,23 +10,9 @@ permissions:
   packages: read    # This is required for installing dependencies
 
 jobs:
-  test:
-    name: Test develop
-    uses: lomeone/github-action/.github/workflows/gradle-kotlin-test.yaml@main
-    secrets: inherit
-
-  build:
-    name: JIB Build
-    needs: [test]
-    uses: lomeone/github-action/.github/workflows/gradle-module-jib.yaml@main
-    with:
-      module-name: api
-    secrets: inherit
-
   deploy:
     environment: dev
     name: Deploy develop
-    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credential
@@ -54,8 +40,7 @@ jobs:
           
           aws --version
 
-      - name: Move develop image tag (Push)
-        if: github.event_name == 'push'
+      - name: Move dev image tag
         run: |
           export MANIFEST=$(aws ecr batch-get-image --repository-name lomeone-server --image-ids imageTag=${GITHUB_SHA::10} --query 'images[].imageManifest' --output text)
           aws ecr put-image --repository-name lomeone-server --image-tag dev --image-manifest $MANIFEST

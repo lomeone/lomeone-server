@@ -1,0 +1,26 @@
+name: Preview Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+  packages: read    # This is required for installing dependencies
+
+jobs:
+  test:
+    name: Test develop
+    uses: lomeone/github-action/.github/workflows/gradle-kotlin-test.yaml@main
+    secrets: inherit
+
+  build:
+    name: JIB Build
+    needs: [test]
+    uses: lomeone/github-action/.github/workflows/gradle-module-jib.yaml@main
+    with:
+      module-name: api
+    secrets: inherit
